@@ -14,7 +14,7 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "DistrhoUI.hpp"
+#include "fabricUI.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -30,10 +30,8 @@ static const float kSmoothMultiplier = 3.0f;
 
 // -----------------------------------------------------------------------------------------------------------
 
-class fabricUI : public UI
-{
-public:
-    fabricUI()
+
+fabricUI::fabricUI()
         : UI(128, 512),
           // default color is green
           fColor(93, 231, 61),
@@ -42,19 +40,17 @@ public:
           // init meter values to 0
           fOutLeft(0.0f),
           fOutRight(0.0f)
-    {
-        setGeometryConstraints(32, 128, false);
+{
+    setGeometryConstraints(900, 400);
+    Window &pw = getWindow(); //this is needed to refresh the waveform display
+    pw.addIdleCallback(this, 10);
+}
+
+void fabricUI::idleCallback(){
+        repaint();  
     }
 
-protected:
-   /* --------------------------------------------------------------------------------------------------------
-    * DSP/Plugin Callbacks */
-
-   /**
-      A parameter has changed on the plugin side.
-      This is called by the host to inform the UI about parameter changes.
-    */
-    void parameterChanged(uint32_t index, float value) override
+void fabricUI::parameterChanged(uint32_t index, float value)
     {
         switch (index)
         {
@@ -90,22 +86,11 @@ protected:
         }
     }
 
-   /**
-      A state has changed on the plugin side.
-      This is called by the host to inform the UI about state changes.
-    */
-    void stateChanged(const char*, const char*) override
+    void fabricUI::stateChanged(const char*, const char*) 
     {
         // nothing here
     }
-
-   /* --------------------------------------------------------------------------------------------------------
-    * Widget Callbacks */
-
-   /**
-      The NanoVG drawing function.
-    */
-    void onNanoDisplay() override
+    void fabricUI::onNanoDisplay() 
     {
         static const Color kColorBlack(0, 0, 0);
         static const Color kColorRed(255, 0, 0);
@@ -181,11 +166,7 @@ protected:
         closePath();
     }
 
-   /**
-      Mouse press event.
-      This UI will change color when clicked.
-    */
-    bool onMouse(const MouseEvent& ev) override
+    bool fabricUI::onMouse(const MouseEvent& ev)
     {
         // Test for left-clicked + pressed first.
         if (ev.button != 1 || ! ev.press)
@@ -198,25 +179,7 @@ protected:
         return true;
     }
 
-    // -------------------------------------------------------------------------------------------------------
-
-private:
-   /**
-      Color and its matching parameter value.
-    */
-    Color fColor;
-    int   fColorValue;
-
-   /**
-      Meter values.
-      These are the parameter outputs from the DSP side.
-    */
-    float fOutLeft, fOutRight;
-
-   /**
-      Update color if needed.
-    */
-    void updateColor(const int color)
+    void fabricUI::updateColor(const int color)
     {
         if (fColorValue == color)
             return;
@@ -236,20 +199,9 @@ private:
         repaint();
     }
 
-   /**
-      Set our UI class as non-copyable and add a leak detector just in case.
-    */
-    DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(fabricUI)
-};
-
-/* ------------------------------------------------------------------------------------------------------------
- * UI entry point, called by DPF to create a new UI instance. */
-
 UI* createUI()
 {
     return new fabricUI();
 }
-
-// -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO

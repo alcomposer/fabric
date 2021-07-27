@@ -13,20 +13,12 @@
  * IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
-#include "DistrhoPlugin.hpp"
+#include "fabricDSP.hpp"
 
 START_NAMESPACE_DISTRHO
 
-// -----------------------------------------------------------------------------------------------------------
 
-/**
-  Plugin to demonstrate parameter outputs using meters.
- */
-class fabricDSP : public Plugin
-{
-public:
-    fabricDSP()
+    fabricDSP::fabricDSP()
         : Plugin(3, 0, 0), // 3 parameters, 0 programs, 0 states
           fColor(0.0f),
           fOutLeft(0.0f),
@@ -34,78 +26,43 @@ public:
           fNeedsReset(true)
     {
     }
-
-protected:
-   /* --------------------------------------------------------------------------------------------------------
-    * Information */
-
-   /**
-      Get the plugin label.
-      A plugin label follows the same rules as Parameter::symbol, with the exception that it can start with numbers.
-    */
-    const char* getLabel() const override
+    const char* fabricDSP::getLabel() const 
     {
-        return "meters";
+        return "Fabric";
     }
 
-   /**
-      Get an extensive comment/description about the plugin.
-    */
-    const char* getDescription() const override
+    const char* fabricDSP::getDescription() const
     {
-        return "Plugin to demonstrate parameter outputs using meters.";
+        return "Fabric Delay Line Granular Effect ";
     }
 
-   /**
-      Get the plugin author/maker.
-    */
-    const char* getMaker() const override
+    const char* fabricDSP::getMaker() const
     {
-        return "DISTRHO";
+        return "AWM";
     }
 
-   /**
-      Get the plugin homepage.
-    */
-    const char* getHomePage() const override
-    {
-        return "https://github.com/DISTRHO/DPF";
-    }
 
-   /**
-      Get the plugin license name (a single line of text).
-      For commercial plugins this should return some short copyright information.
-    */
-    const char* getLicense() const override
+    const char* fabricDSP::getHomePage() const 
+    {
+        return "https://github.com/alcomposer/fabric";
+    }
+    const char* fabricDSP::getLicense() const 
     {
         return "ISC";
     }
 
-   /**
-      Get the plugin version, in hexadecimal.
-    */
-    uint32_t getVersion() const override
+    uint32_t fabricDSP::getVersion() const
     {
         return d_version(1, 0, 0);
     }
 
-   /**
-      Get the plugin unique Id.
-      This value is used by LADSPA, DSSI and VST plugin formats.
-    */
-    int64_t getUniqueId() const override
+
+    int64_t fabricDSP::getUniqueId() const 
     {
         return d_cconst('d', 'M', 't', 'r');
     }
 
-   /* --------------------------------------------------------------------------------------------------------
-    * Init */
-
-   /**
-      Initialize the parameter @a index.
-      This function will be called once, shortly after the plugin is created.
-    */
-    void initParameter(uint32_t index, Parameter& parameter) override
+    void fabricDSP::initParameter(uint32_t index, Parameter& parameter)
     {
        /**
           All parameters in this plugin have the same ranges.
@@ -148,22 +105,12 @@ protected:
         }
     }
 
-   /**
-      Set a state key and default value.
-      This function will be called once, shortly after the plugin is created.
-    */
-    void initState(uint32_t, String&, String&) override
+    void fabricDSP::initState(uint32_t, String&, String&)
     {
         // we are using states but don't want them saved in the host
     }
 
-   /* --------------------------------------------------------------------------------------------------------
-    * Internal data */
-
-   /**
-      Get the current value of a parameter.
-    */
-    float getParameterValue(uint32_t index) const override
+    float fabricDSP::getParameterValue(uint32_t index) const
     {
         switch (index)
         {
@@ -175,10 +122,7 @@ protected:
         return 0.0f;
     }
 
-   /**
-      Change a parameter value.
-    */
-    void setParameterValue(uint32_t index, float value) override
+    void fabricDSP::setParameterValue(uint32_t index, float value)
     {
         // this is only called for input paramters, and we only have one of those.
         if (index != 0) return;
@@ -186,10 +130,7 @@ protected:
         fColor = value;
     }
 
-   /**
-      Change an internal state.
-    */
-    void setState(const char* key, const char*) override
+    void fabricDSP::setState(const char* key, const char*)
     {
         if (std::strcmp(key, "reset") != 0)
             return;
@@ -197,13 +138,7 @@ protected:
         fNeedsReset = true;
     }
 
-   /* --------------------------------------------------------------------------------------------------------
-    * Process */
-
-   /**
-      Run/process function for plugins without MIDI input.
-    */
-    void run(const float** inputs, float** outputs, uint32_t frames) override
+    void fabricDSP::run(const float** inputs, float** outputs, uint32_t frames) 
     {
         float tmp;
         float tmpLeft  = 0.0f;
@@ -251,34 +186,11 @@ protected:
             std::memcpy(outputs[1], inputs[1], sizeof(float)*frames);
     }
 
-    // -------------------------------------------------------------------------------------------------------
-
-private:
-   /**
-      Parameters.
-    */
-    float fColor, fOutLeft, fOutRight;
-
-   /**
-      Boolean used to reset meter values.
-      The UI will send a "reset" message which sets this as true.
-    */
-    volatile bool fNeedsReset;
-
-   /**
-      Set our plugin class as non-copyable and add a leak detector just in case.
-    */
-    DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(fabricDSP)
-};
-
-/* ------------------------------------------------------------------------------------------------------------
- * Plugin entry point, called by DPF to create a new plugin instance. */
-
+/* Plugin entry point, called by DPF to create a new plugin instance. */
 Plugin* createPlugin()
 {
     return new fabricDSP();
 }
 
-// -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
