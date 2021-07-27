@@ -17,180 +17,180 @@
 
 START_NAMESPACE_DISTRHO
 
+fabricDSP::fabricDSP()
+    : Plugin(3, 0, 0), // 3 parameters, 0 programs, 0 states
+      fColor(0.0f),
+      fOutLeft(0.0f),
+      fOutRight(0.0f),
+      fNeedsReset(true)
+{
+}
+const char *fabricDSP::getLabel() const
+{
+    return "Fabric";
+}
 
-    fabricDSP::fabricDSP()
-        : Plugin(3, 0, 0), // 3 parameters, 0 programs, 0 states
-          fColor(0.0f),
-          fOutLeft(0.0f),
-          fOutRight(0.0f),
-          fNeedsReset(true)
-    {
-    }
-    const char* fabricDSP::getLabel() const 
-    {
-        return "Fabric";
-    }
+const char *fabricDSP::getDescription() const
+{
+    return "Fabric Delay Line Granular Effect ";
+}
 
-    const char* fabricDSP::getDescription() const
-    {
-        return "Fabric Delay Line Granular Effect ";
-    }
+const char *fabricDSP::getMaker() const
+{
+    return "AWM";
+}
 
-    const char* fabricDSP::getMaker() const
-    {
-        return "AWM";
-    }
+const char *fabricDSP::getHomePage() const
+{
+    return "https://github.com/alcomposer/fabric";
+}
+const char *fabricDSP::getLicense() const
+{
+    return "ISC";
+}
 
+uint32_t fabricDSP::getVersion() const
+{
+    return d_version(1, 0, 0);
+}
 
-    const char* fabricDSP::getHomePage() const 
-    {
-        return "https://github.com/alcomposer/fabric";
-    }
-    const char* fabricDSP::getLicense() const 
-    {
-        return "ISC";
-    }
+int64_t fabricDSP::getUniqueId() const
+{
+    return d_cconst('d', 'M', 't', 'r');
+}
 
-    uint32_t fabricDSP::getVersion() const
-    {
-        return d_version(1, 0, 0);
-    }
-
-
-    int64_t fabricDSP::getUniqueId() const 
-    {
-        return d_cconst('d', 'M', 't', 'r');
-    }
-
-    void fabricDSP::initParameter(uint32_t index, Parameter& parameter)
-    {
-       /**
+void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
+{
+    /**
           All parameters in this plugin have the same ranges.
         */
-        parameter.ranges.min = 0.0f;
-        parameter.ranges.max = 1.0f;
-        parameter.ranges.def = 0.0f;
+    parameter.ranges.min = 0.0f;
+    parameter.ranges.max = 1.0f;
+    parameter.ranges.def = 0.0f;
 
-       /**
+    /**
           Set parameter data.
         */
-        switch (index)
+    switch (index)
+    {
+    case 0:
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.name = "color";
+        parameter.symbol = "color";
+        parameter.enumValues.count = 2;
+        parameter.enumValues.restrictedMode = true;
         {
-        case 0:
-            parameter.hints  = kParameterIsAutomable|kParameterIsInteger;
-            parameter.name   = "color";
-            parameter.symbol = "color";
-            parameter.enumValues.count = 2;
-            parameter.enumValues.restrictedMode = true;
-            {
-                ParameterEnumerationValue* const values = new ParameterEnumerationValue[2];
-                parameter.enumValues.values = values;
+            ParameterEnumerationValue *const values = new ParameterEnumerationValue[2];
+            parameter.enumValues.values = values;
 
-                values[0].label = "Green";
-                values[0].value = METER_COLOR_GREEN;
-                values[1].label = "Blue";
-                values[1].value = METER_COLOR_BLUE;
-            }
-            break;
-        case 1:
-            parameter.hints  = kParameterIsAutomable|kParameterIsOutput;
-            parameter.name   = "out-left";
-            parameter.symbol = "out_left";
-            break;
-        case 2:
-            parameter.hints  = kParameterIsAutomable|kParameterIsOutput;
-            parameter.name   = "out-right";
-            parameter.symbol = "out_right";
-            break;
+            values[0].label = "Green";
+            values[0].value = METER_COLOR_GREEN;
+            values[1].label = "Blue";
+            values[1].value = METER_COLOR_BLUE;
         }
+        break;
+    case 1:
+        parameter.hints = kParameterIsAutomable | kParameterIsOutput;
+        parameter.name = "out-left";
+        parameter.symbol = "out_left";
+        break;
+    case 2:
+        parameter.hints = kParameterIsAutomable | kParameterIsOutput;
+        parameter.name = "out-right";
+        parameter.symbol = "out_right";
+        break;
+    }
+}
+
+void fabricDSP::initState(uint32_t, String &, String &)
+{
+    // we are using states but don't want them saved in the host
+}
+
+float fabricDSP::getParameterValue(uint32_t index) const
+{
+    switch (index)
+    {
+    case 0:
+        return fColor;
+    case 1:
+        return fOutLeft;
+    case 2:
+        return fOutRight;
     }
 
-    void fabricDSP::initState(uint32_t, String&, String&)
+    return 0.0f;
+}
+
+void fabricDSP::setParameterValue(uint32_t index, float value)
+{
+    // this is only called for input paramters, and we only have one of those.
+    if (index != 0)
+        return;
+
+    fColor = value;
+}
+
+void fabricDSP::setState(const char *key, const char *)
+{
+    if (std::strcmp(key, "reset") != 0)
+        return;
+
+    fNeedsReset = true;
+}
+
+void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
+{
+    float tmp;
+    float tmpLeft = 0.0f;
+    float tmpRight = 0.0f;
+
+    for (uint32_t i = 0; i < frames; ++i)
     {
-        // we are using states but don't want them saved in the host
+        // left
+        tmp = std::abs(inputs[0][i]);
+
+        if (tmp > tmpLeft)
+            tmpLeft = tmp;
+
+        // right
+        tmp = std::abs(inputs[1][i]);
+
+        if (tmp > tmpRight)
+            tmpRight = tmp;
     }
 
-    float fabricDSP::getParameterValue(uint32_t index) const
-    {
-        switch (index)
-        {
-        case 0: return fColor;
-        case 1: return fOutLeft;
-        case 2: return fOutRight;
-        }
+    if (tmpLeft > 1.0f)
+        tmpLeft = 1.0f;
+    if (tmpRight > 1.0f)
+        tmpRight = 1.0f;
 
-        return 0.0f;
+    if (fNeedsReset)
+    {
+        fOutLeft = tmpLeft;
+        fOutRight = tmpRight;
+        fNeedsReset = false;
     }
-
-    void fabricDSP::setParameterValue(uint32_t index, float value)
+    else
     {
-        // this is only called for input paramters, and we only have one of those.
-        if (index != 0) return;
-
-        fColor = value;
-    }
-
-    void fabricDSP::setState(const char* key, const char*)
-    {
-        if (std::strcmp(key, "reset") != 0)
-            return;
-
-        fNeedsReset = true;
-    }
-
-    void fabricDSP::run(const float** inputs, float** outputs, uint32_t frames) 
-    {
-        float tmp;
-        float tmpLeft  = 0.0f;
-        float tmpRight = 0.0f;
-
-        for (uint32_t i=0; i<frames; ++i)
-        {
-            // left
-            tmp = std::abs(inputs[0][i]);
-
-            if (tmp > tmpLeft)
-                tmpLeft = tmp;
-
-            // right
-            tmp = std::abs(inputs[1][i]);
-
-            if (tmp > tmpRight)
-                tmpRight = tmp;
-        }
-
-        if (tmpLeft > 1.0f)
-            tmpLeft = 1.0f;
-        if (tmpRight > 1.0f)
-            tmpRight = 1.0f;
-
-        if (fNeedsReset)
-        {
-            fOutLeft  = tmpLeft;
+        if (tmpLeft > fOutLeft)
+            fOutLeft = tmpLeft;
+        if (tmpRight > fOutRight)
             fOutRight = tmpRight;
-            fNeedsReset = false;
-        }
-        else
-        {
-            if (tmpLeft > fOutLeft)
-                fOutLeft = tmpLeft;
-            if (tmpRight > fOutRight)
-                fOutRight = tmpRight;
-        }
-
-        // copy inputs over outputs if needed
-        if (outputs[0] != inputs[0])
-            std::memcpy(outputs[0], inputs[0], sizeof(float)*frames);
-
-        if (outputs[1] != inputs[1])
-            std::memcpy(outputs[1], inputs[1], sizeof(float)*frames);
     }
+
+    // copy inputs over outputs if needed
+    if (outputs[0] != inputs[0])
+        std::memcpy(outputs[0], inputs[0], sizeof(float) * frames);
+
+    if (outputs[1] != inputs[1])
+        std::memcpy(outputs[1], inputs[1], sizeof(float) * frames);
+}
 
 /* Plugin entry point, called by DPF to create a new plugin instance. */
-Plugin* createPlugin()
+Plugin *createPlugin()
 {
     return new fabricDSP();
 }
-
 
 END_NAMESPACE_DISTRHO
