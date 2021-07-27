@@ -18,7 +18,7 @@
 
 #define DISTRHO_PLUGIN_BRAND "AWM"
 #define DISTRHO_PLUGIN_NAME  "Fabric"
-#define DISTRHO_PLUGIN_URI   "http://distrho.sf.net/examples/Meters"
+#define DISTRHO_PLUGIN_URI   "https://github.com/alcomposer/fabric"
 
 #define DISTRHO_PLUGIN_HAS_UI      1
 #define DISTRHO_PLUGIN_IS_RT_SAFE  1
