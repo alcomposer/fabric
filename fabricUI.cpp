@@ -44,16 +44,14 @@ fabricUI::fabricUI()
     Window &pw = getWindow(); //this is needed to refresh the waveform display
     pw.addIdleCallback(this, 10);
 
+
+/*
     fdensity = new VolumeKnob(this,  Size<uint>(60, 60));
     fdensity->setId(id_density);
     fdensity->setCallback(this);
     fdensity->setColor(Color(173, 216, 230, 255));   
     fdensity->setAbsolutePos(15, 350);
     fdensity->show();
-
-    
-
-    
 
     flength = new VolumeKnob(this,  Size<uint>(60, 60));
     flength->setId(id_length);
@@ -75,9 +73,11 @@ fabricUI::fabricUI()
     flabelLive->setId(id_temp_label);
     flabelLive->setFontSize(45.0);
     flabelLive->show();
+    */
 
 
     custom_widget = new fabricController(this, Size<uint>(200,200));
+    custom_widget->setText("DENSITY");
     custom_widget->setAbsolutePos(100,100);
     custom_widget->show();
 

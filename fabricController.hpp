@@ -23,19 +23,18 @@
 
 START_NAMESPACE_DISTRHO
 
-class fabricController : public NanoSubWidget
-                 ,public NanoKnob::Callback
+class fabricController : public VolumeKnob
+                 , public NanoKnob::Callback
 {
 public:
     explicit fabricController(Widget *widget, Size<uint> size) noexcept;
+    void setText(std::string text);
 
 protected:
 
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
 
     void onNanoDisplay() override;
-
-    
 
     //void onDisplay() override;
     /**
@@ -44,9 +43,17 @@ protected:
     */
     //bool onMouse(const MouseEvent &ev) override;
 
+    void onPositionChanged(const PositionChangedEvent &event) override;
+    void onResize(const ResizeEvent &event) override;
+
 private:
-    ScopedPointer<VolumeKnob> fdensity;
-    ScopedPointer<NanoLabel> flabel;
+    void updateBuddyWidgetPositions();
+
+private:
+    std::string topText = {" "};
+    ScopedPointer<NanoLabel> flabelTop;
+    ScopedPointer<VolumeKnob> fknobCenter;
+
 
     DISTRHO_LEAK_DETECTOR(fabricController);
 };

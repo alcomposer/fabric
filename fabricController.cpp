@@ -14,25 +14,25 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #include "fabricController.hpp"
+#include <iostream>
 
 START_NAMESPACE_DISTRHO
 
 fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
-    : NanoSubWidget(widget)
+    : VolumeKnob(widget, size)
 {
-    setSize(size);
+    //setSize(size);
     
-    fdensity = new VolumeKnob(this,  Size<uint>(60, 60));
-    fdensity->setColor(Color(173, 216, 230, 255));
-    fdensity->setAbsolutePos(0, 0);
-    fdensity->show();
+    flabelTop = new NanoLabel(widget, Size<uint>(2000,200));
+    flabelTop->setFontSize(20.0);
+    flabelTop->textAlign(ALIGN_CENTER);
+    flabelTop->show();
 
-    
-    flabel = new NanoLabel(this, Size<uint>(900,200));
-    flabel->setText("This should be at top left edge of red box");
-    flabel->setFontSize(20.0);
-    flabel->setAbsolutePos(0, 0);
-    flabel->show();
+    fknobCenter = new VolumeKnob(widget,  Size<uint>(60, 60));
+    fknobCenter->setColor(Color(173, 216, 230, 255));
+    fknobCenter->show();
+
+    updateBuddyWidgetPositions();
 }
 
 
@@ -42,19 +42,38 @@ void fabricController::nanoKnobValueChanged(NanoKnob *nanoKnob, const float valu
 
 void fabricController::onNanoDisplay()
 {
-    static const Color k_grey(255, 0, 0);
-    beginPath();
-    rect(0.0f, 0.0f, getWidth()/2, getHeight()/2);
-    fillColor(k_grey);
-    fill();
-    closePath();
 }
 
-//
-//}
-//void fabricControl::onDisplay()
-//{
-//
+void fabricController::setText(std::string text)
+{
+    topText = text;
+    flabelTop->setText(topText.c_str());
+    updateBuddyWidgetPositions();
+};
 
+void fabricController::onPositionChanged(const PositionChangedEvent &event)
+{
+    updateBuddyWidgetPositions();
+}
+
+void fabricController::onResize(const ResizeEvent &event)
+{
+    updateBuddyWidgetPositions();
+}
+
+void fabricController::updateBuddyWidgetPositions()
+{
+    Rectangle<int> area = getAbsoluteArea();
+
+
+    Rectangle<float> labelTopBounds;
+    flabelTop->textBounds(0.0, 0.0, topText.c_str(), NULL, labelTopBounds);
+    std::cout << labelTopBounds.getWidth() << std::endl;
+
+    // reposition the label at horizontal center and above the knob
+    flabelTop->setAbsolutePos(area.getX() - labelTopBounds.getWidth() / 2.0, area.getY() - labelTopBounds.getHeight() - 4);
+    // reposition the knob at top-left
+    fknobCenter->setAbsolutePos(area.getX(), area.getY());
+}
 
 END_NAMESPACE_DISTRHO
