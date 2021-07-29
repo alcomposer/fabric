@@ -52,7 +52,7 @@ private:
 private:
     std::string topText = {" "};
     ScopedPointer<NanoLabel> flabelTop;
-    ScopedPointer<VolumeKnob> fknobCenter;
+    // ScopedPointer<VolumeKnob> fknobCenter;
 
 
     DISTRHO_LEAK_DETECTOR(fabricController);
