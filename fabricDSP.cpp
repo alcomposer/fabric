@@ -20,11 +20,14 @@ START_NAMESPACE_DISTRHO
 
 fabricDSP::fabricDSP()
     : Plugin(Parameters::TOTAL, 0, 0), // 8 parameters, 0 programs, 0 states
+      waveForm(2000),
       fColor(0.0f),
       fOutLeft(0.0f),
       fOutRight(0.0f),
       fNeedsReset(true)
 {
+    _sampleRate = getSampleRate();
+    st_audioBuffer.resize(10*_sampleRate);
 }
 const char *fabricDSP::getLabel() const
 {
@@ -178,6 +181,24 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             fOutLeft = tmpLeft;
         if (tmpRight > fOutRight)
             fOutRight = tmpRight;
+    }
+
+    if (true){//(recTrue){
+        for (int pos = 0; pos < frames; pos++)
+        {
+            st_audioBuffer[_bufferPos].first = inputs[0][pos];
+            st_audioBuffer[_bufferPos].second = inputs[1][pos];
+            _bufferPos++;
+            if (_bufferPos > st_audioBuffer.size()) _bufferPos = 0;
+        }
+    }
+    
+    //convert audio buffer into low quality buffer
+    int increment = st_audioBuffer.size()/DISPLAY_WIDTH;
+    waveForm.clear();
+    for (int pos = 0; pos < (_sampleRate * 10) ; pos+=increment)
+    {
+        waveForm.push_back(((st_audioBuffer[pos].first + st_audioBuffer[pos].second) * 0.5) * float(DISPLAY_WIDTH * 0.5));
     }
 
     // copy inputs over outputs if needed

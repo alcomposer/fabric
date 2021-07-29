@@ -23,6 +23,7 @@
 
 #include "fabricWaveformDisplay.hpp"
 #include "fabricController.hpp" 
+#include "fabricDSP.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -59,6 +60,7 @@ protected:
     bool onMouse(const MouseEvent &ev) override;
 
 private:
+    fabricDSP *plugin;
     /**
         Meter values.
         These are the parameter outputs from the DSP side.

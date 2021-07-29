@@ -17,6 +17,7 @@
 #pragma once
 
 #include "DistrhoPlugin.hpp"
+#include <vector>
 
 START_NAMESPACE_DISTRHO
 
@@ -97,6 +98,16 @@ protected:
     // -------------------------------------------------------------------------------------------------------
 
 private:
+    //stereo audio buffer
+    std::vector<std::pair<float,float>> st_audioBuffer;
+
+    //position inside audio buffer
+    int _bufferPos = {0};
+
+    // Low Resolution Waveform Display Buffer
+    std::vector<signed char> waveForm;
+
+    float _sampleRate = {0.0f};
     /**
       Parameters.
     */
@@ -109,6 +120,10 @@ private:
     /**
       Set our plugin class as non-copyable and add a leak detector just in case.
     */
+
+    //Get access to UI
+    friend class fabricUI;
+    
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(fabricDSP);
 };
 

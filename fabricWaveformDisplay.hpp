@@ -19,6 +19,7 @@
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 #include "Window.hpp"
+#include "fabricDSP.hpp"
 
 START_NAMESPACE_DISTRHO
 
