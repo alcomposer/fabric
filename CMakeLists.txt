@@ -9,6 +9,8 @@ dpf_add_plugin(fabric
   FILES_UI
       fabricUI.cpp
 
+      fabricWaveformDisplay.cpp
+
       fabricController.cpp
 
       widgets/src/WolfWidget.cpp

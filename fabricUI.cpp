@@ -33,6 +33,7 @@ static const float kSmoothMultiplier = 3.0f;
 fabricUI::fabricUI()
     : UI(850, 500)
       ,knobSizeStandard(50,50)
+      ,waveformDisplaySize(850, 300)
       // default color is green
       ,fColor(93, 231, 61)
       // which is value 0
@@ -44,6 +45,10 @@ fabricUI::fabricUI()
     setGeometryConstraints(850, 500);
     Window &pw = getWindow(); //this is needed to refresh the waveform display
     pw.addIdleCallback(this, 10);
+
+    fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
+    fwaveformDisplay->setAbsolutePos(0,60);
+    fwaveformDisplay->show();
 
     fcontrolSpeed = new fabricController(this, knobSizeStandard);
     fcontrolSpeed->setText("SPEED");

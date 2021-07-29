@@ -21,6 +21,7 @@
 #include "NanoLabel.hpp"
 #include "fabricParameters.hpp"
 
+#include "fabricWaveformDisplay.hpp"
 #include "fabricController.hpp" 
 
 START_NAMESPACE_DISTRHO
@@ -64,7 +65,11 @@ private:
     */
     float fOutLeft, fOutRight;
 
+    Size<uint> waveformDisplaySize;
+
     Size<uint> knobSizeStandard;
+
+    ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
 
     ScopedPointer<fabricController> fcontrolSpeed;
     ScopedPointer<fabricController> fcontrolDensity;
