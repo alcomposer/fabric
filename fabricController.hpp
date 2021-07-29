@@ -35,8 +35,6 @@ protected:
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
 
     void onNanoDisplay() override;
-
-    //void onDisplay() override;
     /**
         Mouse press event.
         This UI will change color when clicked.
@@ -52,7 +50,6 @@ private:
 private:
     std::string topText = {" "};
     ScopedPointer<NanoLabel> flabelTop;
-    // ScopedPointer<VolumeKnob> fknobCenter;
 
 
     DISTRHO_LEAK_DETECTOR(fabricController);

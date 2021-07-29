@@ -22,19 +22,15 @@ fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     : VolumeKnob(widget, size)
 {
     //setSize(size);
+    //setNeedsFullViewportDrawing();
 
     setColor(Color(173, 216, 230, 255));
 
     
     flabelTop = new NanoLabel(widget, Size<uint>(200,200));
-    flabelTop->setFontSize(20.0);
-    //flabelTop->textAlign(ALIGN_CENTER);
+    flabelTop->setFontSize(16.0);
     flabelTop->setAlign(ALIGN_CENTER|ALIGN_TOP);
     flabelTop->show();
-
-    // fknobCenter = new VolumeKnob(widget,  Size<uint>(60, 60));
-    // fknobCenter->setColor(Color(173, 216, 230, 255));
-    // fknobCenter->show();
 
     updateBuddyWidgetPositions();
 }
@@ -79,11 +75,11 @@ void fabricController::updateBuddyWidgetPositions()
     //flabelTop->setAbsolutePos(area.getX() - labelTopBounds.getWidth() / 2.0, area.getY() - labelTopBounds.getHeight() - 4);
 
     flabelTop->setAbsolutePos(
-        area.getX() + (area.getWidth() - flabelTop->getWidth()) / 2.0,
+        area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
         area.getY() - labelTopBounds.getHeight() - 4);
 
-// fprintf(stderr, "area %d %d\n", area.getX(), area.getWidth());
-// fprintf(stderr, "label %d %d\n", flabelTop->getAbsoluteX(), flabelTop->getWidth());
+ //fprintf(stderr, "area %d %d\n", area.getX(), area.getWidth());
+ //fprintf(stderr, "label %d %d\n", flabelTop->getAbsoluteX(), flabelTop->getWidth());
 
     // reposition the knob at top-left
     //fknobCenter->setAbsolutePos(area.getX(), area.getY());

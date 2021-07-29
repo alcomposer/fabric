@@ -31,57 +31,77 @@ static const float kSmoothMultiplier = 3.0f;
 // -----------------------------------------------------------------------------------------------------------
 
 fabricUI::fabricUI()
-    : UI(900, 400),
+    : UI(850, 500)
+      ,knobSizeStandard(50,50)
       // default color is green
-      fColor(93, 231, 61),
+      ,fColor(93, 231, 61)
       // which is value 0
-      fColorValue(0),
+      ,fColorValue(0)
       // init meter values to 0
-      fOutLeft(0.0f),
-      fOutRight(0.0f)
+      ,fOutLeft(0.0f)
+      ,fOutRight(0.0f)
 {
-    setGeometryConstraints(900, 400);
+    setGeometryConstraints(850, 500);
     Window &pw = getWindow(); //this is needed to refresh the waveform display
     pw.addIdleCallback(this, 10);
 
+    fcontrolSpeed = new fabricController(this, knobSizeStandard);
+    fcontrolSpeed->setText("SPEED");
+    fcontrolSpeed->setId(id_speed);
+    fcontrolSpeed->setCallback(this);
+    fcontrolSpeed->setAbsolutePos(50,400);
+    fcontrolSpeed->setBipolar(true);
+    fcontrolSpeed->show();
 
-/*
-    fdensity = new VolumeKnob(this,  Size<uint>(60, 60));
-    fdensity->setId(id_density);
-    fdensity->setCallback(this);
-    fdensity->setColor(Color(173, 216, 230, 255));   
-    fdensity->setAbsolutePos(15, 350);
-    fdensity->show();
+    fcontrolDensity = new fabricController(this, knobSizeStandard);
+    fcontrolDensity->setText("DENSITY");
+    fcontrolDensity->setId(id_density);
+    fcontrolDensity->setCallback(this);
+    fcontrolDensity->setAbsolutePos(150,400);
+    fcontrolDensity->show();
 
-    flength = new VolumeKnob(this,  Size<uint>(60, 60));
-    flength->setId(id_length);
-    flength->setCallback(this);
-    flength->setColor(Color(173, 216, 230, 255));   
-    flength->setAbsolutePos(100, 350);
-    flength->setRange(-1.0, 1.0);
-    flength->setBipolar(true);
-    flength->show();
+    fcontrolLength = new fabricController(this, knobSizeStandard);
+    fcontrolLength->setText("LENGTH");
+    fcontrolLength->setId(id_length);
+    fcontrolLength->setCallback(this);
+    fcontrolLength->setAbsolutePos(250,400);
+    fcontrolLength->show();
 
-    flabel = new NanoLabel(this, Size<uint>(900,200));
-    flabel->setText("label & these two knobs inside main window");
-    flabel->setAbsolutePos(15,300);
-    flabel->setFontSize(45.0);
-    flabel->show();
+    fcontrolSpray = new fabricController(this, knobSizeStandard);
+    fcontrolSpray->setText("SPRAY");
+    fcontrolSpray->setId(id_spray);
+    fcontrolSpray->setCallback(this);
+    fcontrolSpray->setAbsolutePos(350,400);
+    fcontrolSpray->show();
 
-    flabelLive = new NanoLabel(this, Size<uint>(200,200));
-    flabelLive->setAbsolutePos(getWidth()/2, getHeight()/2);
-    flabelLive->setId(id_temp_label);
-    flabelLive->setFontSize(45.0);
-    flabelLive->show();
-    */
+    fcontrolSides = new fabricController(this, knobSizeStandard);
+    fcontrolSides->setText("SIDES");
+    fcontrolSides->setId(id_sides);
+    fcontrolSides->setCallback(this);
+    fcontrolSides->setAbsolutePos(450,400);
+    fcontrolSides->show();
 
+    fcontrolWet = new fabricController(this, knobSizeStandard);
+    fcontrolWet->setText("WET");
+    fcontrolWet->setId(id_wet);
+    fcontrolWet->setCallback(this);
+    fcontrolWet->setAbsolutePos(550,400);
+    fcontrolWet->show();
 
-    custom_widget = new fabricController(this, Size<uint>(200,200));
-    custom_widget->setText("DENSITY");
-    custom_widget->setAbsolutePos(100,100);
-    custom_widget->show();
+    fcontrolDry = new fabricController(this, knobSizeStandard);
+    fcontrolDry->setText("DRY");
+    fcontrolDry->setId(id_dry);
+    fcontrolDry->setCallback(this);
+    fcontrolDry->setAbsolutePos(650,400);
+    fcontrolDry->show();
 
-    
+    fcontrolMix = new fabricController(this, knobSizeStandard);
+    fcontrolMix->setText("MIX");
+    fcontrolMix->setId(id_mix);
+    fcontrolMix->setCallback(this);
+    fcontrolMix->setAbsolutePos(750,400);
+    fcontrolMix->setBipolar(true);
+    fcontrolMix->show();
 }
 
 void fabricUI::idleCallback()
@@ -135,6 +155,7 @@ void fabricUI::stateChanged(const char *, const char *)
 }
 void fabricUI::onNanoDisplay()
 {    
+    //draw grey window background
     static const Color k_grey(99, 99, 99);
     beginPath();
     rect(0.0f, 0.0f, getWidth(), getHeight());
@@ -155,9 +176,10 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
 
     setParameterValue(id, value);
 
-    if (id == id_density)
+    if (id == id_speed)
     {
-        flabelLive->setText(newValue);
+        std::cout << "speed is: " << value << std::endl;
+        //flabelLive->setText(newValue);
     }
     if (id == id_length)
     {
@@ -166,7 +188,7 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
     //{
     //    fGraphWidget->setHorizontalWarpAmount(value);
     //}
-    //else if (id == paramVerticalWarpAmount)
+    //else if (id == paramVerticalWarpA${appName}: ${sessionName}mount)
     //{
     //    fGraphWidget->setVerticalWarpAmount(value);
     //}

@@ -64,13 +64,17 @@ private:
     */
     float fOutLeft, fOutRight;
 
-    ScopedPointer<VolumeKnob> fdensity;
-    ScopedPointer<VolumeKnob> flength;
-    ScopedPointer<NanoLabel> flabel;
-    ScopedPointer<NanoLabel> flabelLive;
-    
-    ScopedPointer<fabricController> custom_widget;
+    Size<uint> knobSizeStandard;
 
+    ScopedPointer<fabricController> fcontrolSpeed;
+    ScopedPointer<fabricController> fcontrolDensity;
+    ScopedPointer<fabricController> fcontrolLength;
+    ScopedPointer<fabricController> fcontrolSpray;
+    ScopedPointer<fabricController> fcontrolSides;
+    ScopedPointer<fabricController> fcontrolWet;
+    ScopedPointer<fabricController> fcontrolDry;
+    ScopedPointer<fabricController> fcontrolMix;
+    
     /**
         Color and its matching parameter value.
     */

@@ -14,11 +14,12 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #include "fabricDSP.hpp"
+#include "fabricParameters.hpp"
 
 START_NAMESPACE_DISTRHO
 
 fabricDSP::fabricDSP()
-    : Plugin(3, 0, 0), // 3 parameters, 0 programs, 0 states
+    : Plugin(Parameters::TOTAL, 0, 0), // 8 parameters, 0 programs, 0 states
       fColor(0.0f),
       fOutLeft(0.0f),
       fOutRight(0.0f),

@@ -13,7 +13,9 @@ NanoLabel::NanoLabel(Widget  *widget, Size<uint> size) noexcept : WolfWidget(wid
                                                                      fColor(Color(255, 255, 255, 255)),
                                                                      fFontSize(12.0f)
 {
+    setNeedsFullViewportDrawing();
     setSize(size);
+
 
     using namespace WOLF_FONTS;
     NanoVG::FontId chivoBoldId = createFontFromMemory("chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
