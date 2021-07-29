@@ -18,7 +18,6 @@
 
 #include "DistrhoUI.hpp"
 #include "VolumeKnob.hpp"
-#include "LabelBox.hpp"
 #include "NanoLabel.hpp"
 #include "fabricParameters.hpp"
 
