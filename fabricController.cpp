@@ -21,9 +21,6 @@ START_NAMESPACE_DISTRHO
 fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     : VolumeKnob(widget, size)
 {
-    //setSize(size);
-    //setNeedsFullViewportDrawing();
-
     setColor(Color(173, 216, 230, 255));
 
     

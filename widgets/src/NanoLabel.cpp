@@ -13,7 +13,6 @@ NanoLabel::NanoLabel(Widget  *widget, Size<uint> size) noexcept : WolfWidget(wid
                                                                      fColor(Color(255, 255, 255, 255)),
                                                                      fFontSize(12.0f)
 {
-    setNeedsFullViewportDrawing();
     setSize(size);
 
 
