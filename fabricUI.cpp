@@ -13,7 +13,7 @@
  * IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
+#include <iostream>
 #include "fabricUI.hpp"
 
 START_NAMESPACE_DISTRHO
@@ -31,7 +31,7 @@ static const float kSmoothMultiplier = 3.0f;
 // -----------------------------------------------------------------------------------------------------------
 
 fabricUI::fabricUI()
-    : UI(128, 512),
+    : UI(900, 400),
       // default color is green
       fColor(93, 231, 61),
       // which is value 0
@@ -43,11 +43,50 @@ fabricUI::fabricUI()
     setGeometryConstraints(900, 400);
     Window &pw = getWindow(); //this is needed to refresh the waveform display
     pw.addIdleCallback(this, 10);
+
+    fdensity = new VolumeKnob(this,  Size<uint>(60, 60));
+    fdensity->setId(id_density);
+    fdensity->setCallback(this);
+    fdensity->setColor(Color(173, 216, 230, 255));   
+    fdensity->setAbsolutePos(15, 350);
+    fdensity->show();
+
+    
+
+    
+
+    flength = new VolumeKnob(this,  Size<uint>(60, 60));
+    flength->setId(id_length);
+    flength->setCallback(this);
+    flength->setColor(Color(173, 216, 230, 255));   
+    flength->setAbsolutePos(100, 350);
+    flength->setRange(-1.0, 1.0);
+    flength->setBipolar(true);
+    flength->show();
+
+    flabel = new NanoLabel(this, Size<uint>(900,200));
+    flabel->setText("label & these two knobs inside main window");
+    flabel->setAbsolutePos(15,300);
+    flabel->setFontSize(45.0);
+    flabel->show();
+
+    flabelLive = new NanoLabel(this, Size<uint>(200,200));
+    flabelLive->setAbsolutePos(getWidth()/2, getHeight()/2);
+    flabelLive->setId(id_temp_label);
+    flabelLive->setFontSize(45.0);
+    flabelLive->show();
+
+
+    custom_widget = new fabricController(this, Size<uint>(200,200));
+    custom_widget->setAbsolutePos(100,100);
+    custom_widget->show();
+
+    
 }
 
 void fabricUI::idleCallback()
 {
-    repaint();
+    //repaint();
 }
 
 void fabricUI::parameterChanged(uint32_t index, float value)
@@ -95,92 +134,42 @@ void fabricUI::stateChanged(const char *, const char *)
     // nothing here
 }
 void fabricUI::onNanoDisplay()
-{
-    static const Color kColorBlack(0, 0, 0);
-    static const Color kColorRed(255, 0, 0);
-    static const Color kColorYellow(255, 255, 0);
-
-    // get meter values
-    const float outLeft(fOutLeft);
-    const float outRight(fOutRight);
-
-    // tell DSP side to reset meter values
-    setState("reset", "");
-
-    // useful vars
-    const float halfWidth = static_cast<float>(getWidth()) / 2;
-    const float redYellowHeight = static_cast<float>(getHeight()) * 0.2f;
-    const float yellowBaseHeight = static_cast<float>(getHeight()) * 0.4f;
-    const float baseBaseHeight = static_cast<float>(getHeight()) * 0.6f;
-
-    // create gradients
-    Paint fGradient1 = linearGradient(0.0f, 0.0f, 0.0f, redYellowHeight, kColorRed, kColorYellow);
-    Paint fGradient2 = linearGradient(0.0f, redYellowHeight, 0.0f, yellowBaseHeight, kColorYellow, fColor);
-
-    // paint left meter
+{    
+    static const Color k_grey(99, 99, 99);
     beginPath();
-    rect(0.0f, 0.0f, halfWidth - 1.0f, redYellowHeight);
-    fillPaint(fGradient1);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(0.0f, redYellowHeight - 0.5f, halfWidth - 1.0f, yellowBaseHeight);
-    fillPaint(fGradient2);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(0.0f, redYellowHeight + yellowBaseHeight - 1.5f, halfWidth - 1.0f, baseBaseHeight);
-    fillColor(fColor);
-    fill();
-    closePath();
-
-    // paint left black matching output level
-    beginPath();
-    rect(0.0f, 0.0f, halfWidth - 1.0f, (1.0f - outLeft) * getHeight());
-    fillColor(kColorBlack);
-    fill();
-    closePath();
-
-    // paint right meter
-    beginPath();
-    rect(halfWidth + 1.0f, 0.0f, halfWidth - 2.0f, redYellowHeight);
-    fillPaint(fGradient1);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(halfWidth + 1.0f, redYellowHeight - 0.5f, halfWidth - 2.0f, yellowBaseHeight);
-    fillPaint(fGradient2);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(halfWidth + 1.0f, redYellowHeight + yellowBaseHeight - 1.5f, halfWidth - 2.0f, baseBaseHeight);
-    fillColor(fColor);
-    fill();
-    closePath();
-
-    // paint right black matching output level
-    beginPath();
-    rect(halfWidth + 1.0f, 0.0f, halfWidth - 2.0f, (1.0f - outRight) * getHeight());
-    fillColor(kColorBlack);
+    rect(0.0f, 0.0f, getWidth(), getHeight());
+    fillColor(k_grey);
     fill();
     closePath();
 }
 
 bool fabricUI::onMouse(const MouseEvent &ev)
 {
-    // Test for left-clicked + pressed first.
-    if (ev.button != 1 || !ev.press)
-        return false;
+    return false; // set false to allow the mouse event to propogate to child widgets
+}
 
-    const int newColor(fColorValue == 0 ? 1 : 0);
-    updateColor(newColor);
-    setParameterValue(0, newColor);
+void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
+{
+    const uint id = nanoKnob->getId();
+    float newValue = value;
 
-    return true;
+    setParameterValue(id, value);
+
+    if (id == id_density)
+    {
+        flabelLive->setText(newValue);
+    }
+    if (id == id_length)
+    {
+        //std::cout << "grain length value is: " << value << std::endl;
+    }
+    //{
+    //    fGraphWidget->setHorizontalWarpAmount(value);
+    //}
+    //else if (id == paramVerticalWarpAmount)
+    //{
+    //    fGraphWidget->setVerticalWarpAmount(value);
+    //}
 }
 
 void fabricUI::updateColor(const int color)

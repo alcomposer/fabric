@@ -17,11 +17,18 @@
 #pragma once
 
 #include "DistrhoUI.hpp"
+#include "VolumeKnob.hpp"
+#include "LabelBox.hpp"
+#include "NanoLabel.hpp"
+#include "fabricParameters.hpp"
+
+#include "fabricController.hpp" 
 
 START_NAMESPACE_DISTRHO
 
-class fabricUI : public UI,
-                 public IdleCallback
+class fabricUI :  public UI
+                 ,public IdleCallback
+                 ,public NanoKnob::Callback
 {
 public:
     fabricUI();
@@ -58,6 +65,13 @@ private:
     */
     float fOutLeft, fOutRight;
 
+    ScopedPointer<VolumeKnob> fdensity;
+    ScopedPointer<VolumeKnob> flength;
+    ScopedPointer<NanoLabel> flabel;
+    ScopedPointer<NanoLabel> flabelLive;
+    
+    ScopedPointer<fabricController> custom_widget;
+
     /**
         Color and its matching parameter value.
     */
@@ -66,6 +80,9 @@ private:
     /**
         Update color if needed.
     */
+
+    void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
+
     void updateColor(const int color);
     /**
         Set our UI class as non-copyable and add a leak detector just in case.
