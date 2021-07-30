@@ -28,12 +28,10 @@
 START_NAMESPACE_DISTRHO
 
 class fabricUI :  public UI
-                 ,public IdleCallback
                  ,public NanoKnob::Callback
 {
 public:
     fabricUI();
-    void idleCallback();
     fabricDSP *_plugin;
 
     /* DSP/Plugin Callbacks */

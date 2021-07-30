@@ -43,10 +43,9 @@ fabricUI::fabricUI()
       ,fOutLeft(0.0f)
       ,fOutRight(0.0f)
 {
-    _plugin = static_cast<fabricDSP *>(getPluginInstancePointer()); 
+    _plugin = static_cast<fabricDSP *>(getPluginInstancePointer());
+
     setGeometryConstraints(850, 500);
-    Window &pw = getWindow(); //this is needed to refresh the waveform display
-    pw.addIdleCallback(this, 10);
 
     fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
     fwaveformDisplay->setAbsolutePos(0,60);
@@ -109,11 +108,6 @@ fabricUI::fabricUI()
     fcontrolMix->setAbsolutePos(750,400);
     fcontrolMix->setBipolar(true);
     fcontrolMix->show();
-}
-
-void fabricUI::idleCallback()
-{
-    //repaint();
 }
 
 void fabricUI::parameterChanged(uint32_t index, float value)
