@@ -28,7 +28,7 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
 
     setSize(size); 
     _parent = static_cast<fabricUI *>(widget);
-    _waveformPtr = &_parent->_plugin->waveForm;
+    _st_audioBuffer = &_parent->_plugin->st_audioBuffer;
 }
 
 void fabricWaveformDisplay::idleCallback()
@@ -49,33 +49,28 @@ void fabricWaveformDisplay::onNanoDisplay()
     float display_center = getHeight() / 2.0;
     float display_left = 0.0f;
     float display_right = getWidth();
-
-
-    double samples_per_pixel = 1.0; // FIXME still connected to scroll zoom somehow
     float fIndex;
-    uint iIndex;
-
-    fIndex = float(0) + float(samples_per_pixel);
-    iIndex = fIndex;
+    uint sampleIndex;
     
-    //std::cout << "drawing waveform" << std::endl;
+    //draw waveform
     beginPath();
-    strokeColor({255,0,0});
-    strokeWidth(1.0f);
-    moveTo(0, getHeight()/2.0);
+    strokeColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
+    strokeWidth(0.9f);
 
     for (uint16_t i = 0; i < DISPLAY_WIDTH; i++)
     {
-        fIndex = float(0) + (float(i) * samples_per_pixel);
-        iIndex = fIndex;
-        auto minmax = std::minmax_element(_waveformPtr->begin() + iIndex, _waveformPtr->begin() + iIndex + int(samples_per_pixel));
-        uint16_t min = *minmax.first + display_center;
-        uint16_t max = *minmax.second + display_center;
-        lineTo(i + display_left, min);
-        lineTo(i + display_left, max);
+        fIndex = (float)i / DISPLAY_WIDTH;
+        sampleIndex = fIndex * 10 * 44100;
+        moveTo(i, display_center);
+        lineTo(i, display_center + ((*_st_audioBuffer)[sampleIndex].first) * display_center);
+        moveTo(i, display_center);
+        lineTo(i, display_center - ((*_st_audioBuffer)[sampleIndex].second) * display_center);
     }
+    //fillColor({255,0,0});
+    //fill();
     stroke();
     closePath();
+
     // center line
     beginPath();
     moveTo(display_left, display_center);

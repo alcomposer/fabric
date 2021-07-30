@@ -38,7 +38,7 @@ protected:
     //void onResize(const ResizeEvent &event) override;
 private:
     fabricUI * _parent;
-    std::vector<signed char> *_waveformPtr;
+    std::vector<std::pair<float,float>> *_st_audioBuffer;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
 

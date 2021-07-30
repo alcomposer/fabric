@@ -21,7 +21,7 @@ START_NAMESPACE_DISTRHO
 fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     : VolumeKnob(widget, size)
 {
-    setColor(Color(173, 216, 230, 255));
+    setColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
 
     
     flabelTop = new NanoLabel(widget, Size<uint>(200,200));
