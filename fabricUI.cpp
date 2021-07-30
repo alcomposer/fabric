@@ -141,8 +141,9 @@ void fabricUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case 0: // color
-        updateColor(std::round(value));
+    case 0: // rec_on / rec_off
+        frecButton->setDown(value);
+        _plugin->setRecording(value);
         break;
 
     case 1: // out-left
@@ -238,7 +239,7 @@ void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
         }
     }
 }
-
+/*
 void fabricUI::updateColor(const int color)
 {
     if (fColorValue == color)
@@ -258,6 +259,7 @@ void fabricUI::updateColor(const int color)
 
     repaint();
 }
+*/
 
 UI *createUI()
 {

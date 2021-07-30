@@ -78,18 +78,18 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
     {
     case 0:
         parameter.hints = kParameterIsAutomable | kParameterIsInteger;
-        parameter.name = "color";
-        parameter.symbol = "color";
+        parameter.name = "REC";
+        parameter.symbol = "REC";
         parameter.enumValues.count = 2;
         parameter.enumValues.restrictedMode = true;
         {
             ParameterEnumerationValue *const values = new ParameterEnumerationValue[2];
             parameter.enumValues.values = values;
 
-            values[0].label = "Green";
-            values[0].value = METER_COLOR_GREEN;
-            values[1].label = "Blue";
-            values[1].value = METER_COLOR_BLUE;
+            values[0].label = "recording off";
+            values[0].value = REC_OFF;
+            values[1].label = "recording on";
+            values[1].value = REC_ON;
         }
         break;
     case 1:
@@ -115,7 +115,7 @@ float fabricDSP::getParameterValue(uint32_t index) const
     switch (index)
     {
     case 0:
-        return fColor;
+        return _recording;
     case 1:
         return fOutLeft;
     case 2:
@@ -128,10 +128,12 @@ float fabricDSP::getParameterValue(uint32_t index) const
 void fabricDSP::setParameterValue(uint32_t index, float value)
 {
     // this is only called for input paramters, and we only have one of those.
-    if (index != 0)
+    switch (index)
+    {
+    case 0:
+        _recording = value;
         return;
-
-    fColor = value;
+    }
 }
 
 void fabricDSP::setState(const char *key, const char *)

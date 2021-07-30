@@ -29,7 +29,7 @@
 #define DISTRHO_UI_USE_NANOVG             1
 #define DISTRHO_PLUGIN_WANT_DIRECT_ACCESS 1
 
-#define METER_COLOR_GREEN                 0
-#define METER_COLOR_BLUE                  1
+#define REC_OFF                           0
+#define REC_ON                            1
 
 #define DISPLAY_WIDTH                     850

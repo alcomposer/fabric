@@ -97,7 +97,7 @@ private:
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
     void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
 
-    void updateColor(const int color);
+    //void updateColor(const int color);
     /**
         Set our UI class as non-copyable and add a leak detector just in case.
     */
