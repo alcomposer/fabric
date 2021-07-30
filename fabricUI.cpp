@@ -43,8 +43,7 @@ fabricUI::fabricUI()
       ,fOutLeft(0.0f)
       ,fOutRight(0.0f)
 {
-    plugin = static_cast<fabricDSP *>(getPluginInstancePointer()); 
-
+    _plugin = static_cast<fabricDSP *>(getPluginInstancePointer()); 
     setGeometryConstraints(850, 500);
     Window &pw = getWindow(); //this is needed to refresh the waveform display
     pw.addIdleCallback(this, 10);

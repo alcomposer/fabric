@@ -15,24 +15,30 @@
  */
 #pragma once
 
-#include "DistrhoUI.hpp"
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 #include "Window.hpp"
-#include "fabricDSP.hpp"
+#include "DistrhoUI.hpp"
+
 
 START_NAMESPACE_DISTRHO
 
+class fabricUI;
+
 class fabricWaveformDisplay : public NanoSubWidget
+                             ,public IdleCallback
 {
 public:
     explicit fabricWaveformDisplay(Widget *widget, Size<uint> size) noexcept;
 protected:
     void onNanoDisplay() override;
+    void idleCallback();
     //bool onMouse(const MouseEvent &ev) override;
     //void onPositionChanged(const PositionChangedEvent &event) override;
     //void onResize(const ResizeEvent &event) override;
 private:
+    fabricUI * _parent;
+    std::vector<signed char> *_waveformPtr;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
 

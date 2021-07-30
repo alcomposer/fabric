@@ -34,6 +34,7 @@ class fabricUI :  public UI
 public:
     fabricUI();
     void idleCallback();
+    fabricDSP *_plugin;
 
     /* DSP/Plugin Callbacks */
 protected:
@@ -60,7 +61,6 @@ protected:
     bool onMouse(const MouseEvent &ev) override;
 
 private:
-    fabricDSP *plugin;
     /**
         Meter values.
         These are the parameter outputs from the DSP side.

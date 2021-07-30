@@ -25,6 +25,9 @@ class fabricDSP : public Plugin
 {
 public:
     fabricDSP();
+    
+     // Low Resolution Waveform Display Buffer
+    std::vector<signed char> waveForm;
 
 protected:
     /**
@@ -103,9 +106,6 @@ private:
 
     //position inside audio buffer
     int _bufferPos = {0};
-
-    // Low Resolution Waveform Display Buffer
-    std::vector<signed char> waveForm;
 
     float _sampleRate = {0.0f};
     /**

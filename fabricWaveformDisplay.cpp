@@ -15,6 +15,7 @@
  */
 #include "fabricWaveformDisplay.hpp"
 #include "DistrhoPluginInfo.h"
+#include "fabricUI.hpp"
 #include <iostream>
 
 START_NAMESPACE_DISTRHO
@@ -22,7 +23,17 @@ START_NAMESPACE_DISTRHO
 fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) noexcept
     : NanoSubWidget(widget)
 {
+    Window &pw = getWindow(); //this is needed to refresh the waveform display
+    pw.addIdleCallback(this, 10);
+
     setSize(size); 
+    _parent = static_cast<fabricUI *>(widget);
+    _waveformPtr = &_parent->_plugin->waveForm;
+}
+
+void fabricWaveformDisplay::idleCallback()
+{
+    repaint();
 }
 
 void fabricWaveformDisplay::onNanoDisplay()
@@ -35,6 +46,11 @@ void fabricWaveformDisplay::onNanoDisplay()
     fill();
     closePath();
     
+    float display_center = getHeight() / 2.0;
+    float display_left = 0.0f;
+    float display_right = getWidth();
+
+
     double samples_per_pixel = 1.0; // FIXME still connected to scroll zoom somehow
     float fIndex;
     uint iIndex;
@@ -50,12 +66,12 @@ void fabricWaveformDisplay::onNanoDisplay()
         moveTo(0, getHeight()/2.0);
 
 
-    /*
+    
         for (uint16_t i = 0; i < DISPLAY_WIDTH; i++)
         {
             fIndex = float(0) + (float(i) * samples_per_pixel);
             iIndex = fIndex;
-            auto minmax = std::minmax_element(waveForm->begin() + iIndex, waveForm->begin() + iIndex + int(samples_per_pixel));
+            auto minmax = std::minmax_element(_waveformPtr->begin() + iIndex, _waveformPtr->begin() + iIndex + int(samples_per_pixel));
             uint16_t min = *minmax.first + display_center;
             uint16_t max = *minmax.second + display_center;
             lineTo(i + display_left, min);
@@ -70,7 +86,7 @@ void fabricWaveformDisplay::onNanoDisplay()
         stroke();
         closePath();
 
-
+        /*
         // draw spray region
         //beginPath();
         //strokeColor(0,0,255,30); //change to an enum
