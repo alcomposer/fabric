@@ -11,12 +11,15 @@ dpf_add_plugin(fabric MONOLITHIC
 
       fabricWaveformDisplay.cpp
 
+      fabricButton.cpp
+
       fabricController.cpp
 
       widgets/src/WolfWidget.cpp
       widgets/src/NanoKnob.cpp
       widgets/src/VolumeKnob.cpp
       widgets/src/NanoLabel.cpp
+      widgets/src/NanoSwitch.cpp
 
       util/src/Mathf.cpp
 

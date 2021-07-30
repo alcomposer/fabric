@@ -2,7 +2,8 @@
 
 enum Parameters
 {
-    id_speed = 0,
+    id_rec,
+    id_speed,
     id_density,
     id_length,
     id_spray,

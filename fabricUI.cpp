@@ -47,65 +47,92 @@ fabricUI::fabricUI()
 
     setGeometryConstraints(850, 500);
 
+    int lazyXPos = 20;
+    int lazyXposSpacer = 95;
+
+
     fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
     fwaveformDisplay->setAbsolutePos(0,60);
     fwaveformDisplay->show();
+
+    frecButton = new fabricButton(this, Size<uint>(50,50));
+    frecButton->setAbsolutePos(lazyXPos,400);
+    frecButton->setText("REC");
+    frecButton->setId(id_rec);
+    frecButton->setCallback(this);
+    frecButton->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolSpeed = new fabricController(this, knobSizeStandard);
     fcontrolSpeed->setText("SPEED");
     fcontrolSpeed->setId(id_speed);
     fcontrolSpeed->setCallback(this);
-    fcontrolSpeed->setAbsolutePos(50,400);
+    fcontrolSpeed->setAbsolutePos(lazyXPos,400);
     fcontrolSpeed->setBipolar(true);
     fcontrolSpeed->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolDensity = new fabricController(this, knobSizeStandard);
     fcontrolDensity->setText("DENSITY");
     fcontrolDensity->setId(id_density);
     fcontrolDensity->setCallback(this);
-    fcontrolDensity->setAbsolutePos(150,400);
+    fcontrolDensity->setAbsolutePos(lazyXPos,400);
     fcontrolDensity->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolLength = new fabricController(this, knobSizeStandard);
     fcontrolLength->setText("LENGTH");
     fcontrolLength->setId(id_length);
     fcontrolLength->setCallback(this);
-    fcontrolLength->setAbsolutePos(250,400);
+    fcontrolLength->setAbsolutePos(lazyXPos,400);
     fcontrolLength->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolSpray = new fabricController(this, knobSizeStandard);
     fcontrolSpray->setText("SPRAY");
     fcontrolSpray->setId(id_spray);
     fcontrolSpray->setCallback(this);
-    fcontrolSpray->setAbsolutePos(350,400);
+    fcontrolSpray->setAbsolutePos(lazyXPos,400);
     fcontrolSpray->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolSides = new fabricController(this, knobSizeStandard);
     fcontrolSides->setText("SIDES");
     fcontrolSides->setId(id_sides);
     fcontrolSides->setCallback(this);
-    fcontrolSides->setAbsolutePos(450,400);
+    fcontrolSides->setAbsolutePos(lazyXPos,400);
     fcontrolSides->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolWet = new fabricController(this, knobSizeStandard);
     fcontrolWet->setText("WET");
     fcontrolWet->setId(id_wet);
     fcontrolWet->setCallback(this);
-    fcontrolWet->setAbsolutePos(550,400);
+    fcontrolWet->setAbsolutePos(lazyXPos,400);
     fcontrolWet->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolDry = new fabricController(this, knobSizeStandard);
     fcontrolDry->setText("DRY");
     fcontrolDry->setId(id_dry);
     fcontrolDry->setCallback(this);
-    fcontrolDry->setAbsolutePos(650,400);
+    fcontrolDry->setAbsolutePos(lazyXPos,400);
     fcontrolDry->show();
+
+    lazyXPos += lazyXposSpacer;
 
     fcontrolMix = new fabricController(this, knobSizeStandard);
     fcontrolMix->setText("MIX");
     fcontrolMix->setId(id_mix);
     fcontrolMix->setCallback(this);
-    fcontrolMix->setAbsolutePos(750,400);
+    fcontrolMix->setAbsolutePos(lazyXPos,400);
     fcontrolMix->setBipolar(true);
     fcontrolMix->show();
 }
@@ -193,6 +220,23 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
     //{
     //    fGraphWidget->setVerticalWarpAmount(value);
     //}
+}
+
+void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
+{
+    const uint id = nanoSwitch->getId();
+
+    if (id == id_rec)
+    {
+        if (frecButton->isDown())
+        {
+            _plugin->setRecording(true);
+            std::cout << "rec is active" << std::endl;
+        }else{
+            std::cout << "rec is inactive" << std::endl;
+            _plugin->setRecording(false);
+        }
+    }
 }
 
 void fabricUI::updateColor(const int color)

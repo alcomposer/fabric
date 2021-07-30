@@ -25,8 +25,10 @@ class fabricDSP : public Plugin
 {
 public:
     fabricDSP();
-        //stereo audio buffer
+    //stereo audio buffer
     std::vector<std::pair<float,float>> st_audioBuffer;
+
+    void setRecording(bool isRecording);
 
 protected:
     /**
@@ -105,6 +107,8 @@ private:
     int _bufferPos = {0};
 
     float _sampleRate = {0.0f};
+
+    bool _recording = {false};
     /**
       Parameters.
     */

@@ -142,6 +142,11 @@ void fabricDSP::setState(const char *key, const char *)
     fNeedsReset = true;
 }
 
+void fabricDSP::setRecording(bool isRecording)
+{
+    _recording = isRecording;
+};
+
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {
     float tmp;
@@ -182,7 +187,7 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             fOutRight = tmpRight;
     }
 
-    if (true){//(recTrue){
+    if (_recording){
         for (int pos = 0; pos < frames; pos++)
         {
             st_audioBuffer[_bufferPos].first = inputs[0][pos];

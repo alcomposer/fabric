@@ -19,6 +19,8 @@
 #include "DistrhoUI.hpp"
 #include "VolumeKnob.hpp"
 #include "NanoLabel.hpp"
+#include "fabricButton.hpp"
+#include "NanoSwitch.hpp"
 #include "fabricParameters.hpp"
 
 #include "fabricWaveformDisplay.hpp"
@@ -29,6 +31,7 @@ START_NAMESPACE_DISTRHO
 
 class fabricUI :  public UI
                  ,public NanoKnob::Callback
+                 ,public NanoSwitch::Callback
 {
 public:
     fabricUI();
@@ -71,6 +74,8 @@ private:
 
     ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
 
+    ScopedPointer<fabricButton> frecButton;
+    
     ScopedPointer<fabricController> fcontrolSpeed;
     ScopedPointer<fabricController> fcontrolDensity;
     ScopedPointer<fabricController> fcontrolLength;
@@ -90,6 +95,7 @@ private:
     */
 
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
+    void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
 
     void updateColor(const int color);
     /**
