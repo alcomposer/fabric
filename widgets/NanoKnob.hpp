@@ -5,7 +5,6 @@
 #include "NanoVG.hpp"
 #include "Window.hpp"
 #include "WolfWidget.hpp"
-#include <vector>
 
 START_NAMESPACE_DISTRHO
 
@@ -30,10 +29,14 @@ public:
   void setRange(float min, float max) noexcept;
   void setStep(float step) noexcept;
   void setUsingLogScale(bool yesNo) noexcept;
-  void addCallback(Callback *callback) noexcept;
+  void setCallback(Callback *callback) noexcept;
   void setColor(Color color) noexcept;
 
 protected:
+  virtual void knobValueChanged(bool sendCallback);
+  virtual void knobDragStarted();
+  virtual void knobDragFinished();
+
   void onNanoDisplay() override;
   bool onMouse(const MouseEvent &) override;
   bool onMotion(const MotionEvent &) override;
@@ -68,7 +71,7 @@ private:
 
   Color fColor;
 
-  std::vector<Callback *> fCallback;
+  Callback *fCallback;
 
   DISTRHO_LEAK_DETECTOR(NanoKnob)
 };

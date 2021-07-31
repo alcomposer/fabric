@@ -67,7 +67,7 @@ fabricUI::fabricUI()
     fcontrolSpeed = new fabricController(this, knobSizeStandard);
     fcontrolSpeed->setText("SPEED");
     fcontrolSpeed->setId(id_speed);
-    fcontrolSpeed->addCallback(this);
+    fcontrolSpeed->setCallback(this);
     fcontrolSpeed->setBipolar(true);
     fcontrolSpeed->setRange(-2.0f, 2.0f);
     fcontrolSpeed->setUnit("x");
@@ -79,7 +79,7 @@ fabricUI::fabricUI()
     fcontrolDensity = new fabricController(this, knobSizeStandard);
     fcontrolDensity->setText("DENSITY");
     fcontrolDensity->setId(id_density);
-    fcontrolDensity->addCallback(this);
+    fcontrolDensity->setCallback(this);
     fcontrolDensity->setUnit("Hz");
     fcontrolDensity->setAbsolutePos(lazyXPos,400);
     fcontrolDensity->show();
@@ -89,7 +89,7 @@ fabricUI::fabricUI()
     fcontrolLength = new fabricController(this, knobSizeStandard);
     fcontrolLength->setText("LENGTH");
     fcontrolLength->setId(id_length);
-    fcontrolLength->addCallback(this);
+    fcontrolLength->setCallback(this);
     fcontrolLength->setUnit("ms");    
     fcontrolLength->setAbsolutePos(lazyXPos,400);
     fcontrolLength->show();
@@ -99,7 +99,7 @@ fabricUI::fabricUI()
     fcontrolSpray = new fabricController(this, knobSizeStandard);
     fcontrolSpray->setText("SPRAY");
     fcontrolSpray->setId(id_spray);
-    fcontrolSpray->addCallback(this);
+    fcontrolSpray->setCallback(this);
     fcontrolSpray->setUnit("ms");
     fcontrolSpray->setAbsolutePos(lazyXPos,400);
     fcontrolSpray->show();
@@ -109,7 +109,7 @@ fabricUI::fabricUI()
     fcontrolSides = new fabricController(this, knobSizeStandard);
     fcontrolSides->setText("SIDES");
     fcontrolSides->setId(id_sides);
-    fcontrolSides->addCallback(this);
+    fcontrolSides->setCallback(this);
     fcontrolSides->setAbsolutePos(lazyXPos,400);
     fcontrolSides->show();
 
@@ -118,7 +118,7 @@ fabricUI::fabricUI()
     fcontrolWet = new fabricController(this, knobSizeStandard);
     fcontrolWet->setText("WET");
     fcontrolWet->setId(id_wet);
-    fcontrolWet->addCallback(this);
+    fcontrolWet->setCallback(this);
     fcontrolWet->setUnit("%");
     fcontrolWet->setAbsolutePos(lazyXPos,400);
     fcontrolWet->show();
@@ -128,7 +128,7 @@ fabricUI::fabricUI()
     fcontrolDry = new fabricController(this, knobSizeStandard);
     fcontrolDry->setText("DRY");
     fcontrolDry->setId(id_dry);
-    fcontrolDry->addCallback(this);    
+    fcontrolDry->setCallback(this);    
     fcontrolDry->setUnit("%");
     fcontrolDry->setAbsolutePos(lazyXPos,400);
     fcontrolDry->show();
@@ -138,7 +138,7 @@ fabricUI::fabricUI()
     fcontrolMix = new fabricController(this, knobSizeStandard);
     fcontrolMix->setText("MIX");
     fcontrolMix->setId(id_mix);
-    fcontrolMix->addCallback(this);
+    fcontrolMix->setCallback(this);
     fcontrolMix->setAbsolutePos(lazyXPos,400);
     fcontrolMix->setBipolar(true);
     fcontrolMix->show();
@@ -152,8 +152,7 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         frecButton->setDown(value);
         break;
     case id_speed:
-        //Host sets the value, but we need to also trigger the callback 
-        fcontrolSpeed->setValue(value, true); 
+        fcontrolSpeed->setValue(value);
         break;
     }
 }
