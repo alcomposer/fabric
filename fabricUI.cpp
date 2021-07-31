@@ -152,8 +152,7 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         frecButton->setDown(value);
         break;
     case id_speed:
-        //Host sets the value, but we need to also trigger the callback 
-        fcontrolSpeed->setValue(value, true); 
+        fcontrolSpeed->setValue(value);
         break;
     }
 }
