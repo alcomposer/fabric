@@ -93,22 +93,12 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
             values[1].value = REC_ON;
         }
         break;
-    case 1:
-        parameter.hints = kParameterIsAutomable | kParameterIsOutput;
-        parameter.name = "out-left";
-        parameter.symbol = "out_left";
-        break;
-    case 2:
-        parameter.hints = kParameterIsAutomable | kParameterIsOutput;
-        parameter.name = "out-right";
-        parameter.symbol = "out_right";
-        break;
     }
 }
 
 void fabricDSP::initState(uint32_t, String &, String &)
 {
-    // we are using states but don't want them saved in the host
+    // we are using states but don't want them saved in the host yet
 }
 
 float fabricDSP::getParameterValue(uint32_t index) const
@@ -117,10 +107,6 @@ float fabricDSP::getParameterValue(uint32_t index) const
     {
     case id_rec:
         return _recording;
-    case 1:
-        return fOutLeft;
-    case 2:
-        return fOutRight;
     }
 
     return 0.0f;
@@ -128,7 +114,6 @@ float fabricDSP::getParameterValue(uint32_t index) const
 
 void fabricDSP::setParameterValue(uint32_t index, float value)
 {
-    // this is only called for input paramters, and we only have one of those.
     switch (index)
     {
     case id_rec:
@@ -154,44 +139,6 @@ String fabricDSP::getState(const char* key) const
 
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {
-    float tmp;
-    float tmpLeft = 0.0f;
-    float tmpRight = 0.0f;
-
-    for (uint32_t i = 0; i < frames; ++i)
-    {
-        // left
-        tmp = std::abs(inputs[0][i]);
-
-        if (tmp > tmpLeft)
-            tmpLeft = tmp;
-
-        // right
-        tmp = std::abs(inputs[1][i]);
-
-        if (tmp > tmpRight)
-            tmpRight = tmp;
-    }
-
-    if (tmpLeft > 1.0f)
-        tmpLeft = 1.0f;
-    if (tmpRight > 1.0f)
-        tmpRight = 1.0f;
-
-    if (fNeedsReset)
-    {
-        fOutLeft = tmpLeft;
-        fOutRight = tmpRight;
-        fNeedsReset = false;
-    }
-    else
-    {
-        if (tmpLeft > fOutLeft)
-            fOutLeft = tmpLeft;
-        if (tmpRight > fOutRight)
-            fOutRight = tmpRight;
-    }
-
     if (_recording){
         for (int pos = 0; pos < frames; pos++)
         {
