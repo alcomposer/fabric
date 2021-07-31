@@ -70,6 +70,7 @@ void fabricController::setText(std::string text)
 void fabricController::setUnit(std::string unit)
 {
     _unit = unit;
+    updateBottomValue();
 }
 
 void fabricController::onPositionChanged(const PositionChangedEvent &event)
