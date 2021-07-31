@@ -12,7 +12,8 @@ NanoKnob::NanoKnob(Widget  *widget, Size<uint> size) noexcept
       fUsingLog(false),
       fLeftMouseDown(false),
       fIsHovered(false),
-      fColor(Color(255, 0, 0, 255))
+      fColor(Color(255, 0, 0, 255)),
+      fCallback(nullptr)
 {
     setSize(size);
 }
@@ -57,11 +58,7 @@ void NanoKnob::setValue(float value, bool sendCallback) noexcept
 
     fValue = value;
 
-    if (sendCallback)
-    {
-        for (Callback *callback : fCallback)
-            callback->nanoKnobValueChanged(this, fValue);
-    }
+    knobValueChanged(sendCallback);
 
     repaint();
 }
@@ -71,9 +68,9 @@ void NanoKnob::setUsingLogScale(bool yesNo) noexcept
     fUsingLog = yesNo;
 }
 
-void NanoKnob::addCallback(Callback *callback) noexcept
+void NanoKnob::setCallback(Callback *callback) noexcept
 {
-    fCallback.push_back(callback);
+    fCallback = callback;
 }
 
 void NanoKnob::setColor(Color color) noexcept
@@ -84,6 +81,27 @@ void NanoKnob::setColor(Color color) noexcept
 Color NanoKnob::getColor() noexcept
 {
     return fColor;
+}
+
+void NanoKnob::knobValueChanged(bool sendCallback)
+{
+    if (sendCallback)
+    {
+        if (fCallback != nullptr)
+            fCallback->nanoKnobValueChanged(this, fValue);
+    }
+}
+
+void NanoKnob::knobDragStarted()
+{
+    if (fCallback != nullptr)
+        fCallback->nanoKnobDragStarted(this);
+}
+
+void NanoKnob::knobDragFinished()
+{
+    if (fCallback != nullptr)
+        fCallback->nanoKnobDragFinished(this);
 }
 
 void NanoKnob::onNanoDisplay()
@@ -105,8 +123,7 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
 
             onMouseUp();
 
-            for (Callback *callback : fCallback)
-                callback->nanoKnobDragFinished(this);
+            knobDragFinished();
 
             return true;
         }
@@ -122,8 +139,7 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
         setFocus(true);
         onMouseDown();
 
-        for (Callback *callback : fCallback)
-            callback->nanoKnobDragStarted(this);
+        knobDragStarted();
 
         return true;
     }

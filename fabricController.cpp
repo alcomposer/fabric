@@ -23,8 +23,6 @@ START_NAMESPACE_DISTRHO
 fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     : VolumeKnob(widget, size)
 {
-    addCallback(this);
-
     setColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
 
     flabelTop = new NanoLabel(widget, Size<uint>(200,200));
@@ -42,13 +40,6 @@ fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     updateBuddyWidgetPositions();
 }
 
-void fabricController::nanoKnobDragStarted(NanoKnob *nanoKnob)
-{
-}
-
-void fabricController::nanoKnobDragFinished(NanoKnob *nanoKnob)
-{
-}
 void fabricController::updateBottomValue()
 {
     std::stringstream bTextFormatted;
@@ -58,8 +49,9 @@ void fabricController::updateBottomValue()
     flabelBottom->setText(bottomText.c_str());
 }
 
-void fabricController::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
-{    
+void fabricController::knobValueChanged(bool sendCallback)
+{
+    VolumeKnob::knobValueChanged(sendCallback);
     updateBottomValue();
 }
 

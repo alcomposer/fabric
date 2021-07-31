@@ -24,7 +24,6 @@
 START_NAMESPACE_DISTRHO
 
 class fabricController : public VolumeKnob
-                       , public NanoKnob::Callback
 {
 public:
     explicit fabricController(Widget *widget, Size<uint> size) noexcept;
@@ -32,10 +31,7 @@ public:
     void setUnit(std::string unit);
 
 protected:
-
-    void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
-    void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
-    void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
+    void knobValueChanged(bool sendCallback) override;
 
     void onNanoDisplay() override;
     /**
