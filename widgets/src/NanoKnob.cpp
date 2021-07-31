@@ -12,8 +12,7 @@ NanoKnob::NanoKnob(Widget  *widget, Size<uint> size) noexcept
       fUsingLog(false),
       fLeftMouseDown(false),
       fIsHovered(false),
-      fColor(Color(255, 0, 0, 255)),
-      fCallback(nullptr)
+      fColor(Color(255, 0, 0, 255))
 {
     setSize(size);
 }
@@ -58,8 +57,11 @@ void NanoKnob::setValue(float value, bool sendCallback) noexcept
 
     fValue = value;
 
-    if (sendCallback && fCallback != nullptr)
-        fCallback->nanoKnobValueChanged(this, fValue);
+    if (sendCallback)
+    {
+        for (Callback *callback : fCallback)
+            callback->nanoKnobValueChanged(this, fValue);
+    }
 
     repaint();
 }
@@ -69,9 +71,9 @@ void NanoKnob::setUsingLogScale(bool yesNo) noexcept
     fUsingLog = yesNo;
 }
 
-void NanoKnob::setCallback(Callback *callback) noexcept
+void NanoKnob::addCallback(Callback *callback) noexcept
 {
-    fCallback = callback;
+    fCallback.push_back(callback);
 }
 
 void NanoKnob::setColor(Color color) noexcept
@@ -103,8 +105,8 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
 
             onMouseUp();
 
-            if (fCallback != nullptr)
-                fCallback->nanoKnobDragFinished(this);
+            for (Callback *callback : fCallback)
+                callback->nanoKnobDragFinished(this);
 
             return true;
         }
@@ -120,8 +122,8 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
         setFocus(true);
         onMouseDown();
 
-        if (fCallback != nullptr)
-            fCallback->nanoKnobDragStarted(this);
+        for (Callback *callback : fCallback)
+            callback->nanoKnobDragStarted(this);
 
         return true;
     }

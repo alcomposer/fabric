@@ -24,11 +24,12 @@
 START_NAMESPACE_DISTRHO
 
 class fabricController : public VolumeKnob
-                 , public NanoKnob::Callback
+                       , public NanoKnob::Callback
 {
 public:
     explicit fabricController(Widget *widget, Size<uint> size) noexcept;
     void setText(std::string text);
+    void setUnit(std::string unit);
 
 protected:
 
@@ -47,12 +48,15 @@ protected:
     void onResize(const ResizeEvent &event) override;
 
 private:
+    void updateBottomValue();
     void updateBuddyWidgetPositions();
 
 private:
     std::string topText = {" "};
+    std::string bottomText = {" "};
+    std::string _unit = {""};
     ScopedPointer<NanoLabel> flabelTop;
-
+    ScopedPointer<NanoLabel> flabelBottom;
 
     DISTRHO_LEAK_DETECTOR(fabricController);
 };

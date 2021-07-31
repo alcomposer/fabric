@@ -15,19 +15,29 @@
  */
 #include "fabricController.hpp"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 START_NAMESPACE_DISTRHO
 
 fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     : VolumeKnob(widget, size)
 {
+    addCallback(this);
+
     setColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
 
-    
     flabelTop = new NanoLabel(widget, Size<uint>(200,200));
     flabelTop->setFontSize(16.0);
     flabelTop->setAlign(ALIGN_CENTER|ALIGN_TOP);
     flabelTop->show();
+
+    flabelBottom = new NanoLabel(widget, Size<uint>(200,200));
+    flabelBottom->setFontSize(16.0);
+    flabelBottom->setAlign(ALIGN_CENTER|ALIGN_TOP);
+    flabelBottom->show();
+
+    updateBottomValue();
 
     updateBuddyWidgetPositions();
 }
@@ -39,9 +49,18 @@ void fabricController::nanoKnobDragStarted(NanoKnob *nanoKnob)
 void fabricController::nanoKnobDragFinished(NanoKnob *nanoKnob)
 {
 }
+void fabricController::updateBottomValue()
+{
+    std::stringstream bTextFormatted;
+    bTextFormatted << std::fixed << std::setprecision(2) << getValue();
+    bTextFormatted << " " << _unit;
+    bottomText = bTextFormatted.str();
+    flabelBottom->setText(bottomText.c_str());
+}
 
 void fabricController::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
-{
+{    
+    updateBottomValue();
 }
 
 void fabricController::onNanoDisplay()
@@ -54,6 +73,11 @@ void fabricController::setText(std::string text)
     topText = text;
     flabelTop->setText(topText.c_str());
     updateBuddyWidgetPositions();
+}
+
+void fabricController::setUnit(std::string unit)
+{
+    _unit = unit;
 }
 
 void fabricController::onPositionChanged(const PositionChangedEvent &event)
@@ -81,6 +105,10 @@ void fabricController::updateBuddyWidgetPositions()
     flabelTop->setAbsolutePos(
         area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
         area.getY() - labelTopBounds.getHeight() - 4);
+
+    flabelBottom->setAbsolutePos(
+        area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
+        area.getY() + getHeight());
 
  //fprintf(stderr, "area %d %d\n", area.getX(), area.getWidth());
  //fprintf(stderr, "label %d %d\n", flabelTop->getAbsoluteX(), flabelTop->getWidth());

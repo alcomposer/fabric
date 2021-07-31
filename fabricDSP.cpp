@@ -97,7 +97,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.symbol = "SPEED";
         parameter.ranges.min = -2.0f;
         parameter.ranges.max = 2.0f;
-        parameter.ranges.def = 0.0f;
+        parameter.ranges.def = 1.0f;
         break;
     }
 }
