@@ -15,6 +15,7 @@
  */
 #include "fabricDSP.hpp"
 #include "fabricParameters.hpp"
+#include <iostream>
 
 START_NAMESPACE_DISTRHO
 
@@ -76,8 +77,8 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         */
     switch (index)
     {
-    case 0:
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+    case id_rec:
+        parameter.hints = kParameterIsAutomable | kParameterIsBoolean;
         parameter.name = "REC";
         parameter.symbol = "REC";
         parameter.enumValues.count = 2;
@@ -114,7 +115,7 @@ float fabricDSP::getParameterValue(uint32_t index) const
 {
     switch (index)
     {
-    case 0:
+    case id_rec:
         return _recording;
     case 1:
         return fOutLeft;
@@ -130,11 +131,12 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     // this is only called for input paramters, and we only have one of those.
     switch (index)
     {
-    case 0:
+    case id_rec:
+        std::cout << "setting parameter value rec" << std::endl;
         _recording = value;
-        return;
     }
 }
+
 
 void fabricDSP::setState(const char *key, const char *)
 {
@@ -144,10 +146,11 @@ void fabricDSP::setState(const char *key, const char *)
     fNeedsReset = true;
 }
 
-void fabricDSP::setRecording(bool isRecording)
+String fabricDSP::getState(const char* key) const
 {
-    _recording = isRecording;
-};
+
+}
+
 
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {

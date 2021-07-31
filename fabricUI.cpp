@@ -141,9 +141,9 @@ void fabricUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case 0: // rec_on / rec_off
+    case id_rec: // rec_on / rec_off
         frecButton->setDown(value);
-        _plugin->setRecording(value);
+        _plugin->setParameterValue(id_rec, value);
         break;
 
     case 1: // out-left
@@ -231,11 +231,11 @@ void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
     {
         if (frecButton->isDown())
         {
-            _plugin->setRecording(true);
+            setParameterValue(id_rec,true);
             std::cout << "rec is active" << std::endl;
         }else{
             std::cout << "rec is inactive" << std::endl;
-            _plugin->setRecording(false);
+            setParameterValue(id_rec,false);
         }
     }
 }

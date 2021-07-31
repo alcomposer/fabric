@@ -27,9 +27,6 @@ public:
     fabricDSP();
     //stereo audio buffer
     std::vector<std::pair<float,float>> st_audioBuffer;
-
-    void setRecording(bool isRecording);
-
 protected:
     /**
         Get the plugin label.
@@ -91,6 +88,8 @@ protected:
       Change an internal state.
     */
     void setState(const char *key, const char *) override;
+
+    String getState(const char* key) const;
     /* --------------------------------------------------------------------------------------------------------
     * Process */
 
