@@ -20,11 +20,9 @@
 START_NAMESPACE_DISTRHO
 
 fabricDSP::fabricDSP()
-    : Plugin(Parameters::TOTAL, 0, 0), // 8 parameters, 0 programs, 0 states
-      fColor(0.0f),
-      fOutLeft(0.0f),
-      fOutRight(0.0f),
-      fNeedsReset(true)
+    : Plugin(Parameters::TOTAL, 0, 0) // 8 parameters, 0 programs, 0 states
+      ,_speed(0.0f)
+      ,fNeedsReset(true)
 {
     _sampleRate = getSampleRate();
     st_audioBuffer.resize(10*_sampleRate);
@@ -93,6 +91,14 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
             values[1].value = REC_ON;
         }
         break;
+    case id_speed:
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "SPEED";
+        parameter.symbol = "SPEED";
+        parameter.ranges.min = -2.0f;
+        parameter.ranges.max = 2.0f;
+        parameter.ranges.def = 0.0f;
+        break;
     }
 }
 
@@ -107,6 +113,8 @@ float fabricDSP::getParameterValue(uint32_t index) const
     {
     case id_rec:
         return _recording;
+    case id_speed:
+        return _speed;
     }
 
     return 0.0f;
@@ -117,8 +125,11 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     switch (index)
     {
     case id_rec:
-        std::cout << "setting parameter value rec" << std::endl;
         _recording = value;
+        break;
+    case id_speed:
+        _speed = value;
+        break;
     }
 }
 

@@ -107,11 +107,11 @@ private:
 
     float _sampleRate = {0.0f};
 
-    bool _recording = {false};
     /**
       Parameters.
     */
-    float fColor, fOutLeft, fOutRight;
+    bool _recording = {false};
+    float _speed;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.

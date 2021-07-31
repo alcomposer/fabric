@@ -68,8 +68,9 @@ fabricUI::fabricUI()
     fcontrolSpeed->setText("SPEED");
     fcontrolSpeed->setId(id_speed);
     fcontrolSpeed->setCallback(this);
-    fcontrolSpeed->setAbsolutePos(lazyXPos,400);
     fcontrolSpeed->setBipolar(true);
+    fcontrolSpeed->setRange(-2.0f, 2.0f);
+    fcontrolSpeed->setAbsolutePos(lazyXPos,400);
     fcontrolSpeed->show();
 
     lazyXPos += lazyXposSpacer;
@@ -143,37 +144,10 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     {
     case id_rec: // rec_on / rec_off
         frecButton->setDown(value);
-        _plugin->setParameterValue(id_rec, value);
+        //_plugin->setParameterValue(id_rec, value);
         break;
-
-    case 1: // out-left
-        value = (fOutLeft * kSmoothMultiplier + value) / (kSmoothMultiplier + 1.0f);
-
-        /**/ if (value < 0.001f)
-            value = 0.0f;
-        else if (value > 0.999f)
-            value = 1.0f;
-
-        if (fOutLeft != value)
-        {
-            fOutLeft = value;
-            repaint();
-        }
-        break;
-
-    case 2: // out-right
-        value = (fOutRight * kSmoothMultiplier + value) / (kSmoothMultiplier + 1.0f);
-
-        /**/ if (value < 0.001f)
-            value = 0.0f;
-        else if (value > 0.999f)
-            value = 1.0f;
-
-        if (fOutRight != value)
-        {
-            fOutRight = value;
-            repaint();
-        }
+    case id_speed:
+        fcontrolSpeed->setValue(value);
         break;
     }
 }
@@ -208,7 +182,7 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
     if (id == id_speed)
     {
         std::cout << "speed is: " << value << std::endl;
-        //flabelLive->setText(newValue);
+        setParameterValue(id_speed, value);
     }
     if (id == id_length)
     {
