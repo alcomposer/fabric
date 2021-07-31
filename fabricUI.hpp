@@ -94,6 +94,8 @@ private:
         Update color if needed.
     */
 
+    void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
+    void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
     void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
 

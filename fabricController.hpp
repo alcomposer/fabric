@@ -32,6 +32,8 @@ public:
 
 protected:
 
+    void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
+    void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
 
     void onNanoDisplay() override;

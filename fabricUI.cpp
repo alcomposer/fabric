@@ -172,6 +172,28 @@ bool fabricUI::onMouse(const MouseEvent &ev)
     return false; // set false to allow the mouse event to propogate to child widgets
 }
 
+void fabricUI::nanoKnobDragStarted(NanoKnob *nanoKnob)
+{
+    const uint id = nanoKnob->getId();
+
+    switch (id) {
+    case id_speed:
+        editParameter(id_speed, true);
+        break;
+    }
+}
+
+void fabricUI::nanoKnobDragFinished(NanoKnob *nanoKnob)
+{
+    const uint id = nanoKnob->getId();
+
+    switch (id) {
+    case id_speed:
+        editParameter(id_speed, false);
+        break;
+    }
+}
+
 void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
 {
     const uint id = nanoKnob->getId();

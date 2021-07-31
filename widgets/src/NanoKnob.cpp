@@ -103,6 +103,9 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
 
             onMouseUp();
 
+            if (fCallback != nullptr)
+                fCallback->nanoKnobDragFinished(this);
+
             return true;
         }
 
@@ -113,9 +116,12 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
     {
         fLeftMouseDownLocation = ev.pos;
         fLeftMouseDown = true;
-        
+
         setFocus(true);
         onMouseDown();
+
+        if (fCallback != nullptr)
+            fCallback->nanoKnobDragStarted(this);
 
         return true;
     }

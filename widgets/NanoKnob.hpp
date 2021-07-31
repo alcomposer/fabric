@@ -15,6 +15,8 @@ public:
   {
   public:
     virtual ~Callback() {}
+    virtual void nanoKnobDragStarted(NanoKnob *nanoKnob) = 0;
+    virtual void nanoKnobDragFinished(NanoKnob *nanoKnob) = 0;
     virtual void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) = 0;
   };
 

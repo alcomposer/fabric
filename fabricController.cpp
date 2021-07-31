@@ -32,6 +32,13 @@ fabricController::fabricController(Widget *widget, Size<uint> size) noexcept
     updateBuddyWidgetPositions();
 }
 
+void fabricController::nanoKnobDragStarted(NanoKnob *nanoKnob)
+{
+}
+
+void fabricController::nanoKnobDragFinished(NanoKnob *nanoKnob)
+{
+}
 
 void fabricController::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
 {
@@ -47,7 +54,7 @@ void fabricController::setText(std::string text)
     topText = text;
     flabelTop->setText(topText.c_str());
     updateBuddyWidgetPositions();
-};
+}
 
 void fabricController::onPositionChanged(const PositionChangedEvent &event)
 {
