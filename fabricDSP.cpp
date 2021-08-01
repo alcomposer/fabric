@@ -77,7 +77,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
     {
     case id_rec:
         parameter.hints = kParameterIsAutomable | kParameterIsBoolean;
-        parameter.name = "REC";
+        parameter.name = "Recording";
         parameter.symbol = "REC";
         parameter.enumValues.count = 2;
         parameter.enumValues.restrictedMode = true;
@@ -93,7 +93,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         break;
     case id_speed:
         parameter.hints = kParameterIsAutomable;
-        parameter.name = "SPEED";
+        parameter.name = "Speed";
         parameter.symbol = "SPEED";
         parameter.ranges.min = -2.0f;
         parameter.ranges.max = 2.0f;

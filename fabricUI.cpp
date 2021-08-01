@@ -57,7 +57,7 @@ fabricUI::fabricUI()
 
     frecButton = new fabricButton(this, Size<uint>(50,50));
     frecButton->setAbsolutePos(lazyXPos,400);
-    frecButton->setText("REC");
+    frecButton->setText("Rec");
     frecButton->setId(id_rec);
     frecButton->setCallback(this);
     frecButton->show();
@@ -65,7 +65,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolSpeed = new fabricController(this, knobSizeStandard);
-    fcontrolSpeed->setText("SPEED");
+    fcontrolSpeed->setText("Speed");
     fcontrolSpeed->setId(id_speed);
     fcontrolSpeed->setCallback(this);
     fcontrolSpeed->setBipolar(true);
@@ -77,7 +77,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolDensity = new fabricController(this, knobSizeStandard);
-    fcontrolDensity->setText("DENSITY");
+    fcontrolDensity->setText("Density");
     fcontrolDensity->setId(id_density);
     fcontrolDensity->setCallback(this);
     fcontrolDensity->setUnit("Hz");
@@ -87,7 +87,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolLength = new fabricController(this, knobSizeStandard);
-    fcontrolLength->setText("LENGTH");
+    fcontrolLength->setText("Length");
     fcontrolLength->setId(id_length);
     fcontrolLength->setCallback(this);
     fcontrolLength->setUnit("ms");    
@@ -97,7 +97,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolSpray = new fabricController(this, knobSizeStandard);
-    fcontrolSpray->setText("SPRAY");
+    fcontrolSpray->setText("Spray");
     fcontrolSpray->setId(id_spray);
     fcontrolSpray->setCallback(this);
     fcontrolSpray->setUnit("ms");
@@ -107,7 +107,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolSides = new fabricController(this, knobSizeStandard);
-    fcontrolSides->setText("SIDES");
+    fcontrolSides->setText("Sides");
     fcontrolSides->setId(id_sides);
     fcontrolSides->setCallback(this);
     fcontrolSides->setAbsolutePos(lazyXPos,400);
@@ -116,7 +116,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolWet = new fabricController(this, knobSizeStandard);
-    fcontrolWet->setText("WET");
+    fcontrolWet->setText("Wet");
     fcontrolWet->setId(id_wet);
     fcontrolWet->setCallback(this);
     fcontrolWet->setUnit("%");
@@ -126,7 +126,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolDry = new fabricController(this, knobSizeStandard);
-    fcontrolDry->setText("DRY");
+    fcontrolDry->setText("Dry");
     fcontrolDry->setId(id_dry);
     fcontrolDry->setCallback(this);    
     fcontrolDry->setUnit("%");
@@ -136,7 +136,7 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fcontrolMix = new fabricController(this, knobSizeStandard);
-    fcontrolMix->setText("MIX");
+    fcontrolMix->setText("Mix");
     fcontrolMix->setId(id_mix);
     fcontrolMix->setCallback(this);
     fcontrolMix->setAbsolutePos(lazyXPos,400);
