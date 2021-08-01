@@ -22,11 +22,6 @@ START_NAMESPACE_DISTRHO
 fabricDSP::fabricDSP()
     : Plugin(Parameters::TOTAL, 0, 0) // 8 parameters, 0 programs, 0 states
       ,_recording(false)
-      ,_speed(1.f)
-      ,_density(10.f)
-      ,_length(0.1f)
-      ,_spray(0.1f)
-      ,_sides(0.5f)
       ,_wet(50.f)
       ,_dry(50.f)
       ,_mix(0.f)
@@ -178,15 +173,15 @@ float fabricDSP::getParameterValue(uint32_t index) const
     case id_rec:
         return _recording;
     case id_speed:
-        return _speed;
+        return _controls.speed;
     case id_density:
-        return _density;
+        return _controls.density;
     case id_length:
-        return _length;
+        return _controls.length;
     case id_spray:
-        return _spray;
+        return _controls.spray;
     case id_sides:
-        return _sides;
+        return _controls.sides;
     case id_wet:
         return _wet;
     case id_dry:
@@ -206,16 +201,16 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         _recording = value;
         break;
     case id_speed:
-        _speed = value;
+        _controls.speed = value;
     case id_density:
-        _density = value;
+        _controls.density = value;
     case id_length:
-        _length = value;
+        _controls.length = value;
     case id_spray:
-        _spray = value;
+        _controls.spray = value;
         break;
     case id_sides:
-        _sides = value;
+        _controls.sides = value;
     case id_wet:
         _wet = value;
     case id_dry:

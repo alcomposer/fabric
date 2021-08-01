@@ -21,6 +21,15 @@
 
 START_NAMESPACE_DISTRHO
 
+typedef struct GrainPlayerControl
+{
+    float speed;
+    float density;
+    float length;
+    float spray;
+    float sides;
+};
+
 class fabricDSP : public Plugin
 {
 public:
@@ -111,7 +120,8 @@ private:
       Parameters.
     */
     bool _recording;
-    float _speed, _density, _length, _spray, _sides, _wet, _dry, _mix;
+    GrainPlayerControl _controls; 
+    float _wet, _dry, _mix;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.
