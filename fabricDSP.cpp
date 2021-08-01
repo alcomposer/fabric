@@ -67,15 +67,8 @@ int64_t fabricDSP::getUniqueId() const
 void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
 {
     /**
-          All parameters in this plugin have the same ranges.
-        */
-    parameter.ranges.min = 0.0f;
-    parameter.ranges.max = 1.0f;
-    parameter.ranges.def = 0.0f;
-
-    /**
-          Set parameter data.
-        */
+        Set parameter data.
+    */
     switch (index)
     {
     case id_rec:
