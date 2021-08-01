@@ -108,16 +108,16 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.name = "Length";
         parameter.symbol = "LENGTH";
         parameter.ranges.min = 0.0f;    //Milliseconds
-        parameter.ranges.max = 10.0f;
-        parameter.ranges.def = .1f;
+        parameter.ranges.max = 10000.0f;
+        parameter.ranges.def = 100.f;
         break;
     case id_spray:
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Spray";
         parameter.symbol = "SPRAY";
         parameter.ranges.min = 0.0f;    //Milliseconds
-        parameter.ranges.max = 10.0f;
-        parameter.ranges.def = .1f;
+        parameter.ranges.max = 10000.0f;
+        parameter.ranges.def = 100.f;
         break;
     case id_sides:
         parameter.hints = kParameterIsAutomable;
@@ -195,17 +195,22 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         break;
     case id_speed:
         _controls.speed = value;
+        break;
     case id_density:
         _controls.density = value;
+        break;
     case id_length:
         _controls.length = value;
+        break;
     case id_spray:
         _controls.spray = value;
         break;
     case id_sides:
         _controls.sides = value;
+        break;
     case id_wet:
         _wet = value;
+        break;
     case id_dry:
         _dry = value;
         break;
