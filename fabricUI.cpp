@@ -91,7 +91,7 @@ fabricUI::fabricUI()
     fcontrolLength->setText("Length");
     fcontrolLength->setId(id_length);
     fcontrolLength->setCallback(this);
-    fcontrolLength->setUnit("s");    
+    fcontrolLength->setUnit("ms");    
     fcontrolLength->setRange(0.f, 10000.f);
     fcontrolLength->setAbsolutePos(lazyXPos,400);
     fcontrolLength->show();
@@ -102,7 +102,7 @@ fabricUI::fabricUI()
     fcontrolSpray->setText("Spray");
     fcontrolSpray->setId(id_spray);
     fcontrolSpray->setCallback(this);
-    fcontrolSpray->setUnit("s");
+    fcontrolSpray->setUnit("ms");
     fcontrolSpray->setRange(0.f, 10000.f);
     fcontrolSpray->setAbsolutePos(lazyXPos,400);
     fcontrolSpray->show();

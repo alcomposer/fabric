@@ -33,7 +33,7 @@ fabricDSP::fabricDSP()
       ,fNeedsReset(true)
 {
     _sampleRate = getSampleRate();
-    st_audioBuffer.resize(10*_sampleRate);
+    st_audioBuffer.resize(10 * _sampleRate);
 }
 const char *fabricDSP::getLabel() const
 {
@@ -119,7 +119,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Length";
         parameter.symbol = "LENGTH";
-        parameter.ranges.min = 0.0f;   //Seconds
+        parameter.ranges.min = 0.0f;    //Milliseconds
         parameter.ranges.max = 10.0f;
         parameter.ranges.def = .1f;
         break;
@@ -127,7 +127,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Spray";
         parameter.symbol = "SPRAY";
-        parameter.ranges.min = 0.0f;   //Seconds
+        parameter.ranges.min = 0.0f;    //Milliseconds
         parameter.ranges.max = 10.0f;
         parameter.ranges.def = .1f;
         break;
