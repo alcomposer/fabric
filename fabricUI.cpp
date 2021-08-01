@@ -80,6 +80,7 @@ fabricUI::fabricUI()
     fcontrolDensity->setText("Density");
     fcontrolDensity->setId(id_density);
     fcontrolDensity->setCallback(this);
+    fcontrolDensity->setRange(0.f, 1000.f);
     fcontrolDensity->setUnit("Hz");
     fcontrolDensity->setAbsolutePos(lazyXPos,400);
     fcontrolDensity->show();
@@ -90,7 +91,8 @@ fabricUI::fabricUI()
     fcontrolLength->setText("Length");
     fcontrolLength->setId(id_length);
     fcontrolLength->setCallback(this);
-    fcontrolLength->setUnit("ms");    
+    fcontrolLength->setUnit("s");    
+    fcontrolLength->setRange(0.f, 10000.f);
     fcontrolLength->setAbsolutePos(lazyXPos,400);
     fcontrolLength->show();
 
@@ -100,7 +102,8 @@ fabricUI::fabricUI()
     fcontrolSpray->setText("Spray");
     fcontrolSpray->setId(id_spray);
     fcontrolSpray->setCallback(this);
-    fcontrolSpray->setUnit("ms");
+    fcontrolSpray->setUnit("s");
+    fcontrolSpray->setRange(0.f, 10000.f);
     fcontrolSpray->setAbsolutePos(lazyXPos,400);
     fcontrolSpray->show();
 
@@ -109,6 +112,7 @@ fabricUI::fabricUI()
     fcontrolSides = new fabricController(this, knobSizeStandard);
     fcontrolSides->setText("Sides");
     fcontrolSides->setId(id_sides);
+    fcontrolSides->setRange(0.f, 1.f);
     fcontrolSides->setCallback(this);
     fcontrolSides->setAbsolutePos(lazyXPos,400);
     fcontrolSides->show();
@@ -116,7 +120,6 @@ fabricUI::fabricUI()
     lazyXPos += lazyXposSpacer;
 
     fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
-    //fenvelopeDisplay->setId(id_sides);
     fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
     fenvelopeDisplay->show();
 
@@ -127,6 +130,7 @@ fabricUI::fabricUI()
     fcontrolWet->setId(id_wet);
     fcontrolWet->setCallback(this);
     fcontrolWet->setUnit("%");
+    fcontrolWet->setRange(0.f, 100.f);
     fcontrolWet->setAbsolutePos(lazyXPos,400);
     fcontrolWet->show();
 
@@ -137,6 +141,7 @@ fabricUI::fabricUI()
     fcontrolDry->setId(id_dry);
     fcontrolDry->setCallback(this);    
     fcontrolDry->setUnit("%");
+    fcontrolDry->setRange(0.f, 100.f);
     fcontrolDry->setAbsolutePos(lazyXPos,400);
     fcontrolDry->show();
 
@@ -146,6 +151,7 @@ fabricUI::fabricUI()
     fcontrolMix->setText("Mix");
     fcontrolMix->setId(id_mix);
     fcontrolMix->setCallback(this);
+    fcontrolMix->setRange(-100.f, 100.f);
     fcontrolMix->setAbsolutePos(lazyXPos,400);
     fcontrolMix->setBipolar(true);
     fcontrolMix->show();
@@ -156,15 +162,33 @@ void fabricUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case id_rec: // rec_on / rec_off
+    case id_rec:
         frecButton->setDown(value);
         break;
     case id_speed:
         fcontrolSpeed->setValue(value);
         break;
+    case id_density:
+        fcontrolDensity->setValue(value);
+        break;
+    case id_length:
+        fcontrolLength->setValue(value);
+        break;
+    case id_spray:
+        fcontrolSpray->setValue(value);
+        break;
     case id_sides:
         fenvelopeDisplay->setSidesValue(value);
         fcontrolSides->setValue(value);
+        break;
+    case id_wet:
+        fcontrolWet->setValue(value);
+        break;
+    case id_dry:
+        fcontrolDry->setValue(value);
+        break;
+    case id_mix:
+        fcontrolMix->setValue(value);
         break;
     }
 }
@@ -192,29 +216,13 @@ bool fabricUI::onMouse(const MouseEvent &ev)
 void fabricUI::nanoKnobDragStarted(NanoKnob *nanoKnob)
 {
     const uint id = nanoKnob->getId();
-
-    switch (id) {
-    case id_speed:
-        editParameter(id_speed, true);
-        break;
-    case id_sides:
-        editParameter(id_sides, true);
-        break;
-    }
+    editParameter(id, true);
 }
 
 void fabricUI::nanoKnobDragFinished(NanoKnob *nanoKnob)
 {
     const uint id = nanoKnob->getId();
-
-    switch (id) {
-    case id_speed:
-        editParameter(id_speed, false);
-        break;
-    case id_sides:
-        editParameter(id_sides, false);
-        break;
-    }
+    editParameter(id, false);
 }
 
 void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
@@ -222,26 +230,12 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
     const uint id = nanoKnob->getId();
     float newValue = value;
 
-    setParameterValue(id, value);
-
-    if (id == id_speed)
-    {
-        std::cout << "speed is: " << value << std::endl;
-        //static_cast<fabricController*>(nanoKnob)->setValueText(value);
-        setParameterValue(id_speed, value);
-    }
     if (id == id_sides)
     {
         setParameterValue(id_sides, value);
         fenvelopeDisplay->setSidesValue(value);
     }
-    //{
-    //    fGraphWidget->setHorizontalWarpAmount(value);
-    //}
-    //else if (id == paramVerticalWarpA${appName}: ${sessionName}mount)
-    //{
-    //    fGraphWidget->setVerticalWarpAmount(value);
-    //}
+    setParameterValue(id, value);
 }
 
 void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
@@ -260,27 +254,6 @@ void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
         }
     }
 }
-/*
-void fabricUI::updateColor(const int color)
-{
-    if (fColorValue == color)
-        return;
-
-    fColorValue = color;
-
-    switch (color)
-    {
-    case METER_COLOR_GREEN:
-        fColor = Color(93, 231, 61);
-        break;
-    case METER_COLOR_BLUE:
-        fColor = Color(82, 238, 248);
-        break;
-    }
-
-    repaint();
-}
-*/
 
 UI *createUI()
 {

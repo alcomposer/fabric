@@ -110,8 +110,8 @@ private:
     /**
       Parameters.
     */
-    bool _recording = {false};
-    float _speed, _sides;
+    bool _recording;
+    float _speed, _density, _length, _spray, _sides, _wet, _dry, _mix;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.
