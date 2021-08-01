@@ -29,6 +29,7 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
     setSize(size); 
     _parent = static_cast<fabricUI *>(widget);
     _st_audioBuffer = &_parent->_plugin->st_audioBuffer;
+    _writeHeadPos = &_parent->_plugin->_bufferPos;
 }
 
 void fabricWaveformDisplay::idleCallback()
@@ -46,8 +47,10 @@ void fabricWaveformDisplay::onNanoDisplay()
     fill();
     closePath();
     
-    float display_center = getHeight() / 2.0;
-    float display_left = 0.0f;
+    float display_top = 0.f;
+    float display_bottom = getHeight();
+    float display_center = display_bottom / 2.0;
+    float display_left = 0.f;
     float display_right = getWidth();
     float fIndex;
     uint sampleIndex;
@@ -145,15 +148,19 @@ void fabricWaveformDisplay::onNanoDisplay()
     }
     stroke();
     closePath();
+    */
+
     // rec head line
     beginPath();
-    strokeColor(255,0,0,200); //change to an enum
+    strokeColor(255,0,0,200); //FIXME (alex) change to an enum- use same red as rec button
     strokeWidth(2.0f);
-    float recheadPos = display_left + (float)plugin->bufferPos / plugin->st_audioBuffer.size() * display_width;
+    float recheadPos = display_left + (float)(*_writeHeadPos) / (*_st_audioBuffer).size() * display_right;
     moveTo(recheadPos, display_top);
     lineTo(recheadPos, display_bottom);
     stroke();
     closePath();
+
+    /*
     // play head line
     beginPath();
     strokeColor(0,0,255,200); //change to an enum

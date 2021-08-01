@@ -39,6 +39,7 @@ protected:
 private:
     fabricUI * _parent;
     std::vector<std::pair<float,float>> *_st_audioBuffer;
+    uint *_writeHeadPos;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
 

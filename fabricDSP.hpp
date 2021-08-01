@@ -36,6 +36,8 @@ public:
     fabricDSP();
     //stereo audio buffer
     std::vector<std::pair<float,float>> st_audioBuffer;
+    //position inside audio buffer
+    uint _bufferPos = {0};
 protected:
     /**
         Get the plugin label.
@@ -110,10 +112,6 @@ protected:
     // -------------------------------------------------------------------------------------------------------
 
 private:
-
-    //position inside audio buffer
-    int _bufferPos = {0};
-
     float _sampleRate = {0.0f};
 
     /**
