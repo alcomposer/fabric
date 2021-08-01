@@ -197,6 +197,9 @@ void fabricUI::nanoKnobDragStarted(NanoKnob *nanoKnob)
     case id_speed:
         editParameter(id_speed, true);
         break;
+    case id_sides:
+        editParameter(id_sides, true);
+        break;
     }
 }
 
@@ -207,6 +210,9 @@ void fabricUI::nanoKnobDragFinished(NanoKnob *nanoKnob)
     switch (id) {
     case id_speed:
         editParameter(id_speed, false);
+        break;
+    case id_sides:
+        editParameter(id_sides, false);
         break;
     }
 }
