@@ -22,6 +22,7 @@ START_NAMESPACE_DISTRHO
 fabricDSP::fabricDSP()
     : Plugin(Parameters::TOTAL, 0, 0) // 8 parameters, 0 programs, 0 states
       ,_speed(0.0f)
+      ,_sides(0.5f)
       ,fNeedsReset(true)
 {
     _sampleRate = getSampleRate();
@@ -99,6 +100,14 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 2.0f;
         parameter.ranges.def = 1.0f;
         break;
+    case id_sides:
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Sides";
+        parameter.symbol = "SIDES";
+        parameter.ranges.min = 0.0f;
+        parameter.ranges.max = 1.0f;
+        parameter.ranges.def = .6f;
+        break;
     }
 }
 
@@ -115,6 +124,8 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return _recording;
     case id_speed:
         return _speed;
+    case id_sides:
+        return _sides;
     }
 
     return 0.0f;
@@ -129,6 +140,9 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         break;
     case id_speed:
         _speed = value;
+        break;
+    case id_sides:
+        _sides = value;
         break;
     }
 }

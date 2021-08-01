@@ -48,7 +48,7 @@ fabricUI::fabricUI()
     setGeometryConstraints(850, 500);
 
     int lazyXPos = 20;
-    int lazyXposSpacer = 95;
+    int lazyXposSpacer = 85;
 
 
     fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
@@ -115,6 +115,13 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
+    fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
+    //fenvelopeDisplay->setId(id_sides);
+    fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
+    fenvelopeDisplay->show();
+
+    lazyXPos += lazyXposSpacer;
+
     fcontrolWet = new fabricController(this, knobSizeStandard);
     fcontrolWet->setText("Wet");
     fcontrolWet->setId(id_wet);
@@ -144,6 +151,7 @@ fabricUI::fabricUI()
     fcontrolMix->show();
 }
 
+//FROM HOST
 void fabricUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
@@ -153,6 +161,10 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         break;
     case id_speed:
         fcontrolSpeed->setValue(value);
+        break;
+    case id_sides:
+        fenvelopeDisplay->setSidesValue(value);
+        fcontrolSides->setValue(value);
         break;
     }
 }
@@ -212,9 +224,10 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
         //static_cast<fabricController*>(nanoKnob)->setValueText(value);
         setParameterValue(id_speed, value);
     }
-    if (id == id_length)
+    if (id == id_sides)
     {
-        //std::cout << "grain length value is: " << value << std::endl;
+        setParameterValue(id_sides, value);
+        fenvelopeDisplay->setSidesValue(value);
     }
     //{
     //    fGraphWidget->setHorizontalWarpAmount(value);

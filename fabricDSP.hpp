@@ -111,7 +111,7 @@ private:
       Parameters.
     */
     bool _recording = {false};
-    float _speed;
+    float _speed, _sides;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.

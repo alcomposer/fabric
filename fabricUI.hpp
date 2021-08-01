@@ -24,6 +24,7 @@
 #include "fabricParameters.hpp"
 
 #include "fabricWaveformDisplay.hpp"
+#include "fabricEnvelopeDisplay.hpp"
 #include "fabricController.hpp" 
 #include "fabricDSP.hpp"
 
@@ -73,6 +74,8 @@ private:
     Size<uint> knobSizeStandard;
 
     ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
+
+    ScopedPointer<fabricEnvelopeDisplay> fenvelopeDisplay;
 
     ScopedPointer<fabricButton> frecButton;
     

@@ -11,6 +11,8 @@ dpf_add_plugin(fabric MONOLITHIC
 
       fabricWaveformDisplay.cpp
 
+      fabricEnvelopeDisplay.cpp
+
       fabricButton.cpp
 
       fabricController.cpp
