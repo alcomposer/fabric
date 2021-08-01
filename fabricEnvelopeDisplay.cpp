@@ -52,18 +52,17 @@ void fabricEnvelopeDisplay::onNanoDisplay()
     beginPath();
     strokeColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
     strokeWidth(2.f);
-    moveTo(0.0, height);
+    moveTo(1, height);
 
     for (uint16_t i = 0; i < points; i++)
     {
         float fIndex = (float)i / points;
-
-        if (_sides < 0.05) _sides = 0.05;
-        
         //Tukey Window        
         float y = (cos(fmax(fabs((double)fIndex - 0.5) * (2.0 / _sides)  - (1.0 / _sides - 1.0), 0.0) * PI) + 1.0) / 2.0;
-        lineTo(1 + fIndex*(width-2), height - 1 - y * (height - 2.0));
+        //add padding to left right and top as the stroke is 2px
+        lineTo(1 + (fIndex * (width-2)), height - 1 - y * (height - 2.0));
     }
+    lineTo(width-1, height);
     stroke();
     closePath();
 }
