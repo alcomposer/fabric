@@ -250,10 +250,10 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
     if (_recording){
         for (int pos = 0; pos < frames; pos++)
         {
-            st_audioBuffer[0][_bufferPos] = inputs[0][pos];
-            st_audioBuffer[1][_bufferPos] = inputs[1][pos];
-            _bufferPos++;
-            if (_bufferPos > st_audioBufferSize) _bufferPos = 0;
+            st_audioBuffer[0][bufferPos] = inputs[0][pos];
+            st_audioBuffer[1][bufferPos] = inputs[1][pos];
+            bufferPos++;
+            if (bufferPos > st_audioBufferSize) bufferPos = 0;
         }
     }
 

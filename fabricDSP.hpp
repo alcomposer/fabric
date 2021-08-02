@@ -39,7 +39,7 @@ public:
     float* st_audioBuffer[2];
     int st_audioBufferSize;
     //position inside audio buffer
-    uint _bufferPos = {0};
+    uint bufferPos = {0};
 protected:
     /**
         Get the plugin label.

@@ -29,7 +29,7 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
     setSize(size); 
     _parent = static_cast<fabricUI *>(widget);
     _st_audioBuffer = _parent->_plugin->st_audioBuffer;
-    _writeHeadPos = &_parent->_plugin->_bufferPos;
+    _writeHeadPos = &_parent->_plugin->bufferPos;
     _sizeOfBuffer = _parent->_plugin->st_audioBufferSize;
 }
 
