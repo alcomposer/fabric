@@ -21,7 +21,7 @@
 
 START_NAMESPACE_DISTRHO
 
-typedef struct GrainPlayerControl
+struct GrainPlayerControl
 {
     float speed;
     float density;
