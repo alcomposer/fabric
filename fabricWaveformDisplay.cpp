@@ -41,7 +41,8 @@ void fabricWaveformDisplay::idleCallback()
 
 void fabricWaveformDisplay::onNanoDisplay()
 {
-    Color blue = Color(173, 216, 230, 255); //FIXME (alex) make this an enum 
+    Color blue = Color(173, 216, 230); //FIXME (alex) make this an enum 
+    Color blue_transparent = Color(173, 216, 230, 0.1f);
     //draw black widget background
     static const Color k_black(0, 0, 0);
     beginPath();
@@ -141,14 +142,14 @@ void fabricWaveformDisplay::onNanoDisplay()
 
     // draw grains
     beginPath();
-    strokeColor(0,0,255,150); //change to an enum
+    strokeColor(blue_transparent); //change to an enum
     strokeWidth(2.0f);
     for (int i = 0; i < 128; i++){
         if (_parent->_plugin->grainPlayer.grainArray[i].playing == true){
             float grainPos = (float)_parent->_plugin->grainPlayer.grainArray[i].startTimeBuffer / (float)(44100*10) * display_right; //FIXME (alex) use sample rate calc please!
             //std::cout << "drawing grain at: " << (float)plugin->grainPlayer.grain_array[i].start_position << std::endl;
-            moveTo(grainPos, display_center - 25);
-            lineTo(grainPos, display_center + 25);
+            moveTo(grainPos, display_top); //- 25);
+            lineTo(grainPos, display_bottom); //+ 25);
         }
     }
     stroke();

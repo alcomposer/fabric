@@ -30,5 +30,6 @@ public:
 private:
     uint32_t _frames;
     int _nextGrainTime = {0};
+    int _bufferSize = {0};
     void addGrain(int currentFrame);
 };
