@@ -28,8 +28,17 @@ fabricDSP::fabricDSP()
       ,fNeedsReset(true)
 {
     _sampleRate = getSampleRate();
-    st_audioBuffer.resize(10 * _sampleRate);
+
+    st_audioBufferSize = 10 * _sampleRate;
+    st_audioBuffer[0] = (float*)malloc(2 * st_audioBufferSize * sizeof(float));
+    st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
 }
+
+fabricDSP::~fabricDSP()
+{
+    free(st_audioBuffer[0]);
+}
+
 const char *fabricDSP::getLabel() const
 {
     return "Fabric";
@@ -237,13 +246,14 @@ String fabricDSP::getState(const char* key) const
 
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {
+    // fill audio delay buffer 
     if (_recording){
         for (int pos = 0; pos < frames; pos++)
         {
-            st_audioBuffer[_bufferPos].first = inputs[0][pos];
-            st_audioBuffer[_bufferPos].second = inputs[1][pos];
+            st_audioBuffer[0][_bufferPos] = inputs[0][pos];
+            st_audioBuffer[1][_bufferPos] = inputs[1][pos];
             _bufferPos++;
-            if (_bufferPos > st_audioBuffer.size()) _bufferPos = 0;
+            if (_bufferPos > st_audioBufferSize) _bufferPos = 0;
         }
     }
 

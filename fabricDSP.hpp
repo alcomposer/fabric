@@ -34,8 +34,10 @@ class fabricDSP : public Plugin
 {
 public:
     fabricDSP();
+    ~fabricDSP();
     //stereo audio buffer
-    std::vector<std::pair<float,float>> st_audioBuffer;
+    float* st_audioBuffer[2];
+    int st_audioBufferSize;
     //position inside audio buffer
     uint _bufferPos = {0};
 protected:

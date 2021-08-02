@@ -38,8 +38,9 @@ protected:
     //void onResize(const ResizeEvent &event) override;
 private:
     fabricUI * _parent;
-    std::vector<std::pair<float,float>> *_st_audioBuffer;
+    float **_st_audioBuffer;
     uint *_writeHeadPos;
+    int _sizeOfBuffer;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
 
