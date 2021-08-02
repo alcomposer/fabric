@@ -256,7 +256,7 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             st_audioBuffer[0][bufferPos] = inputs[0][pos];
             st_audioBuffer[1][bufferPos] = inputs[1][pos];
             bufferPos++;
-            if (bufferPos > st_audioBufferSize) bufferPos = 0;
+            if (bufferPos >= st_audioBufferSize) bufferPos = 0;
         }
     }
 
