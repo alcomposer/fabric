@@ -34,6 +34,7 @@ fabricDSP::fabricDSP()
     st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
 
     grainPlayer = GrainPlayer();
+    grainPlayer.controls.sampleRate = _sampleRate;
 }
 
 fabricDSP::~fabricDSP()
@@ -110,7 +111,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Density";
         parameter.symbol = "DENSITY";
-        parameter.ranges.min = 0.0f;    //Hz
+        parameter.ranges.min = 0.01f;    //Hz
         parameter.ranges.max = 1000.0f;
         parameter.ranges.def = 10.f;
         break;
@@ -262,12 +263,14 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
     // run the effect
     grainPlayer.generate(outputs, st_audioBuffer, st_audioBufferSize, frames);
 
+    /*
     // copy inputs over outputs if needed
     if (outputs[0] != inputs[0])
         std::memcpy(outputs[0], inputs[0], sizeof(float) * frames);
 
     if (outputs[1] != inputs[1])
         std::memcpy(outputs[1], inputs[1], sizeof(float) * frames);
+    */
 }
 
 /* Plugin entry point, called by DPF to create a new plugin instance. */

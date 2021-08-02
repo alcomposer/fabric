@@ -80,7 +80,7 @@ fabricUI::fabricUI()
     fcontrolDensity->setText("Density");
     fcontrolDensity->setId(id_density);
     fcontrolDensity->setCallback(this);
-    fcontrolDensity->setRange(0.f, 1000.f);
+    fcontrolDensity->setRange(0.01f, 1000.f);
     fcontrolDensity->setUnit("Hz");
     fcontrolDensity->setAbsolutePos(lazyXPos,400);
     fcontrolDensity->show();

@@ -137,14 +137,15 @@ void fabricWaveformDisplay::onNanoDisplay()
     lineTo(right_spray_x, display_top);
     fill();
     closePath();
+    */
+
     // draw grains
     beginPath();
     strokeColor(0,0,255,150); //change to an enum
     strokeWidth(2.0f);
     for (int i = 0; i < 128; i++){
-        //std::cout << "drawing grain number: " << i << std::endl;
-        if (plugin->grainPlayer.grain_array[i].erase_me == false){
-            float grainPos = display_left + plugin->grainPlayer.grain_array[i].start_position * display_width;
+        if (_parent->_plugin->grainPlayer.grainArray[i].playing == true){
+            float grainPos = (float)_parent->_plugin->grainPlayer.grainArray[i].startTimeBuffer / (float)(44100*10) * display_right; //FIXME (alex) use sample rate calc please!
             //std::cout << "drawing grain at: " << (float)plugin->grainPlayer.grain_array[i].start_position << std::endl;
             moveTo(grainPos, display_center - 25);
             lineTo(grainPos, display_center + 25);
@@ -152,7 +153,7 @@ void fabricWaveformDisplay::onNanoDisplay()
     }
     stroke();
     closePath();
-    */
+    
 
     // rec head line
     beginPath();
