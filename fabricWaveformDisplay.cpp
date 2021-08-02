@@ -24,7 +24,7 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
     : NanoSubWidget(widget)
 {
     Window &pw = getWindow(); //this is needed to refresh the waveform display
-    pw.addIdleCallback(this, 10);
+    pw.addIdleCallback(this, 16);
 
     setSize(size); 
     _parent = static_cast<fabricUI *>(widget);
