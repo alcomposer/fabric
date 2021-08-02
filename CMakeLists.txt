@@ -6,6 +6,8 @@ dpf_add_plugin(fabric MONOLITHIC
   TARGETS jack lv2 vst2
   FILES_DSP
       fabricDSP.cpp
+      Grain.cpp
+      GrainPlayer.cpp
   FILES_UI
       fabricUI.cpp
 

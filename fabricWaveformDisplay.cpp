@@ -31,6 +31,7 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
     _st_audioBuffer = _parent->_plugin->st_audioBuffer;
     _writeHeadPos = &_parent->_plugin->bufferPos;
     _sizeOfBuffer = _parent->_plugin->st_audioBufferSize;
+    _playHeadPos = &_parent->_plugin->grainPlayer.controls.playHeadPos;
 }
 
 void fabricWaveformDisplay::idleCallback()
@@ -40,6 +41,7 @@ void fabricWaveformDisplay::idleCallback()
 
 void fabricWaveformDisplay::onNanoDisplay()
 {
+    Color blue = Color(173, 216, 230, 255); //FIXME (alex) make this an enum 
     //draw black widget background
     static const Color k_black(0, 0, 0);
     beginPath();
@@ -59,7 +61,7 @@ void fabricWaveformDisplay::onNanoDisplay()
     
     //draw waveform
     beginPath();
-    strokeColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
+    strokeColor(blue);
     strokeWidth(0.9f);
 
     for (uint16_t i = 0; i < DISPLAY_WIDTH; i++)
@@ -154,7 +156,7 @@ void fabricWaveformDisplay::onNanoDisplay()
 
     // rec head line
     beginPath();
-    strokeColor(255,0,0,200); //FIXME (alex) change to an enum- use same red as rec button
+    strokeColor(255,0,0); //FIXME (alex) change to an enum- use same red as rec button
     strokeWidth(2.0f);
     float recheadPos = display_left + (float)(*_writeHeadPos) / _sizeOfBuffer * display_right;
     moveTo(recheadPos, display_top);
@@ -162,16 +164,17 @@ void fabricWaveformDisplay::onNanoDisplay()
     stroke();
     closePath();
 
-    /*
+    
     // play head line
     beginPath();
-    strokeColor(0,0,255,200); //change to an enum
+    strokeColor(blue);
     strokeWidth(2.0f);
-    moveTo(playHeadPos, display_top);
-    lineTo(playHeadPos, display_bottom);
+    float playheadPos = (float)(*_playHeadPos) / _sizeOfBuffer * display_right;
+    moveTo(playheadPos, display_top);
+    lineTo(playheadPos, display_bottom);
     stroke();
     closePath();
-    */
+    
 }
 
 

@@ -30,8 +30,10 @@ fabricDSP::fabricDSP()
     _sampleRate = getSampleRate();
 
     st_audioBufferSize = 10 * _sampleRate;
-    st_audioBuffer[0] = (float*)malloc(2 * st_audioBufferSize * sizeof(float));
+    st_audioBuffer[0] = (float*)calloc(2 * st_audioBufferSize, sizeof(float));
     st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
+
+    grainPlayer = GrainPlayer();
 }
 
 fabricDSP::~fabricDSP()
@@ -175,15 +177,15 @@ float fabricDSP::getParameterValue(uint32_t index) const
     case id_rec:
         return _recording;
     case id_speed:
-        return _controls.speed;
+        return grainPlayer.controls.speed;
     case id_density:
-        return _controls.density;
+        return grainPlayer.controls.density;
     case id_length:
-        return _controls.length;
+        return grainPlayer.controls.length;
     case id_spray:
-        return _controls.spray;
+        return grainPlayer.controls.spray;
     case id_sides:
-        return _controls.sides;
+        return grainPlayer.controls.sides;
     case id_wet:
         return _wet;
     case id_dry:
@@ -203,19 +205,19 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         _recording = value;
         break;
     case id_speed:
-        _controls.speed = value;
+        grainPlayer.controls.speed = value;
         break;
     case id_density:
-        _controls.density = value;
+        grainPlayer.controls.density = value;
         break;
     case id_length:
-        _controls.length = value;
+        grainPlayer.controls.length = value;
         break;
     case id_spray:
-        _controls.spray = value;
+        grainPlayer.controls.spray = value;
         break;
     case id_sides:
-        _controls.sides = value;
+        grainPlayer.controls.sides = value;
         break;
     case id_wet:
         _wet = value;
@@ -256,6 +258,9 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             if (bufferPos > st_audioBufferSize) bufferPos = 0;
         }
     }
+
+    // run the effect
+    grainPlayer.generate(outputs, st_audioBuffer, st_audioBufferSize, frames);
 
     // copy inputs over outputs if needed
     if (outputs[0] != inputs[0])

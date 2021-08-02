@@ -17,18 +17,10 @@
 #pragma once
 
 #include "DistrhoPlugin.hpp"
+#include "GrainPlayer.hpp"
 #include <vector>
 
 START_NAMESPACE_DISTRHO
-
-struct GrainPlayerControl
-{
-    float speed;
-    float density;
-    float length;
-    float spray;
-    float sides;
-};
 
 class fabricDSP : public Plugin
 {
@@ -40,6 +32,8 @@ public:
     int st_audioBufferSize;
     //position inside audio buffer
     uint bufferPos = {0};
+    //The grainplayer object
+    GrainPlayer grainPlayer;
 protected:
     /**
         Get the plugin label.
@@ -120,7 +114,6 @@ private:
       Parameters.
     */
     bool _recording;
-    GrainPlayerControl _controls; 
     float _wet, _dry, _mix;
     /**
       Boolean used to reset meter values.

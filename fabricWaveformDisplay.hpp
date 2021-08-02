@@ -40,6 +40,7 @@ private:
     fabricUI * _parent;
     float **_st_audioBuffer;
     uint *_writeHeadPos;
+    float *_playHeadPos;
     int _sizeOfBuffer;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
