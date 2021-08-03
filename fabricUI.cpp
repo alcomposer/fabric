@@ -13,8 +13,9 @@
  * IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
+#include <iostream>
 #include "fabricUI.hpp"
+#include "DistrhoUI.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -31,61 +32,163 @@ static const float kSmoothMultiplier = 3.0f;
 // -----------------------------------------------------------------------------------------------------------
 
 fabricUI::fabricUI()
-    : UI(128, 512),
+    : UI(850, 500)
+      ,knobSizeStandard(50,50)
+      ,waveformDisplaySize(850, 300)
       // default color is green
-      fColor(93, 231, 61),
+      ,fColor(93, 231, 61)
       // which is value 0
-      fColorValue(0),
+      ,fColorValue(0)
       // init meter values to 0
-      fOutLeft(0.0f),
-      fOutRight(0.0f)
+      ,fOutLeft(0.0f)
+      ,fOutRight(0.0f)
 {
-    setGeometryConstraints(900, 400);
-    Window &pw = getWindow(); //this is needed to refresh the waveform display
-    pw.addIdleCallback(this, 10);
+    _plugin = static_cast<fabricDSP *>(getPluginInstancePointer());
+
+    setGeometryConstraints(850, 500);
+
+    int lazyXPos = 20;
+    int lazyXposSpacer = 85;
+
+
+    fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
+    fwaveformDisplay->setAbsolutePos(0,60);
+    fwaveformDisplay->show();
+
+    frecButton = new fabricButton(this, Size<uint>(50,50));
+    frecButton->setAbsolutePos(lazyXPos,400);
+    frecButton->setText("Rec");
+    frecButton->setId(id_rec);
+    frecButton->setCallback(this);
+    frecButton->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolSpeed = new fabricController(this, knobSizeStandard);
+    fcontrolSpeed->setText("Speed");
+    fcontrolSpeed->setId(id_speed);
+    fcontrolSpeed->setCallback(this);
+    fcontrolSpeed->setBipolar(true);
+    fcontrolSpeed->setRange(-2.0f, 2.0f);
+    fcontrolSpeed->setUnit("x");
+    fcontrolSpeed->setAbsolutePos(lazyXPos,400);
+    fcontrolSpeed->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolDensity = new fabricController(this, knobSizeStandard);
+    fcontrolDensity->setText("Density");
+    fcontrolDensity->setId(id_density);
+    fcontrolDensity->setCallback(this);
+    fcontrolDensity->setRange(0.01f, 1000.f);
+    fcontrolDensity->setUnit("Hz");
+    fcontrolDensity->setAbsolutePos(lazyXPos,400);
+    fcontrolDensity->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolLength = new fabricController(this, knobSizeStandard);
+    fcontrolLength->setText("Length");
+    fcontrolLength->setId(id_length);
+    fcontrolLength->setCallback(this);
+    fcontrolLength->setUnit("ms");    
+    fcontrolLength->setRange(0.f, 10000.f);
+    fcontrolLength->setAbsolutePos(lazyXPos,400);
+    fcontrolLength->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolSpray = new fabricController(this, knobSizeStandard);
+    fcontrolSpray->setText("Spray");
+    fcontrolSpray->setId(id_spray);
+    fcontrolSpray->setCallback(this);
+    fcontrolSpray->setUnit("ms");
+    fcontrolSpray->setRange(0.f, 10000.f);
+    fcontrolSpray->setAbsolutePos(lazyXPos,400);
+    fcontrolSpray->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolSides = new fabricController(this, knobSizeStandard);
+    fcontrolSides->setText("Sides");
+    fcontrolSides->setId(id_sides);
+    fcontrolSides->setRange(0.f, 1.f);
+    fcontrolSides->setCallback(this);
+    fcontrolSides->setAbsolutePos(lazyXPos,400);
+    fcontrolSides->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
+    fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
+    fenvelopeDisplay->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolWet = new fabricController(this, knobSizeStandard);
+    fcontrolWet->setText("Wet");
+    fcontrolWet->setId(id_wet);
+    fcontrolWet->setCallback(this);
+    fcontrolWet->setUnit("%");
+    fcontrolWet->setRange(0.f, 100.f);
+    fcontrolWet->setAbsolutePos(lazyXPos,400);
+    fcontrolWet->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolDry = new fabricController(this, knobSizeStandard);
+    fcontrolDry->setText("Dry");
+    fcontrolDry->setId(id_dry);
+    fcontrolDry->setCallback(this);    
+    fcontrolDry->setUnit("%");
+    fcontrolDry->setRange(0.f, 100.f);
+    fcontrolDry->setAbsolutePos(lazyXPos,400);
+    fcontrolDry->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolMix = new fabricController(this, knobSizeStandard);
+    fcontrolMix->setText("Mix");
+    fcontrolMix->setId(id_mix);
+    fcontrolMix->setCallback(this);
+    fcontrolMix->setRange(-100.f, 100.f);
+    fcontrolMix->setAbsolutePos(lazyXPos,400);
+    fcontrolMix->setBipolar(true);
+    fcontrolMix->show();
 }
 
-void fabricUI::idleCallback()
-{
-    repaint();
-}
-
+//FROM HOST
 void fabricUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case 0: // color
-        updateColor(std::round(value));
+    case id_rec:
+        frecButton->setDown(value);
         break;
-
-    case 1: // out-left
-        value = (fOutLeft * kSmoothMultiplier + value) / (kSmoothMultiplier + 1.0f);
-
-        /**/ if (value < 0.001f)
-            value = 0.0f;
-        else if (value > 0.999f)
-            value = 1.0f;
-
-        if (fOutLeft != value)
-        {
-            fOutLeft = value;
-            repaint();
-        }
+    case id_speed:
+        fcontrolSpeed->setValue(value);
         break;
-
-    case 2: // out-right
-        value = (fOutRight * kSmoothMultiplier + value) / (kSmoothMultiplier + 1.0f);
-
-        /**/ if (value < 0.001f)
-            value = 0.0f;
-        else if (value > 0.999f)
-            value = 1.0f;
-
-        if (fOutRight != value)
-        {
-            fOutRight = value;
-            repaint();
-        }
+    case id_density:
+        fcontrolDensity->setValue(value);
+        break;
+    case id_length:
+        fcontrolLength->setValue(value);
+        break;
+    case id_spray:
+        fcontrolSpray->setValue(value);
+        break;
+    case id_sides:
+        fenvelopeDisplay->setSidesValue(value);
+        fcontrolSides->setValue(value);
+        break;
+    case id_wet:
+        fcontrolWet->setValue(value);
+        break;
+    case id_dry:
+        fcontrolDry->setValue(value);
+        break;
+    case id_mix:
+        fcontrolMix->setValue(value);
         break;
     }
 }
@@ -95,112 +198,61 @@ void fabricUI::stateChanged(const char *, const char *)
     // nothing here
 }
 void fabricUI::onNanoDisplay()
-{
-    static const Color kColorBlack(0, 0, 0);
-    static const Color kColorRed(255, 0, 0);
-    static const Color kColorYellow(255, 255, 0);
-
-    // get meter values
-    const float outLeft(fOutLeft);
-    const float outRight(fOutRight);
-
-    // tell DSP side to reset meter values
-    setState("reset", "");
-
-    // useful vars
-    const float halfWidth = static_cast<float>(getWidth()) / 2;
-    const float redYellowHeight = static_cast<float>(getHeight()) * 0.2f;
-    const float yellowBaseHeight = static_cast<float>(getHeight()) * 0.4f;
-    const float baseBaseHeight = static_cast<float>(getHeight()) * 0.6f;
-
-    // create gradients
-    Paint fGradient1 = linearGradient(0.0f, 0.0f, 0.0f, redYellowHeight, kColorRed, kColorYellow);
-    Paint fGradient2 = linearGradient(0.0f, redYellowHeight, 0.0f, yellowBaseHeight, kColorYellow, fColor);
-
-    // paint left meter
+{    
+    //draw grey window background
+    static const Color k_grey(99, 99, 99);
     beginPath();
-    rect(0.0f, 0.0f, halfWidth - 1.0f, redYellowHeight);
-    fillPaint(fGradient1);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(0.0f, redYellowHeight - 0.5f, halfWidth - 1.0f, yellowBaseHeight);
-    fillPaint(fGradient2);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(0.0f, redYellowHeight + yellowBaseHeight - 1.5f, halfWidth - 1.0f, baseBaseHeight);
-    fillColor(fColor);
-    fill();
-    closePath();
-
-    // paint left black matching output level
-    beginPath();
-    rect(0.0f, 0.0f, halfWidth - 1.0f, (1.0f - outLeft) * getHeight());
-    fillColor(kColorBlack);
-    fill();
-    closePath();
-
-    // paint right meter
-    beginPath();
-    rect(halfWidth + 1.0f, 0.0f, halfWidth - 2.0f, redYellowHeight);
-    fillPaint(fGradient1);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(halfWidth + 1.0f, redYellowHeight - 0.5f, halfWidth - 2.0f, yellowBaseHeight);
-    fillPaint(fGradient2);
-    fill();
-    closePath();
-
-    beginPath();
-    rect(halfWidth + 1.0f, redYellowHeight + yellowBaseHeight - 1.5f, halfWidth - 2.0f, baseBaseHeight);
-    fillColor(fColor);
-    fill();
-    closePath();
-
-    // paint right black matching output level
-    beginPath();
-    rect(halfWidth + 1.0f, 0.0f, halfWidth - 2.0f, (1.0f - outRight) * getHeight());
-    fillColor(kColorBlack);
+    rect(0.0f, 0.0f, getWidth(), getHeight());
+    fillColor(k_grey);
     fill();
     closePath();
 }
 
 bool fabricUI::onMouse(const MouseEvent &ev)
 {
-    // Test for left-clicked + pressed first.
-    if (ev.button != 1 || !ev.press)
-        return false;
-
-    const int newColor(fColorValue == 0 ? 1 : 0);
-    updateColor(newColor);
-    setParameterValue(0, newColor);
-
-    return true;
+    return false; // set false to allow the mouse event to propogate to child widgets
 }
 
-void fabricUI::updateColor(const int color)
+void fabricUI::nanoKnobDragStarted(NanoKnob *nanoKnob)
 {
-    if (fColorValue == color)
-        return;
+    const uint id = nanoKnob->getId();
+    editParameter(id, true);
+}
 
-    fColorValue = color;
+void fabricUI::nanoKnobDragFinished(NanoKnob *nanoKnob)
+{
+    const uint id = nanoKnob->getId();
+    editParameter(id, false);
+}
 
-    switch (color)
+void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
+{
+    const uint id = nanoKnob->getId();
+    float newValue = value;
+
+    if (id == id_sides)
     {
-    case METER_COLOR_GREEN:
-        fColor = Color(93, 231, 61);
-        break;
-    case METER_COLOR_BLUE:
-        fColor = Color(82, 238, 248);
-        break;
+        setParameterValue(id_sides, value);
+        fenvelopeDisplay->setSidesValue(value);
     }
+    setParameterValue(id, value);
+}
 
-    repaint();
+void fabricUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
+{
+    const uint id = nanoSwitch->getId();
+
+    if (id == id_rec)
+    {
+        if (frecButton->isDown())
+        {
+            setParameterValue(id_rec,true);
+            std::cout << "rec is active" << std::endl;
+        }else{
+            std::cout << "rec is inactive" << std::endl;
+            setParameterValue(id_rec,false);
+        }
+    }
 }
 
 UI *createUI()

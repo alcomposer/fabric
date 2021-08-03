@@ -17,6 +17,8 @@
 #pragma once
 
 #include "DistrhoPlugin.hpp"
+#include "GrainPlayer.hpp"
+#include <vector>
 
 START_NAMESPACE_DISTRHO
 
@@ -24,7 +26,14 @@ class fabricDSP : public Plugin
 {
 public:
     fabricDSP();
-
+    ~fabricDSP();
+    //stereo audio buffer
+    float* st_audioBuffer[2];
+    int st_audioBufferSize;
+    //position inside audio buffer
+    uint bufferPos = {0};
+    //The grainplayer object
+    GrainPlayer grainPlayer;
 protected:
     /**
         Get the plugin label.
@@ -86,6 +95,8 @@ protected:
       Change an internal state.
     */
     void setState(const char *key, const char *) override;
+
+    String getState(const char* key) const;
     /* --------------------------------------------------------------------------------------------------------
     * Process */
 
@@ -97,10 +108,13 @@ protected:
     // -------------------------------------------------------------------------------------------------------
 
 private:
+    float _sampleRate = {0.0f};
+
     /**
       Parameters.
     */
-    float fColor, fOutLeft, fOutRight;
+    bool _recording;
+    float _wet, _dry, _mix;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.
@@ -109,6 +123,10 @@ private:
     /**
       Set our plugin class as non-copyable and add a leak detector just in case.
     */
+
+    //Get access to UI
+    friend class fabricUI;
+    
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(fabricDSP);
 };
 

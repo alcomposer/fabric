@@ -17,15 +17,26 @@
 #pragma once
 
 #include "DistrhoUI.hpp"
+#include "VolumeKnob.hpp"
+#include "NanoLabel.hpp"
+#include "fabricButton.hpp"
+#include "NanoSwitch.hpp"
+#include "fabricParameters.hpp"
+
+#include "fabricWaveformDisplay.hpp"
+#include "fabricEnvelopeDisplay.hpp"
+#include "fabricController.hpp" 
+#include "fabricDSP.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class fabricUI : public UI,
-                 public IdleCallback
+class fabricUI :  public UI
+                 ,public NanoKnob::Callback
+                 ,public NanoSwitch::Callback
 {
 public:
     fabricUI();
-    void idleCallback();
+    fabricDSP *_plugin;
 
     /* DSP/Plugin Callbacks */
 protected:
@@ -58,6 +69,25 @@ private:
     */
     float fOutLeft, fOutRight;
 
+    Size<uint> waveformDisplaySize;
+
+    Size<uint> knobSizeStandard;
+
+    ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
+
+    ScopedPointer<fabricEnvelopeDisplay> fenvelopeDisplay;
+
+    ScopedPointer<fabricButton> frecButton;
+    
+    ScopedPointer<fabricController> fcontrolSpeed;
+    ScopedPointer<fabricController> fcontrolDensity;
+    ScopedPointer<fabricController> fcontrolLength;
+    ScopedPointer<fabricController> fcontrolSpray;
+    ScopedPointer<fabricController> fcontrolSides;
+    ScopedPointer<fabricController> fcontrolWet;
+    ScopedPointer<fabricController> fcontrolDry;
+    ScopedPointer<fabricController> fcontrolMix;
+    
     /**
         Color and its matching parameter value.
     */
@@ -66,7 +96,13 @@ private:
     /**
         Update color if needed.
     */
-    void updateColor(const int color);
+
+    void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
+    void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
+    void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
+    void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
+
+    //void updateColor(const int color);
     /**
         Set our UI class as non-copyable and add a leak detector just in case.
     */
