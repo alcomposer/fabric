@@ -2,6 +2,12 @@
 #include <random>
 #include <iostream>
 
+inline int modulo(int a, int b) {
+    if(b < 0) return modulo(-a, -b);
+    const int result = a % b;
+    return result >= 0 ? result : result + b;
+}
+
 GrainPlayer::GrainPlayer()
 {
 
@@ -26,7 +32,7 @@ void GrainPlayer::addGrain(int currentFrame)
             currentGrain->startTimeFrameOffset = currentFrame;
             currentGrain->length               = (int)(controls.length/1000 * controls.sampleRate);
             currentGrain->age                  = currentGrain->length; 
-            currentGrain->startTimeBuffer      = (int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray) % _bufferSize; 
+            currentGrain->startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
             currentGrain->sides                = controls.sides;
             return;
         }

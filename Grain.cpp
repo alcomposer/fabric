@@ -43,6 +43,7 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
             {
                 playing = false;
                 queuedToPlay = false;
+                return;
             }
             age--;
         }
