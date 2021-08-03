@@ -119,7 +119,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable | kParameterIsLogarithmic;
         parameter.name = "Length";
         parameter.symbol = "LENGTH";
-        parameter.ranges.min = 0.0f;    //Milliseconds
+        parameter.ranges.min = 0.1f;    //Milliseconds
         parameter.ranges.max = 10000.0f;
         parameter.ranges.def = 100.f;
         break;
@@ -127,7 +127,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable | kParameterIsLogarithmic;
         parameter.name = "Spray";
         parameter.symbol = "SPRAY";
-        parameter.ranges.min = 0.0f;    //Milliseconds
+        parameter.ranges.min = 0.0001f;    //Milliseconds
         parameter.ranges.max = 10000.0f;
         parameter.ranges.def = 100.f;
         break;
