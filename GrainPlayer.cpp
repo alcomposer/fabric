@@ -62,6 +62,8 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
     for(int grainArrayPos = 0; grainArrayPos < MAX_GRAINS; ++grainArrayPos)
     {
         Grain* currentGrain = &grainArray[grainArrayPos];
-        currentGrain->process(outputs, st_audioBuffer, bufferSize, frames);
+        if (currentGrain->queuedToPlay){
+            currentGrain->process(outputs, st_audioBuffer, bufferSize, frames);
+        }
     }
 }

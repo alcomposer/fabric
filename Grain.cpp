@@ -26,7 +26,7 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
 {
     for (int framePos = 0; framePos < frames; ++framePos)
     {
-        if (queuedToPlay == true && startTimeFrameOffset == framePos)
+        if (startTimeFrameOffset == framePos)
         {
             playing = true;
         }
