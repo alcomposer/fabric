@@ -36,7 +36,7 @@ void GrainPlayer::addGrain(int currentFrame)
 void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t frames)
 {
     _bufferSize = bufferSize;
-    int densityHz = (int)(controls.sampleRate / controls.density);
+    int densityFramesInterval = (int)(controls.sampleRate / controls.density);
     //queue the grains
     for(int currentFrame = 0; currentFrame < frames; ++currentFrame)
     {
@@ -44,7 +44,7 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
         {   
             addGrain(currentFrame);
         }
-        if (_nextGrainTime > densityHz)
+        if (_nextGrainTime > densityFramesInterval)
         {
             _nextGrainTime = 0;
         }else
