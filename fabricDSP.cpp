@@ -108,7 +108,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.def = 1.0f;
         break;
     case id_density:
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomable | kParameterIsLogarithmic;
         parameter.name = "Density";
         parameter.symbol = "DENSITY";
         parameter.ranges.min = 0.01f;    //Hz
@@ -116,7 +116,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.def = 10.f;
         break;
     case id_length:
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomable | kParameterIsLogarithmic;
         parameter.name = "Length";
         parameter.symbol = "LENGTH";
         parameter.ranges.min = 0.0f;    //Milliseconds
@@ -124,7 +124,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.def = 100.f;
         break;
     case id_spray:
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomable | kParameterIsLogarithmic;
         parameter.name = "Spray";
         parameter.symbol = "SPRAY";
         parameter.ranges.min = 0.0f;    //Milliseconds
