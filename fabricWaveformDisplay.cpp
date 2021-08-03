@@ -42,7 +42,7 @@ void fabricWaveformDisplay::idleCallback()
 void fabricWaveformDisplay::onNanoDisplay()
 {
     Color blue = Color(173, 216, 230); //FIXME (alex) make this an enum 
-    Color blue_transparent = Color(173, 216, 230, 0.1f);
+    Color blue_transparent = Color(173, 216, 230, 0.3f);
     //draw black widget background
     static const Color k_black(0, 0, 0);
     beginPath();
@@ -63,19 +63,15 @@ void fabricWaveformDisplay::onNanoDisplay()
     //draw waveform
     beginPath();
     strokeColor(blue);
-    strokeWidth(0.9f);
+    strokeWidth(1.f);
+    moveTo(display_left, display_center);
 
     for (uint16_t i = 0; i < DISPLAY_WIDTH; i++)
     {
         fIndex = (float)i / DISPLAY_WIDTH;
         sampleIndex = floor(fIndex * _sizeOfBuffer);
-        moveTo(i, display_center);
-        lineTo(i, display_center + _st_audioBuffer[0][sampleIndex] * display_center);
-        moveTo(i, display_center);
-        lineTo(i, display_center - _st_audioBuffer[1][sampleIndex] * display_center);
+        lineTo(i, display_center + (_st_audioBuffer[0][sampleIndex] + _st_audioBuffer[1][sampleIndex]) / 2.0 * display_center);
     }
-    //fillColor({255,0,0});
-    //fill();
     stroke();
     closePath();
     
