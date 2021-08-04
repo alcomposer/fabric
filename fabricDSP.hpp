@@ -109,6 +109,7 @@ protected:
 
 private:
     float _sampleRate = {0.0f};
+    void clearOutputs(float**, uint32_t);
 
     /**
       Parameters.

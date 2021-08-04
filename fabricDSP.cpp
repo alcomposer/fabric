@@ -246,6 +246,11 @@ String fabricDSP::getState(const char* key) const
 
 }
 
+void fabricDSP::clearOutputs(float** outputs, uint32_t frames)
+{
+    std::memset(outputs[0], 0, sizeof(float) * frames);
+    std::memset(outputs[1], 0, sizeof(float) * frames);
+}
 
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {
@@ -259,6 +264,9 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             if (bufferPos >= st_audioBufferSize) bufferPos = 0;
         }
     }
+
+    // then clear the output buffer (which may be the same as the input on some hosts, hence why we do it here.)
+    clearOutputs(outputs, frames);
 
     // run the effect
     grainPlayer.generate(outputs, st_audioBuffer, st_audioBufferSize, frames);
