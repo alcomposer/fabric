@@ -42,7 +42,6 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
             if (age <= 0)
             {
                 playing = false;
-                queuedToPlay = false;
                 return;
             }
             age--;

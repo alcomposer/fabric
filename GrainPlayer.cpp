@@ -41,6 +41,15 @@ void GrainPlayer::addGrain(int currentFrame)
 
 void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t frames)
 {
+    //Reset grains that have already played in previous buffer cycle. Do this outside of the audio loop
+    for(int grainArrayPos = 0; grainArrayPos < MAX_GRAINS; ++grainArrayPos)
+    {
+        Grain* currentGrain = &grainArray[grainArrayPos];
+        if (!currentGrain->playing){
+            currentGrain->queuedToPlay = false;
+        }
+    }
+
     _bufferSize = bufferSize;
     int densityFramesInterval = (int)(controls.sampleRate / controls.density);
     //queue the grains
