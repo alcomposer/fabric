@@ -1,5 +1,7 @@
 # CMake file for DISTRHO Plugins #
 # ------------------------------ #
+cmake_minimum_required(VERSION 3.5)
+project(fabric)
 add_subdirectory(DPF)
 
 dpf_add_plugin(fabric MONOLITHIC
