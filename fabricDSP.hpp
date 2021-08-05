@@ -114,8 +114,8 @@ private:
     void copyInputs(const float** inputs, uint32_t frames);
     void mixToOutputs(float** wet, float** dry, uint32_t frames);
     float* mixDry[2];
-    fabricParamSmooth * smooth_mix;
-
+    fabricParamSmooth * smoothMixWetValue;
+    fabricParamSmooth * smoothMixDryValue;
 
     /**
       Parameters.
