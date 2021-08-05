@@ -26,12 +26,11 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
 {
     for (int framePos = 0; framePos < frames; ++framePos)
     {
-        if (startTimeFrameOffset == framePos)
+        bool trigger = startTimeFrameOffset == framePos ? true : false;
+
+        if (playing == true || trigger == true) //can be true at any time during the loop
         {
             playing = true;
-        }
-        if (playing == true) //can be true at any time during the loop
-        {
             double i = (double)age/length;
             float window = (cos(fmax(fabs((double)i - 0.5) * (2.0 / sides)  - (1.0 / sides - 1.0), 0.0) * PI) + 1.0) / 2.0;
 
