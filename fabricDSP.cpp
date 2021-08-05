@@ -29,11 +29,12 @@ fabricDSP::fabricDSP()
 {
     _sampleRate = getSampleRate();
 
+    // smoothing for mix control
     smooth_mix = new fabricParamSmooth();
     smooth_mix->setSampleRate(_sampleRate);
     smooth_mix->setSmoothingT60(1);
 
-    // allocate stereo buffer for 10 circular delay line
+    // allocate stereo buffer for 10 second circular delay line
     st_audioBufferSize = 10 * _sampleRate;
     st_audioBuffer[0] = (float*)calloc(2 * st_audioBufferSize, sizeof(float));
     st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
