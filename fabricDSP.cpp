@@ -29,6 +29,10 @@ fabricDSP::fabricDSP()
 {
     _sampleRate = getSampleRate();
 
+    smooth_mix = new fabricParamSmooth();
+    smooth_mix->setSampleRate(_sampleRate);
+    smooth_mix->setSmoothingT60(1);
+
     // allocate stereo buffer for 10 circular delay line
     st_audioBufferSize = 10 * _sampleRate;
     st_audioBuffer[0] = (float*)calloc(2 * st_audioBufferSize, sizeof(float));
@@ -264,12 +268,13 @@ void fabricDSP::copyInputs(const float** inputs, uint32_t frames)
 }
 
 void fabricDSP::mixToOutputs(float** outputs, float** dry, uint32_t frames)
-{
-    float mixWetValue = _mix > 0 ? 1.f : (100.f - abs(_mix)) * .01f ;
-    float mixDryValue = _mix < 0 ? 1.f : (100.f - _mix) * .01f;
-    
+{    
     for(int pos = 0; pos < frames; ++pos)
     {
+        float smoothed_mix = smooth_mix->process(_mix);
+        float mixWetValue = smoothed_mix > 0 ? 1.f : (100.f - abs(smoothed_mix)) * .01f ;
+        float mixDryValue = smoothed_mix < 0 ? 1.f : (100.f - smoothed_mix) * .01f;
+        
         outputs[0][pos] = outputs[0][pos] * mixWetValue + mixDry[0][pos] * mixDryValue;
         outputs[1][pos] = outputs[1][pos] * mixWetValue + mixDry[1][pos] * mixDryValue;
     }
