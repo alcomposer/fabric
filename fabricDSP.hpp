@@ -109,7 +109,11 @@ protected:
 
 private:
     float _sampleRate = {0.0f};
-    void clearOutputs(float**, uint32_t);
+    void clearOutputs(float** outputs, uint32_t frames);
+    void copyInputs(const float** inputs, uint32_t frames);
+    void mixToOutputs(float** wet, float** dry, uint32_t frames);
+    float* mixDry[2];
+
 
     /**
       Parameters.

@@ -29,9 +29,14 @@ fabricDSP::fabricDSP()
 {
     _sampleRate = getSampleRate();
 
+    // allocate stereo buffer for 10 circular delay line
     st_audioBufferSize = 10 * _sampleRate;
     st_audioBuffer[0] = (float*)calloc(2 * st_audioBufferSize, sizeof(float));
     st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
+
+    // allocate stereo buffer for mixDry
+    mixDry[0] = (float*)calloc(2 * 8192, sizeof(float));
+    mixDry[1] = mixDry[0] + 8192;
 
     grainPlayer = GrainPlayer();
     grainPlayer.controls.sampleRate = _sampleRate;
@@ -252,6 +257,24 @@ void fabricDSP::clearOutputs(float** outputs, uint32_t frames)
     std::memset(outputs[1], 0, sizeof(float) * frames);
 }
 
+void fabricDSP::copyInputs(const float** inputs, uint32_t frames)
+{
+    memcpy(mixDry[0], inputs[0], sizeof(float) * frames);
+    memcpy(mixDry[1], inputs[1], sizeof(float) * frames);
+}
+
+void fabricDSP::mixToOutputs(float** outputs, float** dry, uint32_t frames)
+{
+    float mixWetValue = _mix > 0 ? 1.f : (100.f - abs(_mix)) * .01f ;
+    float mixDryValue = _mix < 0 ? 1.f : (100.f - _mix) * .01f;
+    
+    for(int pos = 0; pos < frames; ++pos)
+    {
+        outputs[0][pos] = outputs[0][pos] * mixWetValue + mixDry[0][pos] * mixDryValue;
+        outputs[1][pos] = outputs[1][pos] * mixWetValue + mixDry[1][pos] * mixDryValue;
+    }
+}
+
 void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
 {
     // fill audio delay buffer 
@@ -264,12 +287,17 @@ void fabricDSP::run(const float **inputs, float **outputs, uint32_t frames)
             if (bufferPos >= st_audioBufferSize) bufferPos = 0;
         }
     }
+    // copy inputs to mixDry
+    copyInputs(inputs, frames);
 
     // then clear the output buffer (which may be the same as the input on some hosts, hence why we do it here.)
     clearOutputs(outputs, frames);
 
     // run the effect
     grainPlayer.generate(outputs, st_audioBuffer, st_audioBufferSize, frames);
+
+    // mix the wet / dry signal;
+    mixToOutputs(outputs, mixDry, frames);
 }
 
 /* Plugin entry point, called by DPF to create a new plugin instance. */
