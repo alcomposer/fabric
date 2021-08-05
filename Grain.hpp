@@ -13,7 +13,6 @@ public:
     ~Grain();
     void process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int frames);
     
-    bool queuedToPlay;
     bool playing;
     int startTimeFrameOffset;
     int length;
