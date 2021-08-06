@@ -26,6 +26,7 @@ fabricDSP::fabricDSP()
       ,_dry(50.f)
       ,_mix(0.f)
       ,fNeedsReset(true)
+      ,grainPlayer()
 {
     _sampleRate = getSampleRate();
 
@@ -47,7 +48,6 @@ fabricDSP::fabricDSP()
     mixDry[0] = (float*)calloc(2 * 8192, sizeof(float));
     mixDry[1] = mixDry[0] + 8192;
 
-    grainPlayer = GrainPlayer();
     grainPlayer.controls.sampleRate = _sampleRate;
 }
 

@@ -1,11 +1,10 @@
 #include "Grain.hpp"
-#include "GrainPlayer.hpp"
 #include <iostream>
 #include <math.h>
 
 #define  PI   3.141592653589793
 
-Grain::Grain() :
+Grain::Grain() : 
      playing(false)
     ,startTimeFrameOffset(0)
     ,length(0)
