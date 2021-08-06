@@ -5,8 +5,13 @@ project(fabric)
 add_subdirectory(DPF)
 find_package(Boost REQUIRED)
 
+set(fabric_TARGETS vst2 lv2)
+if(LINUX)
+  list(APPEND fabric_TARGETS jack)
+endif()
+
 dpf_add_plugin(fabric MONOLITHIC
-  TARGETS jack lv2 vst2
+  TARGETS ${fabric_TARGETS}
   FILES_DSP
       fabricDSP.cpp
       Grain.cpp

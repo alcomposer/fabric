@@ -257,7 +257,7 @@ void fabricDSP::setState(const char *key, const char *)
 
 String fabricDSP::getState(const char* key) const
 {
-
+    return String();
 }
 
 void fabricDSP::clearOutputs(float** outputs, uint32_t frames)
