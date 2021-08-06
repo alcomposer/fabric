@@ -17,7 +17,7 @@ jobs:
       matrix:
         include:
           - name: win32
-            display_name: Windows 32-bit
+            display-name: Windows 32-bit
             runs-on: windows-2019
             platform: x86
             release-arch: Win32
@@ -26,7 +26,7 @@ jobs:
             vcpkg-triplet: x86-windows-static
             vcpkg-commit-id: 5742e878fc71b4fcb9c019b50f1f887f22db58df
           - name: win64
-            display_name: Windows 64-bit
+            display-name: Windows 64-bit
             runs-on: windows-2019
             platform: x64
             release-arch: x64
@@ -35,18 +35,18 @@ jobs:
             vcpkg-triplet: x64-windows-static
             vcpkg-commit-id: 5742e878fc71b4fcb9c019b50f1f887f22db58df
           - name: linux64
-            display_name: Linux 64-bit
+            display-name: Linux 64-bit
             runs-on: ubuntu-20.04
             platform: x64
             release-arch: Linux64
             os-type: Linux
             build-type: Release
       fail-fast: false
-    name: Compile for ${{ matrix.display_name }}
+    name: Compile for ${{ matrix.display-name }}
     runs-on: ${{ matrix.runs-on }}
     env:
       name: ${{ matrix.name }}
-      display_name: ${{ matrix.display_name }}
+      display_name: ${{ matrix.display-name }}
       platform: ${{ matrix.platform }}
       release_arch: ${{ matrix.release-arch }}
       build_type: ${{ matrix.build-type }}
@@ -86,5 +86,5 @@ jobs:
         run: cmake --build . --config "${build_type}" -j "${num_jobs}"
       - uses: actions/upload-artifact@v2
         with:
-          name: Fabric for ${{ matrix.display_name }}
+          name: Fabric for ${{ matrix.display-name }}
           path: "${{runner.workspace}}/build/bin/*"
