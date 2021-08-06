@@ -3,6 +3,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(fabric)
 add_subdirectory(DPF)
+find_package(Boost REQUIRED)
 
 dpf_add_plugin(fabric MONOLITHIC
   TARGETS jack lv2 vst2
@@ -39,7 +40,8 @@ target_include_directories(
       "widgets"
       "Structures"
       "util"
-      "Resources/Fonts")
+      "Resources/Fonts"
+      ${Boost_INCLUDE_DIRS})
 
 function(target_enable_fast_math NAME ACCESS)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
