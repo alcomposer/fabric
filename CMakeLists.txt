@@ -3,9 +3,15 @@
 cmake_minimum_required(VERSION 3.5)
 project(fabric)
 add_subdirectory(DPF)
+find_package(Boost REQUIRED)
+
+set(fabric_TARGETS vst2 lv2)
+if(LINUX)
+  list(APPEND fabric_TARGETS jack)
+endif()
 
 dpf_add_plugin(fabric MONOLITHIC
-  TARGETS jack lv2 vst2
+  TARGETS ${fabric_TARGETS}
   FILES_DSP
       fabricDSP.cpp
       Grain.cpp
@@ -39,7 +45,8 @@ target_include_directories(
       "widgets"
       "Structures"
       "util"
-      "Resources/Fonts")
+      "Resources/Fonts"
+      ${Boost_INCLUDE_DIRS})
 
 function(target_enable_fast_math NAME ACCESS)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
