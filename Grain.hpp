@@ -10,7 +10,7 @@ class Grain : public boost::intrusive::list_base_hook<>
 public:
     Grain();
     ~Grain();
-    void process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int frames);
+    void process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int subdivStart, int frames);
     
     bool playing;
     int startTimeFrameOffset;

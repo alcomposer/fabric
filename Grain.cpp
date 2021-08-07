@@ -20,7 +20,7 @@ Grain::~Grain()
 
 }
 
-void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int frames)
+void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int subdivStart, int frames)
 {
     for (int framePos = startTimeFrameOffset; framePos < frames && age > 0; ++framePos)
     {
@@ -29,8 +29,8 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         float window = (cos(fmax(fabs((double)i - 0.5) * (2.0 / sides)  - (1.0 / sides - 1.0), 0.0) * PI) + 1.0) / 2.0;
         startTimeBuffer = startTimeBuffer % st_audioBufferSize;
 
-        outputs[0][framePos] += st_audioBuffer[0][startTimeBuffer] * window;
-        outputs[1][framePos] += st_audioBuffer[1][startTimeBuffer] * window;
+        outputs[0][subdivStart + framePos] += st_audioBuffer[0][startTimeBuffer] * window;
+        outputs[1][subdivStart + framePos] += st_audioBuffer[1][startTimeBuffer] * window;
 
         startTimeBuffer++;
         age--;
