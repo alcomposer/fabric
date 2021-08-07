@@ -21,17 +21,16 @@ GrainPlayer::~GrainPlayer()
 
 }
 
-void GrainPlayer::addGrain(int currentFrame)
+bool GrainPlayer::addGrain(int currentFrame)
 {
     if (grains_free.empty())
     {
-        return;
+        return false;
     }
     Grain &slot = grains_free.front();
     grains_free.pop_front();
     grains_used.push_back(slot);
 
-    //std::cout << "grains used LL: " << grains_used.size() << " grains free LL: " << grains_free.size()<< std::endl;
 
     Grain grain;
 
@@ -45,11 +44,15 @@ void GrainPlayer::addGrain(int currentFrame)
     grain.sides                = controls.sides;
     
     slot = grain;
+    return true;
 }
 
 void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t frames)
 {
     _bufferSize = bufferSize;
+
+    //Number of frames synthesized so far
+    int synthesizedFrames = 0;
 
     //Reset grains that have already played
     //for(int grainArrayPos = 0; grainArrayPos < MAX_GRAINS; ++grainArrayPos)
@@ -65,8 +68,21 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
     for(int currentFrame = 0; currentFrame < frames; ++currentFrame)
     {
         if (_nextGrainTime == 0)
-        {   
-            addGrain(currentFrame);
+        {
+            //The index of the frame within the subdivision
+            int subdivisionFrame = currentFrame - synthesizedFrames;
+
+            bool haveGrain = addGrain(subdivisionFrame);
+            if (!haveGrain)
+            {
+                //Synth current grains up to currentFrame not included, then try again
+                if (synthesizedFrames < currentFrame)
+                {
+                    generateSubdivision(outputs, st_audioBuffer, bufferSize, synthesizedFrames, currentFrame - synthesizedFrames);
+                    synthesizedFrames = currentFrame;
+                    addGrain(0);
+                }
+            }
         }
         if (_nextGrainTime > densityFramesInterval)
         {
@@ -83,12 +99,23 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
             controls.playHeadPos = bufferSize;
     }
 
+    //Synth the remaining frames
+    if (synthesizedFrames < frames)
+        generateSubdivision(outputs, st_audioBuffer, bufferSize, synthesizedFrames, frames - synthesizedFrames);
+
+    std::cout << "grains used LL: " << grains_used.size() << " synthesised frames: " << synthesizedFrames << std::endl;
+}
+
+void GrainPlayer::generateSubdivision(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t subdivStart, uint32_t subdivFrames)
+{
     GrainList::iterator grain_itterator = grains_used.begin();
 
     while (grain_itterator != grains_used.end())
     {
         Grain &grain = *grain_itterator;
-        grain.process(outputs, st_audioBuffer, bufferSize, frames);
+
+        float *subdivOutputs[2] = { outputs[0] + subdivStart, outputs[1] + subdivStart };
+        grain.process(subdivOutputs, st_audioBuffer, bufferSize, subdivFrames);
 
         GrainList::iterator saved_itterator = grain_itterator++;
         if (grain.age == 0)

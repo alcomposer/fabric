@@ -33,9 +33,11 @@ public:
     virtual ~GrainPlayer();
     void generate(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t frames);
     GrainPlayerControl controls;
+
 private:
     uint32_t _frames;
     int _nextGrainTime = {0};
     int _bufferSize = {0};
-    void addGrain(int currentFrame);
+    bool addGrain(int currentFrame);
+    void generateSubdivision(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t subdivStart, uint32_t subdivFrames);
 };
