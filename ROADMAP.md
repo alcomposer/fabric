@@ -6,13 +6,9 @@
   - [x] display write head
   - [x] display play head
   - [ ] move write head with mouse (when stopped only?)
-  - [ ] move play head with mouse (at all times)
-  - [ ] show grains as boxes (to show both position, and length)
-  - [x] show spray amount as box
-  - [ ] options for spray:
-    - left of playhead
-    - right of playhead
-    - center of playhead
+  - [ ] move play head with mouse (at all times, relative only - no jumping)
+  - [x] show spray amount visually 
+  - [ ] spray offset amount (-1, 0, 1)
 - [ ] Volume control:
   - [ ] in volume (dry)
   - [ ] out volume (wet)
@@ -25,10 +21,12 @@
   - [x] Density
     - Option to adjust Density in Hz or Beats
     - Possibly have two seperate controls, and allow syncing between to allow ramping effects
-  - [x] Readhead speed
+  - [x] Readhead speed (-5x, 5x)
   - [ ] Readhead sync to writehead (to use Fabric as a set'n'forget effect)
   - [ ] Readhead sync to writehead offset (as above)
-  - [ ] Grain length
+  - [x] Grain length
+  - [ ] Grain spread control (randomises left/right pitch of grains, 0-100%)
+  - [ ] Grain Pitch ()
 - [ ] Grain Envelope controls:
   - [ ] Sides (taken care of with Tukey window function)
   - [ ] Tilt (moving apex left/right)
@@ -46,7 +44,7 @@
 - [ ] Buffer Logic:
   - [ ] Circular buffer with xfade between writehead and readhead
 - [ ] Envelope:
-  - [ ] Grain Envelope with 3 Parameters: Sides, Tilt, Curve
+  - [x] Grain Envelope with 3 Parameters: Sides, Tilt
 - [ ] Volume:
   - [ ] control the output volume based on sqrt of active grains
 - [ ] SinC Interpolation for sub-sample playback? (optional)
