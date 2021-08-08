@@ -19,4 +19,5 @@ public:
     int positionInAudioBuffer;
     int age;
     float sides;
+    float tilt;
 };

@@ -121,7 +121,7 @@ private:
       Parameters.
     */
     bool _recording;
-    float _wet, _dry, _mix;
+    float _dry, _mix;
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.

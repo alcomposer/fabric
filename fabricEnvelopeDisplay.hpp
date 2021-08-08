@@ -30,6 +30,7 @@ class fabricEnvelopeDisplay : public NanoSubWidget
 public:
     explicit fabricEnvelopeDisplay(Widget *widget, Size<uint> size) noexcept;
     void setSidesValue(float value);
+    void setTiltValue(float value);
 protected:
     void onNanoDisplay() override;
     void idleCallback();
@@ -39,6 +40,7 @@ protected:
 private:
     fabricUI * _parent;
     float _sides = {0.0f};
+    float _tilt = {0.0f};
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
 

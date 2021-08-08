@@ -1,8 +1,7 @@
+#include "fabricMaths.hpp"
 #include "Grain.hpp"
 #include <iostream>
 #include <math.h>
-
-#define  PI   3.141592653589793
 
 Grain::Grain() : 
      playing(false)
@@ -25,8 +24,8 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
     for (int framePos = startTimeFrameOffset; framePos < frames && age > 0; ++framePos)
     {
         startTimeFrameOffset = 0;
-        double i = (double)age/length;
-        float window = (cos(fmax(fabs((double)i - 0.5) * (2.0 / sides)  - (1.0 / sides - 1.0), 0.0) * PI) + 1.0) / 2.0;
+        double i = (double)(length-age)/length;
+        float window = FABRICMATHS::tukeyWindow(i, sides, tilt);
         startTimeBuffer = startTimeBuffer % st_audioBufferSize;
 
         outputs[0][subdivStart + framePos] += st_audioBuffer[0][startTimeBuffer] * window;

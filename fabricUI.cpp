@@ -119,20 +119,20 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
-    fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
-    fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
-    fenvelopeDisplay->show();
+    fcontrolTilt = new fabricController(this, knobSizeStandard);
+    fcontrolTilt->setText("Tilt");
+    fcontrolTilt->setId(id_tilt);
+    fcontrolTilt->setCallback(this);
+    fcontrolTilt->setRange(-1.f, 1.f);
+    fcontrolTilt->setAbsolutePos(lazyXPos,400);
+    fcontrolTilt->setBipolar(true);
+    fcontrolTilt->show();
 
     lazyXPos += lazyXposSpacer;
 
-    fcontrolWet = new fabricController(this, knobSizeStandard);
-    fcontrolWet->setText("Wet");
-    fcontrolWet->setId(id_wet);
-    fcontrolWet->setCallback(this);
-    fcontrolWet->setUnit("%");
-    fcontrolWet->setRange(0.f, 100.f);
-    fcontrolWet->setAbsolutePos(lazyXPos,400);
-    fcontrolWet->show();
+    fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
+    fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
+    fenvelopeDisplay->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -181,8 +181,8 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         fenvelopeDisplay->setSidesValue(value);
         fcontrolSides->setValue(value);
         break;
-    case id_wet:
-        fcontrolWet->setValue(value);
+    case id_tilt:
+        fcontrolTilt->setValue(value);
         break;
     case id_dry:
         fcontrolDry->setValue(value);
@@ -234,6 +234,11 @@ void fabricUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
     {
         setParameterValue(id_sides, value);
         fenvelopeDisplay->setSidesValue(value);
+    }
+    if (id == id_tilt)
+    {
+        setParameterValue(id_tilt, value);
+        fenvelopeDisplay->setTiltValue(value);
     }
     setParameterValue(id, value);
 }

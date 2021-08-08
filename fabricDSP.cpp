@@ -22,7 +22,6 @@ START_NAMESPACE_DISTRHO
 fabricDSP::fabricDSP()
     : Plugin(Parameters::TOTAL, 0, 0) // 8 parameters, 0 programs, 0 states
       ,_recording(false)
-      ,_wet(50.f)
       ,_dry(50.f)
       ,_mix(0.f)
       ,fNeedsReset(true)
@@ -153,13 +152,13 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 1.0f;
         parameter.ranges.def = .5f;
         break;
-    case id_wet:
+    case id_tilt:
         parameter.hints = kParameterIsAutomable;
-        parameter.name = "Wet";
-        parameter.symbol = "WET";
-        parameter.ranges.min = 0.0f;    //Percent
-        parameter.ranges.max = 100.0f;
-        parameter.ranges.def = 50.f;
+        parameter.name = "Tilt";
+        parameter.symbol = "TILT";
+        parameter.ranges.min = -1.0f;   //Tilt factor
+        parameter.ranges.max = 1.0f;
+        parameter.ranges.def = 0.f;
         break;
     case id_dry:
         parameter.hints = kParameterIsAutomable;
@@ -201,8 +200,8 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return grainPlayer.controls.spray;
     case id_sides:
         return grainPlayer.controls.sides;
-    case id_wet:
-        return _wet;
+    case id_tilt:
+        return grainPlayer.controls.tilt;
     case id_dry:
         return _dry;
     case id_mix:
@@ -234,8 +233,8 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     case id_sides:
         grainPlayer.controls.sides = value;
         break;
-    case id_wet:
-        _wet = value;
+    case id_tilt:
+        grainPlayer.controls.tilt = value;
         break;
     case id_dry:
         _dry = value;
