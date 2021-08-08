@@ -6,7 +6,7 @@ add_subdirectory(DPF)
 find_package(Boost REQUIRED)
 
 set(fabric_TARGETS vst2 lv2)
-if(LINUX)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   list(APPEND fabric_TARGETS jack)
 endif()
 
