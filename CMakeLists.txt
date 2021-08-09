@@ -5,6 +5,10 @@ project(fabric)
 add_subdirectory(DPF)
 find_package(Boost REQUIRED)
 
+if(MSVC)
+  add_definitions(-D_USE_MATH_DEFINES=1)
+endif()
+
 set(fabric_TARGETS vst2 lv2)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   list(APPEND fabric_TARGETS jack)
