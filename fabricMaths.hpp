@@ -9,8 +9,6 @@
 
 namespace fabricMaths {
 
-#define  PI   3.141592653589793
-
 inline __m128 absPS(__m128 x)
 {
      float mask;
@@ -50,8 +48,8 @@ inline float approxCosine(float x)
 // Calculate a Tukey window with tilt implemented as a timewarp of time
 inline float tukeyWindow(float x, float sides, float tilt)
 {   
-    float timeWarp = tilt < 0? pow(x, 1 + tilt) : pow(1 - x, 1 - tilt);
-    return (approxCosine(fmax(fabs(timeWarp - 0.5f) * (2.0f / sides)  - (1.0f / sides - 1.0f), 0.0f) * PI) + 1.0f) * 0.5f; 
+    float timeWarp = tilt < 0? std::pow(x, 1 + tilt) : std::pow(1 - x, 1 - tilt);
+    return (approxCosine(std::fmax(std::fabs(timeWarp - 0.5f) * (2.0f / sides)  - (1.0f / sides - 1.0f), 0.0f) * (float)M_PI) + 1.0f) * 0.5f; 
 }
 
 }
