@@ -25,7 +25,7 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
     {
         startTimeFrameOffset = 0;
         double i = (double)(length-age)/length;
-        float window = FABRICMATHS::tukeyWindow(i, sides, tilt);
+        float window = fabricMaths::tukeyWindow(i, sides, tilt);
         startTimeBuffer = startTimeBuffer % st_audioBufferSize;
 
         outputs[0][subdivStart + framePos] += st_audioBuffer[0][startTimeBuffer] * window;

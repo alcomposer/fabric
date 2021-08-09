@@ -63,7 +63,7 @@ void fabricEnvelopeDisplay::onNanoDisplay()
     {
         //Tukey Window        
         float fIndex = (float)i / points;
-        float windowY = FABRICMATHS::tukeyWindow(fIndex, _sides, _tilt);
+        float windowY = fabricMaths::tukeyWindow(fIndex, _sides, _tilt);
         
         //add padding to left right and top as the stroke is 2px
         lineTo(1 + (fIndex * (width-2)), height - 1 - windowY * (height - 2.0));
