@@ -23,7 +23,7 @@ Grain::~Grain()
 void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int subdivStart, int frames)
 {
     //copy the data from member variable, to local variable to improve performance
-    int startTimeBuffer = this->m_startTimeBuffer;
+    int startTimeBuffer = m_startTimeBuffer;
 
     float *leftOutput = outputs[0] + subdivStart;
     float *rightOutput = outputs[1] + subdivStart;
@@ -54,6 +54,6 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
 
         startTimeBuffer++;
     }
-    this->m_startTimeBuffer = startTimeBuffer;
+    m_startTimeBuffer = startTimeBuffer;
     age -= frames;
 }
