@@ -39,7 +39,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.startTimeFrameOffset = currentFrame;
     grain.length               = (int)(controls.length/1000 * controls.sampleRate);
     grain.age                  = grain.length; 
-    grain.startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
+    grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
     grain.sides                = controls.sides;
     grain.tilt                 = controls.tilt;
     
