@@ -51,7 +51,7 @@ inline float approxCosine(float x)
 inline float tukeyWindow(float x, float sides, float tilt)
 {   
     float timeWarp = tilt < 0? pow(x, 1 + tilt) : pow(1 - x, 1 - tilt);
-    return (approxCosine(fmax(fabs(timeWarp - 0.5) * (2.0 / sides)  - (1.0 / sides - 1.0), 0.0) * PI) + 1.0) * 0.5; 
+    return (approxCosine(fmax(fabs(timeWarp - 0.5f) * (2.0f / sides)  - (1.0f / sides - 1.0f), 0.0f) * PI) + 1.0f) * 0.5f; 
 }
 
 }
