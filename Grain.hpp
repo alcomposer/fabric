@@ -20,5 +20,5 @@ public:
     float m_age;
     float m_sides;
     float m_tilt;
-    float m_speed;
+    float m_pitch;
 };

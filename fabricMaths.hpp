@@ -33,7 +33,7 @@ inline __m128 approxCosinePS(__m128 x)
                           _mm_set1_ps(float(M_PI / 2)), _mm_set1_ps(float(-3 * M_PI / 2)));
     return approxSinePS(xx);
 }
-// Fast lerp
+//Lerp
 inline float lerp(float a, float b, float fraction)
 {
     return a + fraction * (b - a);
@@ -53,7 +53,7 @@ inline float approxCosine(float x)
 // Calculate a Tukey window with tilt implemented as a timewarp of time
 inline float tukeyWindow(float x, float sides, float tilt)
 {   
-    float timeWarp = tilt < 0? std::pow(x, 1 + tilt) : std::pow(1 - x, 1 - tilt);
+    float timeWarp = tilt < 0? std::pow(x, 1.f + tilt) : std::pow(1.f - x, 1.f - tilt);
     return (approxCosine(std::fmax(std::fabs(timeWarp - 0.5f) * (2.0f / sides)  - (1.0f / sides - 1.0f), 0.0f) * (float)M_PI) + 1.0f) * 0.5f; 
 }
 

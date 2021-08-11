@@ -164,7 +164,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Pitch";
         parameter.symbol = "PITCH";
-        parameter.ranges.min = 0.1f;    //Percent
+        parameter.ranges.min = 0.1f;   //FIXME (alex) temp speed factor for testing
         parameter.ranges.max = 10.0f;
         parameter.ranges.def = 1.f;
         break;

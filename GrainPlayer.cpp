@@ -40,9 +40,9 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
     grain.m_sides                = controls.sides;
     grain.m_tilt                 = controls.tilt;
-    grain.m_speed                = controls.pitch;
-    grain.m_length               = (controls.length/1000.f * controls.sampleRate);
-    grain.m_age                  = grain.m_length; 
+    grain.m_pitch                = controls.pitch;
+    grain.m_age                  = (controls.length/1000.f * controls.sampleRate);
+    grain.m_length               = grain.m_age; 
     
     slot = grain;
     return true;
