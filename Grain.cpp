@@ -46,23 +46,23 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
 
     for (int framePos = 0; framePos < frames; ++framePos)
     {
+        startTimeBuffer = fmod(startTimeBuffer, (float)st_audioBufferSize);
+        
         float i = (m_length - m_age) / m_length;
         float window = fabricMaths::tukeyWindow(i, m_sides, m_tilt);
 
         // lerp for accessing the stereo audio buffer
         int startTimeBufferLerp = ((int)std::floor(startTimeBuffer + 1)) % st_audioBufferSize;
         float fraction = startTimeBuffer - (int)startTimeBuffer;
-        
-        float left = fabricMaths::lerp(leftBuffer[(int)startTimeBuffer % st_audioBufferSize], leftBuffer[startTimeBufferLerp], fraction);
-        float right = fabricMaths::lerp(rightBuffer[(int)startTimeBuffer % st_audioBufferSize], rightBuffer[startTimeBufferLerp], fraction);
+
+        float left = fabricMaths::lerp(leftBuffer[(int)startTimeBuffer], leftBuffer[startTimeBufferLerp], fraction);
+        float right = fabricMaths::lerp(rightBuffer[(int)startTimeBuffer], rightBuffer[startTimeBufferLerp], fraction);
 
         leftOutput[framePos]  += left  * window;
         rightOutput[framePos] += right * window;
 
-        startTimeBuffer += m_speed;
-        startTimeBuffer > st_audioBufferSize ? st_audioBufferSize : startTimeBuffer;
-        startTimeBuffer < 0 ? 0 : startTimeBuffer;
         m_age -= m_speed;
+        startTimeBuffer += m_speed;
     }
     m_startTimeBuffer = startTimeBuffer;
 }

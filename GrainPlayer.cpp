@@ -107,9 +107,9 @@ void GrainPlayer::generateSubdivision(float** outputs, float** st_audioBuffer, i
         grain.process(outputs, st_audioBuffer, bufferSize, subdivStart, subdivFrames);
 
         GrainList::iterator saved_itterator = grain_itterator++;
-        if (grain.age <= 0)
+        if (grain.m_age <= 0)
         {
-            grain.playing = false;
+            grain.m_playing = false;
             grains_used.erase(saved_itterator);
             grains_free.push_back(grain);
         }
