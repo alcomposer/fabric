@@ -113,9 +113,10 @@ fabricUI::fabricUI()
     fcontrolPitch->setText("Pitch");
     fcontrolPitch->setId(id_pitch);
     fcontrolPitch->setCallback(this);    
-    fcontrolPitch->setUnit("%");
-    fcontrolPitch->setRange(0.1f, 10.f);
+    fcontrolPitch->setUnit("Oct");
+    fcontrolPitch->setRange(-2.f, 2.f);
     fcontrolPitch->setAbsolutePos(lazyXPos,400);
+    fcontrolPitch->setBipolar(true);
     fcontrolPitch->show();
 
     lazyXPos += lazyXposSpacer;

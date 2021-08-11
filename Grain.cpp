@@ -46,9 +46,6 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
 
     for (int framePos = 0; framePos < frames; ++framePos)
     {
-        //FIXME (alex) age is float, so we need to process the frames when age goes negative inside this frame buffer cycle
-        m_age = m_age < 0 ? 0 : m_age; 
-
         startTimeBuffer = fmod(startTimeBuffer, (float)st_audioBufferSize);
         
         float i = (m_length - m_age) / m_length;
@@ -61,11 +58,13 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         float left = fabricMaths::lerp(leftBuffer[(int)startTimeBuffer], leftBuffer[startTimeBufferLerp], fraction);
         float right = fabricMaths::lerp(rightBuffer[(int)startTimeBuffer], rightBuffer[startTimeBufferLerp], fraction);
 
-        leftOutput[framePos]  += left * window ;
+        leftOutput[framePos]  += left * window;
         rightOutput[framePos] += right * window;
 
         m_age -= m_pitch;
         startTimeBuffer += m_pitch;
+
+        if (m_age <= 0) break; // FIXME not the greatest idea to have this?
     }
     m_startTimeBuffer = startTimeBuffer;
 }
