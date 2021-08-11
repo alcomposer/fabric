@@ -9,7 +9,7 @@ enum Parameters
     id_spray,
     id_sides,
     id_tilt,
-    id_dry,
+    id_pitch,
     id_mix,
     TOTAL
 };

@@ -80,7 +80,7 @@ fabricUI::fabricUI()
     fcontrolDensity->setText("Density");
     fcontrolDensity->setId(id_density);
     fcontrolDensity->setCallback(this);
-    fcontrolDensity->setRange(0.01f, 1000.f);
+    fcontrolDensity->setRange(0.1f, 500.f);
     fcontrolDensity->setUnit("Hz");
     fcontrolDensity->setAbsolutePos(lazyXPos,400);
     fcontrolDensity->show();
@@ -109,6 +109,17 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
+    fcontrolPitch = new fabricController(this, knobSizeStandard);
+    fcontrolPitch->setText("Pitch");
+    fcontrolPitch->setId(id_pitch);
+    fcontrolPitch->setCallback(this);    
+    fcontrolPitch->setUnit("%");
+    fcontrolPitch->setRange(0.1f, 10.f);
+    fcontrolPitch->setAbsolutePos(lazyXPos,400);
+    fcontrolPitch->show();
+
+    lazyXPos += lazyXposSpacer;
+
     fcontrolSides = new fabricController(this, knobSizeStandard);
     fcontrolSides->setText("Sides");
     fcontrolSides->setId(id_sides);
@@ -133,17 +144,6 @@ fabricUI::fabricUI()
     fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
     fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
     fenvelopeDisplay->show();
-
-    lazyXPos += lazyXposSpacer;
-
-    fcontrolDry = new fabricController(this, knobSizeStandard);
-    fcontrolDry->setText("Dry");
-    fcontrolDry->setId(id_dry);
-    fcontrolDry->setCallback(this);    
-    fcontrolDry->setUnit("%");
-    fcontrolDry->setRange(0.f, 100.f);
-    fcontrolDry->setAbsolutePos(lazyXPos,400);
-    fcontrolDry->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -184,8 +184,8 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_tilt:
         fcontrolTilt->setValue(value);
         break;
-    case id_dry:
-        fcontrolDry->setValue(value);
+    case id_pitch:
+        fcontrolPitch->setValue(value);
         break;
     case id_mix:
         fcontrolMix->setValue(value);
@@ -205,7 +205,6 @@ void fabricUI::onNanoDisplay()
     rect(0.0f, 0.0f, getWidth(), getHeight());
     fillColor(k_grey);
     fill();
-    closePath();
 }
 
 bool fabricUI::onMouse(const MouseEvent &ev)

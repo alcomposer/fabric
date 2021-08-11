@@ -18,6 +18,7 @@ struct GrainPlayerControl
     float tilt = 0.f;
     float playHeadPos = 0.f;
     float sampleRate = 44100.f;
+    float pitch = 1.f;
 };
 
 class GrainPlayer

@@ -33,6 +33,11 @@ inline __m128 approxCosinePS(__m128 x)
                           _mm_set1_ps(float(M_PI / 2)), _mm_set1_ps(float(-3 * M_PI / 2)));
     return approxSinePS(xx);
 }
+// Fast lerp
+inline float lerp(float a, float b, float fraction)
+{
+    return a + fraction * (b - a);
+}
 // Calculate a rough approximation of sine, valid in +-pi
 inline float approxSine(float x)
 {

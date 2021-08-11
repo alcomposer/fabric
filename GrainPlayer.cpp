@@ -35,13 +35,14 @@ bool GrainPlayer::addGrain(int currentFrame)
 
     float calcSpray = controls.spray / 1000.f * controls.sampleRate;
     
-    grain.playing              = true;
-    grain.startTimeFrameOffset = currentFrame;
-    grain.length               = (int)(controls.length/1000 * controls.sampleRate);
-    grain.age                  = grain.length; 
+    grain.m_playing              = true;
+    grain.m_startTimeFrameOffset = currentFrame;
     grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
-    grain.sides                = controls.sides;
-    grain.tilt                 = controls.tilt;
+    grain.m_sides                = controls.sides;
+    grain.m_tilt                 = controls.tilt;
+    grain.m_speed                = controls.pitch;
+    grain.m_length               = (controls.length/1000.f * controls.sampleRate);
+    grain.m_age                  = grain.m_length; 
     
     slot = grain;
     return true;
@@ -106,7 +107,7 @@ void GrainPlayer::generateSubdivision(float** outputs, float** st_audioBuffer, i
         grain.process(outputs, st_audioBuffer, bufferSize, subdivStart, subdivFrames);
 
         GrainList::iterator saved_itterator = grain_itterator++;
-        if (grain.age == 0)
+        if (grain.age <= 0)
         {
             grain.playing = false;
             grains_used.erase(saved_itterator);

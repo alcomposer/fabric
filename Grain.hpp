@@ -12,12 +12,13 @@ public:
     ~Grain();
     void process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int subdivStart, int frames);
     
-    bool playing;
-    int startTimeFrameOffset;
-    int length;
-    int m_startTimeBuffer;
-    int positionInAudioBuffer;
-    int age;
-    float sides;
-    float tilt;
+    bool  m_playing;
+    int   m_startTimeFrameOffset;
+    float m_length;
+    float m_startTimeBuffer;
+    int   m_positionInAudioBuffer;
+    float m_age;
+    float m_sides;
+    float m_tilt;
+    float m_speed;
 };
