@@ -41,15 +41,16 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
     frames -= m_startTimeFrameOffset;
     m_startTimeFrameOffset = 0;
     
-    //do not output past the grain's lifetime
-    frames = std::min(frames, (int)std::ceil(m_age));
+    //do not output past the grain's lifetime - we need to calculate the frames that m_age takes up
+    //because we are also playing the grains back at speed depending on m_pitch
+    frames = std::min(frames, (int)std::ceil(m_age / m_pitch));
 
     for (int framePos = 0; framePos < frames; ++framePos)
     {
         startTimeBuffer = fmod(startTimeBuffer, (float)st_audioBufferSize);
         
-        float i = (m_length - m_age) / m_length;
-        float window = fabricMaths::tukeyWindow(i, m_sides, m_tilt);
+        float fIndexGrain = (m_length - m_age) / m_length;
+        float window = fabricMaths::tukeyWindow(fIndexGrain, m_sides, m_tilt);
 
         // lerp for accessing the stereo audio buffer
         int startTimeBufferLerp = ((int)startTimeBuffer + 1) % st_audioBufferSize;
@@ -61,10 +62,14 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         leftOutput[framePos]  += left * window;
         rightOutput[framePos] += right * window;
 
+       /*
+       FIXME (alex) Should we factor out decrementing m_age inside the loop?
+                    We only need the m_age inside the loop to get the float index (0-1) 
+                    for the window function.
+                    Possibly do something like: fIndexGrain = (m_length - (m_age - (framePos / m_pitch))) / m_length 
+       */
         m_age -= m_pitch;
         startTimeBuffer += m_pitch;
-
-        if (m_age <= 0) break; // FIXME not the greatest idea to have this?
     }
     m_startTimeBuffer = startTimeBuffer;
 }

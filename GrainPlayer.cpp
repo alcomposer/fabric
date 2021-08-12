@@ -88,7 +88,7 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
         if (controls.playHeadPos > bufferSize)
             controls.playHeadPos = 0;
         if (controls.playHeadPos < 0)
-            controls.playHeadPos = bufferSize;
+            controls.playHeadPos = bufferSize - 1;
     }
 
     //Synth the remaining frames
