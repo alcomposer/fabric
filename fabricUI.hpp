@@ -63,10 +63,6 @@ protected:
     bool onMouse(const MouseEvent &ev) override;
 
 private:
-    /**
-        Meter values.
-        These are the parameter outputs from the DSP side.
-    */
     float fOutLeft, fOutRight;
 
     Size<uint> waveformDisplaySize;
@@ -92,11 +88,7 @@ private:
     void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
     void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
     void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
-
-    //void updateColor(const int color);
-    /**
-        Set our UI class as non-copyable and add a leak detector just in case.
-    */
+    
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(fabricUI);
 };
 
