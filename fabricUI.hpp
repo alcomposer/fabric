@@ -83,9 +83,9 @@ private:
     ScopedPointer<fabricController> fcontrolDensity;
     ScopedPointer<fabricController> fcontrolLength;
     ScopedPointer<fabricController> fcontrolSpray;
+    ScopedPointer<fabricController> fcontrolPitch;
     ScopedPointer<fabricController> fcontrolSides;
-    ScopedPointer<fabricController> fcontrolWet;
-    ScopedPointer<fabricController> fcontrolDry;
+    ScopedPointer<fabricController> fcontrolTilt;
     ScopedPointer<fabricController> fcontrolMix;
     
     /**

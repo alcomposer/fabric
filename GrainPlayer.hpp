@@ -14,9 +14,11 @@ struct GrainPlayerControl
     float density = 0.01f;
     float length = 0.01f;
     float spray = 0.01f;
-    float sides;
+    float sides = 0.5f;
+    float tilt = 0.f;
     float playHeadPos = 0.f;
     float sampleRate = 44100.f;
+    float pitch = 1.f;
 };
 
 class GrainPlayer

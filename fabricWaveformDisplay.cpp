@@ -141,8 +141,8 @@ void fabricWaveformDisplay::onNanoDisplay()
     strokeColor(blue_transparent); //change to an enum
     strokeWidth(2.0f);
     for (int i = 0; i < 128; i++){
-        if (_parent->_plugin->grainPlayer.grainArray[i].playing == true){
-            float grainPos = (float)_parent->_plugin->grainPlayer.grainArray[i].startTimeBuffer / (float)(_parent->getSampleRate()*10) * display_right;//FIXME (alex) don't calcuate the buffer time, use a define
+        if (_parent->_plugin->grainPlayer.grainArray[i].m_playing == true){
+            float grainPos = (float)_parent->_plugin->grainPlayer.grainArray[i].m_startTimeBuffer / (float)(_parent->getSampleRate()*10) * display_right;//FIXME (alex) don't calcuate the buffer time, use a define
             //std::cout << "drawing grain at: " << (float)plugin->grainPlayer.grain_array[i].start_position << std::endl;
             moveTo(grainPos, display_top); //- 25);
             lineTo(grainPos, display_bottom); //+ 25);
