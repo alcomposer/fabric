@@ -179,10 +179,11 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         fcontrolSpray->setValue(value);
         break;
     case id_sides:
-        fenvelopeDisplay->setSidesValue(value);
+        fenvelopeDisplay->setSidesValue(value); // FIXME (alex) should we be doing this here?
         fcontrolSides->setValue(value);
         break;
     case id_tilt:
+        fenvelopeDisplay->setTiltValue(value);  // FIXME (alex) should we be doing this here?
         fcontrolTilt->setValue(value);
         break;
     case id_pitch:
