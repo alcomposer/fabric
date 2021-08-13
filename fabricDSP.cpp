@@ -116,8 +116,8 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Speed";
         parameter.symbol = "SPEED";
-        parameter.ranges.min = -2.0f;
-        parameter.ranges.max = 2.0f;
+        parameter.ranges.min = -5.0f;
+        parameter.ranges.max = 5.0f;
         parameter.ranges.def = 1.0f;
         break;
     case id_density:

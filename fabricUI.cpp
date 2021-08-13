@@ -69,7 +69,7 @@ fabricUI::fabricUI()
     fcontrolSpeed->setId(id_speed);
     fcontrolSpeed->setCallback(this);
     fcontrolSpeed->setBipolar(true);
-    fcontrolSpeed->setRange(-2.0f, 2.0f);
+    fcontrolSpeed->setRange(-5.0f, 5.0f);
     fcontrolSpeed->setUnit("x");
     fcontrolSpeed->setAbsolutePos(lazyXPos,400);
     fcontrolSpeed->show();
