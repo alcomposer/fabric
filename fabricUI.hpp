@@ -87,15 +87,6 @@ private:
     ScopedPointer<fabricController> fcontrolSides;
     ScopedPointer<fabricController> fcontrolTilt;
     ScopedPointer<fabricController> fcontrolMix;
-    
-    /**
-        Color and its matching parameter value.
-    */
-    Color fColor;
-    int fColorValue;
-    /**
-        Update color if needed.
-    */
 
     void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
     void nanoKnobDragFinished(NanoKnob *nanoKnob) override;

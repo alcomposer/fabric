@@ -35,11 +35,6 @@ fabricUI::fabricUI()
     : UI(850, 500)
       ,knobSizeStandard(50,50)
       ,waveformDisplaySize(850, 300)
-      // default color is green
-      ,fColor(93, 231, 61)
-      // which is value 0
-      ,fColorValue(0)
-      // init meter values to 0
       ,fOutLeft(0.0f)
       ,fOutRight(0.0f)
 {
