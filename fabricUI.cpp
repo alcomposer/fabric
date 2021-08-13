@@ -206,7 +206,7 @@ void fabricUI::onNanoDisplay()
 
 bool fabricUI::onMouse(const MouseEvent &ev)
 {
-    return false; // set false to allow the mouse event to propogate to child widgets
+    return false; // set false to allow the mouse event to propagate to child widgets
 }
 
 void fabricUI::nanoKnobDragStarted(NanoKnob *nanoKnob)
