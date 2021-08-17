@@ -67,8 +67,6 @@ private:
 
     Size<uint> waveformDisplaySize;
 
-    Size<uint> knobSizeStandard;
-
     ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
 
     ScopedPointer<fabricEnvelopeDisplay> fenvelopeDisplay;

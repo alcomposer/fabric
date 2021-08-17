@@ -33,7 +33,6 @@ static const float kSmoothMultiplier = 3.0f;
 
 fabricUI::fabricUI()
     : UI(850, 500)
-      ,knobSizeStandard(50,50)
       ,waveformDisplaySize(850, 300)
       ,fOutLeft(0.0f)
       ,fOutRight(0.0f)
@@ -42,6 +41,7 @@ fabricUI::fabricUI()
 
     setGeometryConstraints(850, 500);
 
+    Size<uint> knobSizeStandard(50,50);
     int lazyXPos = 20;
     int lazyXposSpacer = 85;
 
@@ -50,7 +50,7 @@ fabricUI::fabricUI()
     fwaveformDisplay->setAbsolutePos(0,60);
     fwaveformDisplay->show();
 
-    frecButton = new fabricButton(this, Size<uint>(50,50));
+    frecButton = new fabricButton(this, knobSizeStandard);
     frecButton->setAbsolutePos(lazyXPos,400);
     frecButton->setText("Rec");
     frecButton->setId(id_rec);
