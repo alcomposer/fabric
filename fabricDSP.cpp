@@ -112,7 +112,7 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
             values[1].value = REC_ON;
         }
         break;
-    case id_speed:
+    case id_scan:
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Speed";
         parameter.symbol = "SPEED";
@@ -190,7 +190,7 @@ float fabricDSP::getParameterValue(uint32_t index) const
     {
     case id_rec:
         return _recording;
-    case id_speed:
+    case id_scan:
         return grainPlayer.controls.speed;
     case id_density:
         return grainPlayer.controls.density;
@@ -218,7 +218,7 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     case id_rec:
         _recording = value;
         break;
-    case id_speed:
+    case id_scan:
         grainPlayer.controls.speed = value;
         break;
     case id_density:

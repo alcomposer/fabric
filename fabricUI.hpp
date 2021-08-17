@@ -73,11 +73,15 @@ private:
 
     ScopedPointer<fabricButton> frecButton;
     
-    ScopedPointer<fabricController> fcontrolSpeed;
+    ScopedPointer<fabricController> fcontrolScan;
     ScopedPointer<fabricController> fcontrolDensity;
     ScopedPointer<fabricController> fcontrolLength;
+    ScopedPointer<fabricController> fcontrolDirection;
     ScopedPointer<fabricController> fcontrolSpray;
     ScopedPointer<fabricController> fcontrolPitch;
+    ScopedPointer<fabricController> fcontrolPitchSpray;
+    ScopedPointer<fabricController> fcontrolPanWidth;
+    ScopedPointer<fabricController> fcontrolPanSpray;        
     ScopedPointer<fabricController> fcontrolSides;
     ScopedPointer<fabricController> fcontrolTilt;
     ScopedPointer<fabricController> fcontrolMix;

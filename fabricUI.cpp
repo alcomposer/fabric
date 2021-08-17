@@ -33,15 +33,17 @@ static const float kSmoothMultiplier = 3.0f;
 
 fabricUI::fabricUI()
     : UI(850, 500)
-      ,waveformDisplaySize(850, 300)
+      ,waveformDisplaySize(850, 250)
       ,fOutLeft(0.0f)
       ,fOutRight(0.0f)
 {
     _plugin = static_cast<fabricDSP *>(getPluginInstancePointer());
 
-    setGeometryConstraints(850, 500);
+    setGeometryConstraints(850, 510);
 
     Size<uint> knobSizeStandard(50,50);
+    int lazyYPosRow1 = 340;
+    int lazyYPosRow2 = 430;
     int lazyXPos = 20;
     int lazyXposSpacer = 85;
 
@@ -51,7 +53,7 @@ fabricUI::fabricUI()
     fwaveformDisplay->show();
 
     frecButton = new fabricButton(this, knobSizeStandard);
-    frecButton->setAbsolutePos(lazyXPos,400);
+    frecButton->setAbsolutePos(lazyXPos,lazyYPosRow1);
     frecButton->setText("Rec");
     frecButton->setId(id_rec);
     frecButton->setCallback(this);
@@ -59,15 +61,24 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
-    fcontrolSpeed = new fabricController(this, knobSizeStandard);
-    fcontrolSpeed->setText("Speed");
-    fcontrolSpeed->setId(id_speed);
-    fcontrolSpeed->setCallback(this);
-    fcontrolSpeed->setBipolar(true);
-    fcontrolSpeed->setRange(-5.0f, 5.0f);
-    fcontrolSpeed->setUnit("x");
-    fcontrolSpeed->setAbsolutePos(lazyXPos,400);
-    fcontrolSpeed->show();
+    fcontrolScan = new fabricController(this, knobSizeStandard);
+    fcontrolScan->setText("Scan");
+    fcontrolScan->setId(id_scan);
+    fcontrolScan->setCallback(this);
+    fcontrolScan->setBipolar(true);
+    fcontrolScan->setRange(-5.0f, 5.0f);
+    fcontrolScan->setUnit("x");
+    fcontrolScan->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolScan->show();
+
+    fcontrolSpray = new fabricController(this, knobSizeStandard);
+    fcontrolSpray->setText("Spray");
+    fcontrolSpray->setId(id_spray);
+    fcontrolSpray->setCallback(this);
+    fcontrolSpray->setUnit("ms");
+    fcontrolSpray->setRange(0.f, 10000.f);
+    fcontrolSpray->setAbsolutePos(lazyXPos,lazyYPosRow2);
+    fcontrolSpray->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -77,7 +88,7 @@ fabricUI::fabricUI()
     fcontrolDensity->setCallback(this);
     fcontrolDensity->setRange(0.1f, 500.f);
     fcontrolDensity->setUnit("Hz");
-    fcontrolDensity->setAbsolutePos(lazyXPos,400);
+    fcontrolDensity->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolDensity->show();
 
     lazyXPos += lazyXposSpacer;
@@ -88,19 +99,19 @@ fabricUI::fabricUI()
     fcontrolLength->setCallback(this);
     fcontrolLength->setUnit("ms");    
     fcontrolLength->setRange(0.f, 10000.f);
-    fcontrolLength->setAbsolutePos(lazyXPos,400);
+    fcontrolLength->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolLength->show();
 
     lazyXPos += lazyXposSpacer;
 
-    fcontrolSpray = new fabricController(this, knobSizeStandard);
-    fcontrolSpray->setText("Spray");
-    fcontrolSpray->setId(id_spray);
-    fcontrolSpray->setCallback(this);
-    fcontrolSpray->setUnit("ms");
-    fcontrolSpray->setRange(0.f, 10000.f);
-    fcontrolSpray->setAbsolutePos(lazyXPos,400);
-    fcontrolSpray->show();
+    fcontrolDirection = new fabricController(this, knobSizeStandard);
+    fcontrolDirection->setText("Dir.");
+    fcontrolDirection->setId(id_direction);
+    fcontrolDirection->setCallback(this);    
+    fcontrolDirection->setRange(-1.f, 1.f);
+    fcontrolDirection->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolDirection->setBipolar(true);
+    fcontrolDirection->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -110,9 +121,35 @@ fabricUI::fabricUI()
     fcontrolPitch->setCallback(this);    
     fcontrolPitch->setUnit("Oct");
     fcontrolPitch->setRange(-2.f, 2.f);
-    fcontrolPitch->setAbsolutePos(lazyXPos,400);
+    fcontrolPitch->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolPitch->setBipolar(true);
     fcontrolPitch->show();
+
+    fcontrolPitchSpray = new fabricController(this, knobSizeStandard);
+    fcontrolPitchSpray->setText("Pitch Spray");
+    fcontrolPitchSpray->setId(id_pitch_spray);
+    fcontrolPitchSpray->setCallback(this);    
+    fcontrolPitchSpray->setRange(0.f, 1.f);
+    fcontrolPitchSpray->setAbsolutePos(lazyXPos,lazyYPosRow2);
+    fcontrolPitchSpray->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolPanWidth = new fabricController(this, knobSizeStandard);
+    fcontrolPanWidth->setText("Pan Width");
+    fcontrolPanWidth->setId(id_pan_width);
+    fcontrolPanWidth->setCallback(this);    
+    fcontrolPanWidth->setRange(-0.f, 1.f);
+    fcontrolPanWidth->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolPanWidth->show();
+
+    fcontrolPanSpray = new fabricController(this, knobSizeStandard);
+    fcontrolPanSpray->setText("Pan Spray");
+    fcontrolPanSpray->setId(id_pan_spray);
+    fcontrolPanSpray->setCallback(this);    
+    fcontrolPanSpray->setRange(-0.f, 1.f);
+    fcontrolPanSpray->setAbsolutePos(lazyXPos,lazyYPosRow2);
+    fcontrolPanSpray->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -121,8 +158,12 @@ fabricUI::fabricUI()
     fcontrolSides->setId(id_sides);
     fcontrolSides->setRange(0.f, 1.f);
     fcontrolSides->setCallback(this);
-    fcontrolSides->setAbsolutePos(lazyXPos,400);
+    fcontrolSides->setAbsolutePos(lazyXPos,lazyYPosRow2);
     fcontrolSides->show();
+
+    fenvelopeDisplay = new fabricEnvelopeDisplay(this, Size<uint>(50+lazyXposSpacer,50));
+    fenvelopeDisplay->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fenvelopeDisplay->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -131,15 +172,9 @@ fabricUI::fabricUI()
     fcontrolTilt->setId(id_tilt);
     fcontrolTilt->setCallback(this);
     fcontrolTilt->setRange(-1.f, 1.f);
-    fcontrolTilt->setAbsolutePos(lazyXPos,400);
+    fcontrolTilt->setAbsolutePos(lazyXPos,lazyYPosRow2);
     fcontrolTilt->setBipolar(true);
     fcontrolTilt->show();
-
-    lazyXPos += lazyXposSpacer;
-
-    fenvelopeDisplay = new fabricEnvelopeDisplay(this, knobSizeStandard);
-    fenvelopeDisplay->setAbsolutePos(lazyXPos,400);
-    fenvelopeDisplay->show();
 
     lazyXPos += lazyXposSpacer;
 
@@ -148,7 +183,7 @@ fabricUI::fabricUI()
     fcontrolMix->setId(id_mix);
     fcontrolMix->setCallback(this);
     fcontrolMix->setRange(-100.f, 100.f);
-    fcontrolMix->setAbsolutePos(lazyXPos,400);
+    fcontrolMix->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolMix->setBipolar(true);
     fcontrolMix->show();
 }
@@ -161,8 +196,8 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_rec:
         frecButton->setDown(value);
         break;
-    case id_speed:
-        fcontrolSpeed->setValue(value);
+    case id_scan:
+        fcontrolScan->setValue(value);
         break;
     case id_density:
         fcontrolDensity->setValue(value);
@@ -197,7 +232,7 @@ void fabricUI::stateChanged(const char *, const char *)
 void fabricUI::onNanoDisplay()
 {    
     //draw grey window background
-    static const Color k_grey(99, 99, 99);
+    static const Color k_grey(90, 90, 90);
     beginPath();
     rect(0.0f, 0.0f, getWidth(), getHeight());
     fillColor(k_grey);
