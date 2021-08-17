@@ -1,5 +1,4 @@
 #include "GrainPlayer.hpp"
-#include <random>
 #include <iostream>
 
 inline int modulo(int a, int b) {
@@ -8,7 +7,8 @@ inline int modulo(int a, int b) {
     return result >= 0 ? result : result + b;
 }
 
-GrainPlayer::GrainPlayer()
+GrainPlayer::GrainPlayer() :
+     m_fRandomNormalized(.0f, 1.0f)
 {
     for (Grain &grain : grainArray)
     {
@@ -37,7 +37,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     
     grain.m_playing              = true;
     grain.m_startTimeFrameOffset = currentFrame;
-    grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + ((float)(std::rand() % 100000)/100000) * calcSpray), _bufferSize); 
+    grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + m_fRandomNormalized(m_seed) * calcSpray), _bufferSize); 
     grain.m_sides                = controls.sides;
     grain.m_tilt                 = controls.tilt;
     grain.m_pitch                = std::pow(2.f, controls.pitch);

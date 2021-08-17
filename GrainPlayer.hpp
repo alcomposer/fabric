@@ -5,6 +5,7 @@
 #include <boost/intrusive/list.hpp>
 
 #include "Grain.hpp"
+#include "fabricMaths.hpp"
 
 #define MAX_GRAINS 128
 
@@ -42,4 +43,7 @@ private:
     int _bufferSize = {0};
     bool addGrain(int currentFrame);
     void generateSubdivision(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t subdivStart, uint32_t subdivFrames);
+    
+    fabricMaths::fast_rand m_seed;
+    fabricMaths::fast_real_distribution<float> m_fRandomNormalized;
 };
