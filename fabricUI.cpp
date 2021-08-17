@@ -199,14 +199,29 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_scan:
         fcontrolScan->setValue(value);
         break;
+    case id_spray:
+        fcontrolSpray->setValue(value);
+        break;
     case id_density:
         fcontrolDensity->setValue(value);
         break;
     case id_length:
         fcontrolLength->setValue(value);
         break;
-    case id_spray:
-        fcontrolSpray->setValue(value);
+    case id_direction:
+        fcontrolDirection->setValue(value);
+        break;
+    case id_pitch:
+        fcontrolPitch->setValue(value);
+        break;
+    case id_pitch_spray:
+        fcontrolPitchSpray->setValue(value);
+        break;
+    case id_pan_width:
+        fcontrolPanWidth->setValue(value);
+        break;
+    case id_pan_spray:
+        fcontrolPanSpray->setValue(value);
         break;
     case id_sides:
         fenvelopeDisplay->setSidesValue(value); // FIXME (alex) should we be doing this here?
@@ -215,9 +230,6 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_tilt:
         fenvelopeDisplay->setTiltValue(value);  // FIXME (alex) should we be doing this here?
         fcontrolTilt->setValue(value);
-        break;
-    case id_pitch:
-        fcontrolPitch->setValue(value);
         break;
     case id_mix:
         fcontrolMix->setValue(value);

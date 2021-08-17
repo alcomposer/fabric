@@ -112,39 +112,47 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
             values[1].value = REC_ON;
         }
         break;
-    case id_scan:
+    case id_scan:  //Scanning speed / direction of the playhead
         parameter.hints = kParameterIsAutomable;
-        parameter.name = "Speed";
-        parameter.symbol = "SPEED";
+        parameter.name = "Scan";
+        parameter.symbol = "SCAN";
         parameter.ranges.min = -5.0f;
         parameter.ranges.max = 5.0f;
         parameter.ranges.def = 1.0f;
         break;
-    case id_density:
-        parameter.hints = kParameterIsAutomable;
-        parameter.name = "Density";
-        parameter.symbol = "DENSITY";
-        parameter.ranges.min = 0.1f;    //Hz
-        parameter.ranges.max = 500.0f;
-        parameter.ranges.def = 10.f;
-        break;
-    case id_length:
-        parameter.hints = kParameterIsAutomable;
-        parameter.name = "Length";
-        parameter.symbol = "LENGTH";
-        parameter.ranges.min = 1.f;    //Milliseconds
-        parameter.ranges.max = 10000.0f;
-        parameter.ranges.def = 100.f;
-        break;
-    case id_spray:
+    case id_spray:   //Width of randomness added to the playhead (scan-head)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Spray";
         parameter.symbol = "SPRAY";
-        parameter.ranges.min = 0.0001f;    //Milliseconds
+        parameter.ranges.min = 0.0001f;
         parameter.ranges.max = 10000.0f;
         parameter.ranges.def = 100.f;
         break;
-    case id_sides:
+    case id_density:   //Grain emission rate in Hz
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Density";
+        parameter.symbol = "DENSITY";
+        parameter.ranges.min = 0.1f;
+        parameter.ranges.max = 500.0f;
+        parameter.ranges.def = 10.f;
+        break;
+    case id_length:   //Length of sampled grain from buffer
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Length";
+        parameter.symbol = "LENGTH";
+        parameter.ranges.min = 1.f;
+        parameter.ranges.max = 10000.0f;
+        parameter.ranges.def = 100.f;
+        break;
+    case id_direction:   //Factor of grain playback directon pobability
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Direction";
+        parameter.symbol = "DIRECTION";
+        parameter.ranges.min = -1.f;
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 1.f;
+        break;
+    case id_sides:   //The shape of the Tukey window
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Sides";
         parameter.symbol = "SIDES";
@@ -152,20 +160,44 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 1.0f;
         parameter.ranges.def = .5f;
         break;
-    case id_tilt:
+    case id_tilt:  //Tilt factor
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Tilt";
         parameter.symbol = "TILT";
-        parameter.ranges.min = -1.0f;   //Tilt factor
+        parameter.ranges.min = -1.0f; 
         parameter.ranges.max = 1.0f;
         parameter.ranges.def = 0.f;
         break;
-    case id_pitch:
+    case id_pitch:     //Octaves up/down
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Pitch";
         parameter.symbol = "PITCH";
-        parameter.ranges.min = -2.f;   //Octaves up/down
+        parameter.ranges.min = -2.f;
         parameter.ranges.max = 2.f;
+        parameter.ranges.def = 0.f;
+        break;
+    case id_pitch_spray:   //Pitch random factor up/down from Pitch value
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Pitch Spray";
+        parameter.symbol = "PITCHSPRAY";
+        parameter.ranges.min = 0.f;
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 0.f;
+        break;
+    case id_pan_width:   //Pan width full- or sum to mono
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Pan Width";
+        parameter.symbol = "PANWIDTH";
+        parameter.ranges.min = 0.f;
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 0.f;
+        break;
+    case id_pan_spray:   //The pan spray random factor
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Pan Spray";
+        parameter.symbol = "PANSPRAY";
+        parameter.ranges.min = 0.f;
+        parameter.ranges.max = 1.f;
         parameter.ranges.def = 0.f;
         break;
     case id_mix:
@@ -192,18 +224,26 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return _recording;
     case id_scan:
         return grainPlayer.controls.speed;
+    case id_spray:
+        return grainPlayer.controls.spray;
     case id_density:
         return grainPlayer.controls.density;
     case id_length:
         return grainPlayer.controls.length;
-    case id_spray:
-        return grainPlayer.controls.spray;
+    case id_direction:
+        return grainPlayer.controls.direction;
+    case id_pitch:
+        return grainPlayer.controls.pitch;
+    case id_pitch_spray:
+        return grainPlayer.controls.pitchSpray;
+    case id_pan_width:
+        return grainPlayer.controls.panWidth;
+    case id_pan_spray:
+        return grainPlayer.controls.panSpray;
     case id_sides:
         return grainPlayer.controls.sides;
     case id_tilt:
         return grainPlayer.controls.tilt;
-    case id_pitch:
-        return grainPlayer.controls.pitch;
     case id_mix:
         return _mix;
     }
@@ -221,23 +261,35 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     case id_scan:
         grainPlayer.controls.speed = value;
         break;
+    case id_spray:
+        grainPlayer.controls.spray = value;
+        break;
     case id_density:
         grainPlayer.controls.density = value;
         break;
     case id_length:
         grainPlayer.controls.length = value;
         break;
-    case id_spray:
-        grainPlayer.controls.spray = value;
+    case id_direction:
+        grainPlayer.controls.direction = value;
+        break;
+    case id_pitch:
+        grainPlayer.controls.pitch = value;
+        break;
+    case id_pitch_spray:
+        grainPlayer.controls.pitchSpray = value;
+        break;
+    case id_pan_width:
+        grainPlayer.controls.panWidth = value;
+        break;
+    case id_pan_spray:
+        grainPlayer.controls.panSpray = value;
         break;
     case id_sides:
         grainPlayer.controls.sides = value;
         break;
     case id_tilt:
         grainPlayer.controls.tilt = value;
-        break;
-    case id_pitch:
-        grainPlayer.controls.pitch = value;
         break;
     case id_mix:
         _mix = value;
