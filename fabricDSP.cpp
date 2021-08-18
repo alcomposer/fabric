@@ -223,7 +223,7 @@ float fabricDSP::getParameterValue(uint32_t index) const
     case id_rec:
         return _recording;
     case id_scan:
-        return grainPlayer.controls.speed;
+        return grainPlayer.controls.scanSpeed;
     case id_spray:
         return grainPlayer.controls.spray;
     case id_density:
@@ -259,7 +259,7 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         _recording = value;
         break;
     case id_scan:
-        grainPlayer.controls.speed = value;
+        grainPlayer.controls.scanSpeed = value;
         break;
     case id_spray:
         grainPlayer.controls.spray = value;

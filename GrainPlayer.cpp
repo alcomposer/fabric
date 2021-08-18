@@ -84,7 +84,7 @@ void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSi
             _nextGrainTime++;
         }
 
-        controls.playHeadPos += controls.speed;
+        controls.playHeadPos += controls.scanSpeed;
         if (controls.playHeadPos > bufferSize)
             controls.playHeadPos = 0;
         if (controls.playHeadPos < 0)

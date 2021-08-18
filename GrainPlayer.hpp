@@ -11,7 +11,7 @@
 
 struct GrainPlayerControl
 {
-    float speed = 1.f;
+    float scanSpeed = 1.f;
     float spray = 0.01f;
     float density = 0.01f;
     float length = 0.01f;
