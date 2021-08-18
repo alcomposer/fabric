@@ -80,7 +80,7 @@ private:
     ScopedPointer<fabricController> fcontrolSpray;
     ScopedPointer<fabricController> fcontrolPitch;
     ScopedPointer<fabricController> fcontrolPitchSpray;
-    ScopedPointer<fabricController> fcontrolPanWidth;
+    ScopedPointer<fabricController> fcontrolStereoWidth;
     ScopedPointer<fabricController> fcontrolPanSpray;        
     ScopedPointer<fabricController> fcontrolSides;
     ScopedPointer<fabricController> fcontrolTilt;

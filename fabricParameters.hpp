@@ -10,7 +10,7 @@ enum Parameters
     id_direction,
     id_pitch,
     id_pitch_spray,
-    id_pan_width,
+    id_stereo_width,
     id_pan_spray,
     id_sides,
     id_tilt,

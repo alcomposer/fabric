@@ -18,7 +18,7 @@ struct GrainPlayerControl
     float direction = 1.0f;
     float pitch = 1.f;
     float pitchSpray = 0.f;
-    float panWidth = 1.f;
+    float stereoWidth = 1.f;
     float panSpray = 1.f;
     float sides = 0.5f;
     float tilt = 0.f;

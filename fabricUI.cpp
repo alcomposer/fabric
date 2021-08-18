@@ -135,13 +135,13 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
-    fcontrolPanWidth = new fabricController(this, knobSizeStandard);
-    fcontrolPanWidth->setText("Pan Width");
-    fcontrolPanWidth->setId(id_pan_width);
-    fcontrolPanWidth->setCallback(this);    
-    fcontrolPanWidth->setRange(-0.f, 1.f);
-    fcontrolPanWidth->setAbsolutePos(lazyXPos,lazyYPosRow1);
-    fcontrolPanWidth->show();
+    fcontrolStereoWidth = new fabricController(this, knobSizeStandard);
+    fcontrolStereoWidth->setText("Stereo Width");
+    fcontrolStereoWidth->setId(id_stereo_width);
+    fcontrolStereoWidth->setCallback(this);    
+    fcontrolStereoWidth->setRange(-0.f, 1.f);
+    fcontrolStereoWidth->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolStereoWidth->show();
 
     fcontrolPanSpray = new fabricController(this, knobSizeStandard);
     fcontrolPanSpray->setText("Pan Spray");
@@ -217,8 +217,8 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_pitch_spray:
         fcontrolPitchSpray->setValue(value);
         break;
-    case id_pan_width:
-        fcontrolPanWidth->setValue(value);
+    case id_stereo_width:
+        fcontrolStereoWidth->setValue(value);
         break;
     case id_pan_spray:
         fcontrolPanSpray->setValue(value);

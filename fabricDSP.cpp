@@ -184,10 +184,10 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 1.f;
         parameter.ranges.def = 0.f;
         break;
-    case id_pan_width:   //Pan width full- or sum to mono
+    case id_stereo_width:   //Stereo full width - or sum to mono
         parameter.hints = kParameterIsAutomable;
-        parameter.name = "Pan Width";
-        parameter.symbol = "PANWIDTH";
+        parameter.name = "Stereo Width";
+        parameter.symbol = "STEREOWIDTH";
         parameter.ranges.min = 0.f;
         parameter.ranges.max = 1.f;
         parameter.ranges.def = 0.f;
@@ -236,8 +236,8 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return grainPlayer.controls.pitch;
     case id_pitch_spray:
         return grainPlayer.controls.pitchSpray;
-    case id_pan_width:
-        return grainPlayer.controls.panWidth;
+    case id_stereo_width:
+        return grainPlayer.controls.stereoWidth;
     case id_pan_spray:
         return grainPlayer.controls.panSpray;
     case id_sides:
@@ -279,8 +279,8 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     case id_pitch_spray:
         grainPlayer.controls.pitchSpray = value;
         break;
-    case id_pan_width:
-        grainPlayer.controls.panWidth = value;
+    case id_stereo_width:
+        grainPlayer.controls.stereoWidth = value;
         break;
     case id_pan_spray:
         grainPlayer.controls.panSpray = value;
