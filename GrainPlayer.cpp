@@ -8,7 +8,8 @@ inline int modulo(int a, int b) {
 }
 
 GrainPlayer::GrainPlayer() :
-     m_fRandomNormalized(.0f, 1.0f)
+      m_fRandomNormalized(.0f, 1.0f)
+     ,m_fRandomBiPolNormalized(-1.f, 1.f)
 {
     for (Grain &grain : grainArray)
     {
@@ -40,7 +41,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.m_startTimeBuffer      = modulo((int)(controls.playHeadPos - calcSpray/2 + m_fRandomNormalized(m_seed) * calcSpray), _bufferSize); 
     grain.m_sides                = controls.sides;
     grain.m_tilt                 = controls.tilt;
-    grain.m_pitch                = std::pow(2.f, controls.pitch);
+    grain.m_pitch                = std::pow(2.f, controls.pitch + (m_fRandomBiPolNormalized(m_seed) * controls.pitchSpray));
     grain.m_age                  = (controls.length/1000.f * controls.sampleRate);
     grain.m_length               = grain.m_age; 
     

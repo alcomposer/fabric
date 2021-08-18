@@ -50,4 +50,5 @@ private:
     
     fabricMaths::fast_rand m_seed;
     fabricMaths::fast_real_distribution<float> m_fRandomNormalized;
+    fabricMaths::fast_real_distribution<float> m_fRandomBiPolNormalized; 
 };
