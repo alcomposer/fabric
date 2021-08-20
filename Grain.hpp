@@ -11,6 +11,7 @@ public:
     Grain();
     ~Grain();
     void process(float** outputs, float** st_audioBuffer, int st_audioBufferSize, int subdivStart, int frames);
+    typedef enum Direction {forward = 1, reverse = -1};
     
     bool  m_playing;
     int   m_startTimeFrameOffset;
@@ -21,4 +22,5 @@ public:
     float m_sides;
     float m_tilt;
     float m_pitch;
+    Direction m_direction;
 };

@@ -44,6 +44,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.m_pitch                = std::pow(2.f, controls.pitch + (m_fRandomBiPolNormalized(m_seed) * controls.pitchSpray));
     grain.m_age                  = (controls.length/1000.f * controls.sampleRate);
     grain.m_length               = grain.m_age; 
+    grain.m_direction            = m_fRandomNormalized(m_seed) <= (controls.direction * .5f) + .5f ? Grain::Direction::forward : Grain::Direction::reverse;
     
     slot = grain;
     return true;

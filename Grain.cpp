@@ -12,6 +12,7 @@ Grain::Grain() :
     ,m_age(0)
     ,m_positionInAudioBuffer(0)
     ,m_pitch(1.f)
+    ,m_direction(Direction::forward)
 {
 
 }
@@ -69,7 +70,7 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
                     Possibly do something like: fIndexGrain = (m_length - (m_age - (framePos / m_pitch))) / m_length 
        */
         m_age -= m_pitch;
-        startTimeBuffer += m_pitch;
+        startTimeBuffer += m_pitch * m_direction;
     }
     m_startTimeBuffer = startTimeBuffer;
 }
