@@ -67,6 +67,9 @@ private:
 
     Size<uint> waveformDisplaySize;
 
+    ScopedPointer<NanoLabel> m_pluginNameTemp;
+    ScopedPointer<NanoLabel> m_pluginStatusTemp;      
+
     ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
 
     ScopedPointer<fabricEnvelopeDisplay> fenvelopeDisplay;

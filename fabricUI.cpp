@@ -47,6 +47,16 @@ fabricUI::fabricUI()
     int lazyXPos = 20;
     int lazyXposSpacer = 85;
 
+    m_pluginNameTemp = new NanoLabel(this, Size<uint>(200,200));
+    m_pluginNameTemp->setText("FABRIC");
+    m_pluginNameTemp->setAbsolutePos(20,5);
+    m_pluginNameTemp->setFontSize(52.0);
+
+    m_pluginStatusTemp = new NanoLabel(this, Size<uint>(400,400));
+    m_pluginStatusTemp->setText("Pre-Alpha");
+    m_pluginStatusTemp->setColor(DGL::Color(150,0,0));  
+    m_pluginStatusTemp->setAbsolutePos(190,32);
+    m_pluginStatusTemp->setFontSize(18.0);
 
     fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
     fwaveformDisplay->setAbsolutePos(0,60);
