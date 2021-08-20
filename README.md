@@ -2,8 +2,11 @@
 
 #### Fabric Delay Line Granular Effect
 
-### Mockup:
-![fabric mockup](fabric_mockup.png)
+Fabric is currently being developed, and is subject to radical changes. 
+Use at own risk during this time. 
+
+### Current Development Screenshot:
+![fabric screenshot](fabric_screenshot.png)
 
 ### Build (Linux only currently):
 
