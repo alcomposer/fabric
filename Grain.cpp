@@ -71,6 +71,7 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
        */
         m_age -= m_pitch;
         startTimeBuffer += m_pitch * m_direction;
+        startTimeBuffer = startTimeBuffer < 0.0f ? startTimeBuffer + st_audioBufferSize : startTimeBuffer;
     }
     m_startTimeBuffer = startTimeBuffer;
 }
