@@ -47,8 +47,8 @@
 ### DSP:
 - [ ] Buffer Logic:
   - [ ] Circular buffer with xfade between writehead and readhead
-- [ ] Envelope:
-  - [x] Grain Envelope with 3 Parameters: Sides, Tilt
+- [x] Envelope:
+  - [x] Grain Envelope with 2 Parameters: Sides, Tilt
 - [ ] Volume:
   - [ ] control the output volume based on sqrt of active grains
 - [ ] SinC Interpolation for sub-sample playback? (optional)
