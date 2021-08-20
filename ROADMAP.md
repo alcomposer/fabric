@@ -12,7 +12,7 @@
 - [ ] Volume control:
   - [ ] in volume (dry)
   - [ ] out volume (wet)
-  - [ ] out mix control
+  - [x] out mix control
 - [ ] Buffer controls:
   - [x] rec active (button)
   - [ ] overdub active (button)
@@ -25,15 +25,19 @@
   - [ ] Readhead sync to writehead (to use Fabric as a set'n'forget effect)
   - [ ] Readhead sync to writehead offset (as above)
   - [x] Grain length
-  - [ ] Grain spread control (randomises left/right pitch of grains, 0-100%)
-  - [ ] Grain Pitch ()
+  - [x] Grain Pitch Spray control
+  - [x] Grain Pitch
+- [ ] Stereo image control:
+  - [ ] Pan spray (L & R)
+  - [ ] Stereo Width
 - [ ] Grain Envelope controls:
-  - [ ] Sides (taken care of with Tukey window function)
-  - [ ] Tilt (moving apex left/right)
+  - [x] Sides (taken care of with Tukey window function)
+  - [x] Tilt (moving apex left/right)
   - [ ] Curve (move from a convex - straigh - concave shape)
 - [ ] Grain direction:
   - [x] forward
-  - [ ] reverse
+  - [x] reverse
+  - [x] Implemented as direction forward/reverse factor
 - [ ] State:
   - [ ] Save/Load the current content of the audio buffer to a wav file 
   - [ ] Import wav files of different lengths
@@ -48,3 +52,4 @@
 - [ ] Volume:
   - [ ] control the output volume based on sqrt of active grains
 - [ ] SinC Interpolation for sub-sample playback? (optional)
+- [x] Lerp Interpolatioin for sub-sample playback
