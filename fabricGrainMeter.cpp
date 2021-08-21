@@ -36,7 +36,6 @@ fabricGrainMeter::fabricGrainMeter(Widget *widget, Size<uint> size) noexcept
 void fabricGrainMeter::idleCallback()
 {
     repaint();
-    std::cout << "idleCallback" << std::endl;
 }
 
 void fabricGrainMeter::onNanoDisplay()
