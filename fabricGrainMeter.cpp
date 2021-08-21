@@ -44,7 +44,7 @@ void fabricGrainMeter::onNanoDisplay()
     int height = m_meterSize.getHeight();
 
     //draw black widget background
-    static const Color k_black(0, 0, 0);
+    static const Color k_black(0, 0, 0, 1);
     beginPath();
     rect(0.0f, 0.0f, getWidth(), getHeight());
     fillColor(k_black);
@@ -63,6 +63,16 @@ void fabricGrainMeter::onNanoDisplay()
         lineTo(pos, height - ((float)grainsActiveHistory.at(pos) / MAX_GRAINS) * height);
     }
     stroke();
+
+    //overlay a gradient ontop of the graph
+    static const Color k_semiTransparent(0, 0, 0, .8);
+    static const Color k_transparent(0, 0, 0, 0);
+    beginPath();
+    rect(0.0f, 0.0f, getWidth(), getHeight());
+    Paint gradient = linearGradient(0,0,width,0,k_semiTransparent, k_transparent);
+    fillPaint(gradient);
+    fill();
+
 }
 
 END_NAMESPACE_DISTRHO
