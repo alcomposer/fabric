@@ -58,8 +58,8 @@ fabricUI::fabricUI()
     m_pluginStatusTemp->setAbsolutePos(190,32);
     m_pluginStatusTemp->setFontSize(18.0);
 
-    m_fabricGrainMeter = new fabricGrainMeter(this, Size<uint>(200,50));
-    m_fabricGrainMeter->setAbsolutePos(645,5);
+    m_fabricGrainMeter = new fabricGrainMeter(this, Size<uint>(200,40));
+    m_fabricGrainMeter->setAbsolutePos(640,10);
 
     fwaveformDisplay = new fabricWaveformDisplay(this, waveformDisplaySize);
     fwaveformDisplay->setAbsolutePos(0,60);
