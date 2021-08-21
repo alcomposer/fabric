@@ -50,7 +50,6 @@ void fabricEnvelopeDisplay::onNanoDisplay()
     rect(0.0f, 0.0f, getWidth(), getHeight());
     fillColor(k_black);
     fill();
-    closePath();
 
     int points = 500;
 
@@ -70,6 +69,5 @@ void fabricEnvelopeDisplay::onNanoDisplay()
     }
     lineTo(width-1, height);
     stroke();
-    closePath();
 }
 END_NAMESPACE_DISTRHO
