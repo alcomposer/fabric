@@ -27,6 +27,8 @@ dpf_add_plugin(fabric MONOLITHIC
 
       fabricEnvelopeDisplay.cpp
 
+      fabricGrainMeter.cpp
+
       fabricButton.cpp
 
       fabricController.cpp

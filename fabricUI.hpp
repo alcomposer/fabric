@@ -27,6 +27,7 @@
 #include "fabricEnvelopeDisplay.hpp"
 #include "fabricController.hpp" 
 #include "fabricDSP.hpp"
+#include "fabricGrainMeter.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -70,8 +71,8 @@ private:
     ScopedPointer<NanoLabel> m_pluginNameTemp;
     ScopedPointer<NanoLabel> m_pluginStatusTemp;      
 
+    ScopedPointer<fabricGrainMeter> m_fabricGrainMeter;
     ScopedPointer<fabricWaveformDisplay> fwaveformDisplay;
-
     ScopedPointer<fabricEnvelopeDisplay> fenvelopeDisplay;
 
     ScopedPointer<fabricButton> frecButton;

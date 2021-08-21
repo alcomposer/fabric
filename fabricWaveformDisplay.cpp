@@ -137,7 +137,7 @@ void fabricWaveformDisplay::onNanoDisplay()
    // draw grains
     strokeWidth(2.0f);
     for (int i = 0; i < 128; i++){
-        
+
         Grain &grain = _parent->_plugin->grainPlayer.grainArray[i];
 
         if (grain.m_playing == true){

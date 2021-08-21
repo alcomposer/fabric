@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include "DistrhoPlugin.hpp"
 #include "GrainPlayer.hpp"
+#include "DistrhoPlugin.hpp"
 #include "fabricParamSmooth.hpp"
 #include <vector>
 
