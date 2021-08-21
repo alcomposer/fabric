@@ -1,6 +1,6 @@
 /*
- * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2018 Filipe Coelho <falktx@falktx.com>
+ * Fabric Granular Audio Effect
+ * Copyright (C) 2021 Alexander Waite Mitchell <alex.w.mitchell@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
