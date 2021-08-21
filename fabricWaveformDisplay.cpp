@@ -43,13 +43,13 @@ void fabricWaveformDisplay::onNanoDisplay()
 {
     Color blue = Color(173, 216, 230); //FIXME (alex) make this an enum 
     Color blue_transparent = Color(173, 216, 230, 0.3f);
+    Color green_transparent = Color(173, 230, 173, 0.3f);
     //draw black widget background
     static const Color k_black(0, 0, 0);
     beginPath();
     rect(0.0f, 0.0f, getWidth(), getHeight());
     fillColor(k_black);
     fill();
-    closePath();
     
     float display_top = 0.f;
     float display_bottom = getHeight();
@@ -73,14 +73,12 @@ void fabricWaveformDisplay::onNanoDisplay()
         lineTo(i, display_center + (_st_audioBuffer[0][sampleIndex] + _st_audioBuffer[1][sampleIndex]) / 2.0 * display_center);
     }
     stroke();
-    closePath();
     
     // center line
     beginPath();
     moveTo(display_left, display_center);
     lineTo(display_right, display_center);
     stroke();
-    closePath();
     /*
     // draw spray region
     //beginPath();
@@ -136,21 +134,25 @@ void fabricWaveformDisplay::onNanoDisplay()
     closePath();
     */
 
-    // draw grains
-    beginPath();
-    strokeColor(blue_transparent); //change to an enum
+   // draw grains
     strokeWidth(2.0f);
     for (int i = 0; i < 128; i++){
-        if (_parent->_plugin->grainPlayer.grainArray[i].m_playing == true){
-            float grainPos = (float)_parent->_plugin->grainPlayer.grainArray[i].m_startTimeBuffer / (float)(_parent->getSampleRate()*10) * display_right;//FIXME (alex) don't calcuate the buffer time, use a define
-            //std::cout << "drawing grain at: " << (float)plugin->grainPlayer.grain_array[i].start_position << std::endl;
-            moveTo(grainPos, display_top); //- 25);
-            lineTo(grainPos, display_bottom); //+ 25);
+        
+        Grain &grain = _parent->_plugin->grainPlayer.grainArray[i];
+
+        if (grain.m_playing == true){
+            float grainPos = (float)grain.m_startTimeBuffer / (float)(_parent->getSampleRate()*10) * display_right;//FIXME (alex) don't calcuate the buffer time, use a define
+            beginPath();
+            if (grain.m_direction == Grain::Direction::forward){
+                strokeColor(blue_transparent); 
+            }else{
+                strokeColor(green_transparent);
+            }
+            moveTo(grainPos, display_top); 
+            lineTo(grainPos, display_bottom);
+            stroke();
         }
     }
-    stroke();
-    closePath();
-    
 
     // rec head line
     beginPath();
@@ -160,8 +162,6 @@ void fabricWaveformDisplay::onNanoDisplay()
     moveTo(recheadPos, display_top);
     lineTo(recheadPos, display_bottom);
     stroke();
-    closePath();
-
     
     // play head line
     beginPath();
@@ -171,8 +171,6 @@ void fabricWaveformDisplay::onNanoDisplay()
     moveTo(playheadPos, display_top);
     lineTo(playheadPos, display_bottom);
     stroke();
-    closePath();
-    
 }
 
 
