@@ -41,6 +41,9 @@ fabricUI::fabricUI()
 
     setGeometryConstraints(850, 510);
 
+    Window &pw = getWindow();
+    pw.addIdleCallback(this, 16);
+
     Size<uint> knobSizeStandard(50,50);
     int lazyYPosRow1 = 340;
     int lazyYPosRow2 = 430;
@@ -254,6 +257,12 @@ void fabricUI::stateChanged(const char *, const char *)
 {
     // nothing here
 }
+
+void fabricUI::idleCallback()
+{
+    repaint();
+}
+
 void fabricUI::onNanoDisplay()
 {    
     //draw grey window background

@@ -34,6 +34,7 @@ START_NAMESPACE_DISTRHO
 class fabricUI :  public UI
                  ,public NanoKnob::Callback
                  ,public NanoSwitch::Callback
+                 ,public IdleCallback
 {
 public:
     fabricUI();
@@ -62,6 +63,8 @@ protected:
         This UI will change color when clicked.
     */
     bool onMouse(const MouseEvent &ev) override;
+
+    void idleCallback();
 
 private:
     float fOutLeft, fOutRight;

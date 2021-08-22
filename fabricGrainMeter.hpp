@@ -27,13 +27,11 @@
 START_NAMESPACE_DISTRHO
 
 class fabricGrainMeter : public NanoSubWidget
-                        ,public IdleCallback
 {
 public:
     explicit fabricGrainMeter(Widget *widget, Size<uint> size) noexcept;
 protected:
     void onNanoDisplay() override;
-    void idleCallback();
 private:
     GrainPlayer * m_grainPlayer;
     std::deque<int> grainsActiveHistory;

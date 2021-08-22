@@ -23,18 +23,10 @@ START_NAMESPACE_DISTRHO
 fabricGrainMeter::fabricGrainMeter(Widget *widget, Size<uint> size) noexcept
     : NanoSubWidget(widget)
 {
-    Window &pw = getWindow();
-    pw.addIdleCallback(this, 16);
-
     setSize(size); 
     m_grainPlayer = &static_cast<fabricUI *>(widget)->_plugin->grainPlayer;
 
     grainsActiveHistory.resize(200);
-}
-
-void fabricGrainMeter::idleCallback()
-{
-    repaint();
 }
 
 void fabricGrainMeter::onNanoDisplay()

@@ -26,13 +26,11 @@ START_NAMESPACE_DISTRHO
 class fabricUI;
 
 class fabricWaveformDisplay : public NanoSubWidget
-                             ,public IdleCallback
 {
 public:
     explicit fabricWaveformDisplay(Widget *widget, Size<uint> size) noexcept;
 protected:
     void onNanoDisplay() override;
-    void idleCallback();
     //bool onMouse(const MouseEvent &ev) override;
     //void onPositionChanged(const PositionChangedEvent &event) override;
     //void onResize(const ResizeEvent &event) override;

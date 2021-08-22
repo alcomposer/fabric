@@ -23,20 +23,12 @@ START_NAMESPACE_DISTRHO
 fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) noexcept
     : NanoSubWidget(widget)
 {
-    Window &pw = getWindow(); //this is needed to refresh the waveform display
-    pw.addIdleCallback(this, 16);
-
     setSize(size); 
     _parent = static_cast<fabricUI *>(widget);
     _st_audioBuffer = _parent->_plugin->st_audioBuffer;
     _writeHeadPos = &_parent->_plugin->bufferPos;
     _sizeOfBuffer = _parent->_plugin->st_audioBufferSize;
     _playHeadPos = &_parent->_plugin->grainPlayer.controls.playHeadPos;
-}
-
-void fabricWaveformDisplay::idleCallback()
-{
-    repaint();
 }
 
 void fabricWaveformDisplay::onNanoDisplay()
