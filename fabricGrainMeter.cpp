@@ -22,7 +22,6 @@ START_NAMESPACE_DISTRHO
 
 fabricGrainMeter::fabricGrainMeter(Widget *widget, Size<uint> size) noexcept
     : NanoSubWidget(widget)
-     ,m_meterSize(size)
 {
     Window &pw = getWindow();
     pw.addIdleCallback(this, 16);
@@ -40,9 +39,6 @@ void fabricGrainMeter::idleCallback()
 
 void fabricGrainMeter::onNanoDisplay()
 {
-    int width = m_meterSize.getWidth();
-    int height = m_meterSize.getHeight();
-
     //draw black widget background
     static const Color k_black(0, 0, 0, 1);
     beginPath();
@@ -58,9 +54,9 @@ void fabricGrainMeter::onNanoDisplay()
     strokeWidth(1.f);
     beginPath();
     strokeColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
-    for (int pos = 0; pos < width; ++pos){
-        moveTo(pos, height);
-        lineTo(pos, height - ((float)grainsActiveHistory.at(pos) / MAX_GRAINS) * height);
+    for (int pos = 0; pos < getWidth(); ++pos){
+        moveTo(pos, getHeight());
+        lineTo(pos, getHeight() - ((float)grainsActiveHistory.at(pos) / MAX_GRAINS) * getHeight());
     }
     stroke();
 
@@ -69,7 +65,7 @@ void fabricGrainMeter::onNanoDisplay()
     static const Color k_transparent(0, 0, 0, 0);
     beginPath();
     rect(0.0f, 0.0f, getWidth(), getHeight());
-    Paint gradient = linearGradient(0,0,width,0,k_semiTransparent, k_transparent);
+    Paint gradient = linearGradient(0, 0, getWidth(), 0, k_semiTransparent, k_transparent);
     fillPaint(gradient);
     fill();
 

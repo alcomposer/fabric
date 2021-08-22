@@ -35,7 +35,6 @@ protected:
     void onNanoDisplay() override;
     void idleCallback();
 private:
-    Size<uint> m_meterSize;
     GrainPlayer * m_grainPlayer;
     std::deque<int> grainsActiveHistory;
     DISTRHO_LEAK_DETECTOR(fabricController);
