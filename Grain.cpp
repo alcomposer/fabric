@@ -62,14 +62,14 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         float right = fabricMaths::lerp(rightBuffer[(int)startTimeBuffer], rightBuffer[startTimeBufferLerp], fraction);
 
         // stereo width
-        float coef_s = m_stereoWidth * 0.5f;
         float mid = 0.5f * (left + right);
-        float side = coef_s * (right - left);
-        left = (mid - side);
-        right = (mid + side);
+        float side = 0.5f * (right - left);
+        float att = std::max(1.0f + m_stereoWidth, 2.0f);
+        left = (mid - m_stereoWidth * side) / att;
+        right = (mid + m_stereoWidth * side) / att;
 
         // pan
-        left *= std::sqrt(1.f - m_pan);
+        left *= std::sqrt(1.0f - m_pan);
         right *= std::sqrt(m_pan);
 
         leftOutput[framePos]  += left * window;
