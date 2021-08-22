@@ -189,8 +189,8 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.name = "Stereo Width";
         parameter.symbol = "STEREOWIDTH";
         parameter.ranges.min = 0.f;
-        parameter.ranges.max = 1.f;
-        parameter.ranges.def = 0.f;
+        parameter.ranges.max = 2.f;
+        parameter.ranges.def = 1.f;
         break;
     case id_pan_spray:   //The pan spray random factor
         parameter.hints = kParameterIsAutomable;

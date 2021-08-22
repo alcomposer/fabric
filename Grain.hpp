@@ -22,5 +22,7 @@ public:
     float m_sides;
     float m_tilt;
     float m_pitch;
+    float m_stereoWidth;
+    float m_pan;
     Direction m_direction;
 };

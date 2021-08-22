@@ -49,6 +49,10 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.m_sides                = controls.sides;
     grain.m_tilt                 = controls.tilt;
     grain.m_pitch                = std::pow(2.f, controls.pitch + (m_fRandomBiPolNormalized(m_seed) * controls.pitchSpray));
+    grain.m_stereoWidth          = controls.stereoWidth;
+    grain.m_pan                  = m_fRandomBiPolNormalized(m_seed) * controls.panSpray;
+
+    std::cout << "setting pan to: " << grain.m_pan << std::endl;
 
     slot = grain;
     return true;

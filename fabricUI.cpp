@@ -155,7 +155,7 @@ fabricUI::fabricUI()
     fcontrolStereoWidth->setText("Stereo Width");
     fcontrolStereoWidth->setId(id_stereo_width);
     fcontrolStereoWidth->setCallback(this);    
-    fcontrolStereoWidth->setRange(-0.f, 1.f);
+    fcontrolStereoWidth->setRange(0.f, 2.f);
     fcontrolStereoWidth->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolStereoWidth->show();
 

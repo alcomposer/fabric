@@ -13,6 +13,7 @@ Grain::Grain() :
     ,m_positionInAudioBuffer(0)
     ,m_pitch(1.f)
     ,m_direction(Direction::forward)
+    ,m_stereoWidth(1.f)
 {
 
 }
@@ -60,15 +61,25 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         float left = fabricMaths::lerp(leftBuffer[(int)startTimeBuffer], leftBuffer[startTimeBufferLerp], fraction);
         float right = fabricMaths::lerp(rightBuffer[(int)startTimeBuffer], rightBuffer[startTimeBufferLerp], fraction);
 
-        leftOutput[framePos]  += left * window;
-        rightOutput[framePos] += right * window;
+        // process stereo width
+        float coef_s = m_stereoWidth * 0.5f;
+        float mid = 0.5f * (left + right);
+        float side = coef_s * (right - left);
+        left = (mid - side);
+        right = (mid + side);
 
-       /*
-       FIXME (alex) Should we factor out decrementing m_age inside the loop?
-                    We only need the m_age inside the loop to get the float index (0-1) 
-                    for the window function.
-                    Possibly do something like: fIndexGrain = (m_length - (m_age - (framePos / m_pitch))) / m_length 
-       */
+        //angle of pan, m_pan is bipolar -1<0<1
+        float r = (m_pan * M_PI);
+        float ballanceL = m_pan > 0 ? 1.f : 1.f + m_pan; 
+        float ballanceR = m_pan < 0 ? 1.f : 1.f - m_pan;
+
+        // Calculate transformation matrix's coefficients
+        float leftOut  = ballanceL * ((left *  fabricMaths::approxCosine(r))  - (right * fabricMaths::approxSine(r)));
+        float rightOut = ballanceR * ((left * fabricMaths::approxSine(r)) + (right * fabricMaths::approxCosine(r)));
+
+        leftOutput[framePos]  += leftOut * window;
+        rightOutput[framePos] += rightOut * window;
+
         m_age -= m_pitch;
         startTimeBuffer += m_pitch * m_direction;
         startTimeBuffer = startTimeBuffer < 0.0f ? startTimeBuffer + st_audioBufferSize : startTimeBuffer;
