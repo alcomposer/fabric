@@ -46,10 +46,18 @@ void fabricGrainMeter::onNanoDisplay()
     strokeWidth(1.f);
     beginPath();
     strokeColor(Color(173, 216, 230, 255)); //FIXME (alex) make this an enum
+    int pos = 0;
+    for (auto grainsActive : grainsActiveHistory){
+        moveTo(pos, getHeight());
+        lineTo(pos, getHeight() - ((float)grainsActive / MAX_GRAINS) * getHeight());
+        pos++;
+    }
+    /*
     for (int pos = 0; pos < getWidth(); ++pos){
         moveTo(pos, getHeight());
         lineTo(pos, getHeight() - ((float)grainsActiveHistory.at(pos) / MAX_GRAINS) * getHeight());
     }
+    */
     stroke();
 
     //overlay a gradient ontop of the graph
