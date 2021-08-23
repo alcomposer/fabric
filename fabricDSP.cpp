@@ -202,17 +202,17 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Wet";
         parameter.symbol = "WET";
-        parameter.ranges.min = 0.f; 
-        parameter.ranges.max = 1.f;
-        parameter.ranges.def = 1.f;
+        parameter.ranges.min = -60.f; 
+        parameter.ranges.max = 10.f;
+        parameter.ranges.def = 0.f;
         break;
     case id_wet:
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Dry";
         parameter.symbol = "DRY";
-        parameter.ranges.min = 0.f; 
-        parameter.ranges.max = 1.f;
-        parameter.ranges.def = 1.f;
+        parameter.ranges.min = -60.f; 
+        parameter.ranges.max = 10.f;
+        parameter.ranges.def = 0.f;
         break;
     }
 }
@@ -338,8 +338,8 @@ void fabricDSP::mixToOutputs(float** outputs, float** dry, uint32_t frames)
 {   
     for(int pos = 0; pos < frames; ++pos)
     {
-        float smoothedDryValue = smoothDryValue->process(m_dry);
-        float smoothedWetValue = smoothWetValue->process(m_wet);
+        float smoothedDryValue = smoothDryValue->process(fabricMaths::db2linear(m_dry));
+        float smoothedWetValue = smoothWetValue->process(fabricMaths::db2linear(m_wet));
 
         outputs[0][pos] = outputs[0][pos] * smoothedWetValue + mixDry[0][pos] * smoothedDryValue;
         outputs[1][pos] = outputs[1][pos] * smoothedWetValue + mixDry[1][pos] * smoothedDryValue;

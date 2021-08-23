@@ -52,12 +52,6 @@ void fabricGrainMeter::onNanoDisplay()
         lineTo(pos, getHeight() - ((float)grainsActive / MAX_GRAINS) * getHeight());
         pos++;
     }
-    /*
-    for (int pos = 0; pos < getWidth(); ++pos){
-        moveTo(pos, getHeight());
-        lineTo(pos, getHeight() - ((float)grainsActiveHistory.at(pos) / MAX_GRAINS) * getHeight());
-    }
-    */
     stroke();
 
     //overlay a gradient ontop of the graph

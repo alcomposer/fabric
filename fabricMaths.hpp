@@ -60,6 +60,17 @@ inline float tukeyWindow(float x, float sides, float tilt)
     float timeWarp = tilt < 0? std::pow(x, 1.f + tilt) : std::pow(1.f - x, 1.f - tilt);
     return (approxCosine(std::fmax(std::fabs(timeWarp - 0.5f) * (2.0f / sides)  - (1.0f / sides - 1.0f), 0.0f) * (float)M_PI) + 1.0f) * 0.5f; 
 }
+// convert db to linear volume
+inline float db2linear(float db)
+{
+    return std::pow(10.0f, 0.05f * db);
+}
+// convert linear to db volume
+inline float linear2db(float linear)
+{
+    return 20.0f * std::log10(linear);
+}
+
 
 // The following code is part of the sfizz library and is licensed under a BSD 2-clause
 // license. You should have receive a LICENSE.md file along with the code.
