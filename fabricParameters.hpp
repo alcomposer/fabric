@@ -30,7 +30,8 @@ enum Parameters
     id_pan_spray,
     id_sides,
     id_tilt,
-    id_mix,
+    id_dry,
+    id_wet,
     TOTAL
 };
 

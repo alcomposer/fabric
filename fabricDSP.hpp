@@ -114,14 +114,15 @@ private:
     void copyInputs(const float** inputs, uint32_t frames);
     void mixToOutputs(float** wet, float** dry, uint32_t frames);
     float* mixDry[2];
-    fabricParamSmooth * smoothMixWetValue;
-    fabricParamSmooth * smoothMixDryValue;
+    fabricParamSmooth * smoothWetValue;
+    fabricParamSmooth * smoothDryValue;
 
     /**
       Parameters.
     */
     bool _recording;
-    float _dry, _mix;
+    float m_dry = {1.f};
+    float m_wet = {1.f};
     /**
       Boolean used to reset meter values.
       The UI will send a "reset" message which sets this as true.

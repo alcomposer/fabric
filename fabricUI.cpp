@@ -194,14 +194,21 @@ fabricUI::fabricUI()
 
     lazyXPos += lazyXposSpacer;
 
-    fcontrolMix = new fabricController(this, knobSizeStandard);
-    fcontrolMix->setText("Mix");
-    fcontrolMix->setId(id_mix);
-    fcontrolMix->setCallback(this);
-    fcontrolMix->setRange(-100.f, 100.f);
-    fcontrolMix->setAbsolutePos(lazyXPos,lazyYPosRow1);
-    fcontrolMix->setBipolar(true);
-    fcontrolMix->show();
+    fcontrolDry = new fabricController(this, knobSizeStandard);
+    fcontrolDry->setText("Dry");
+    fcontrolDry->setId(id_dry);
+    fcontrolDry->setCallback(this);
+    fcontrolDry->setRange(0.f, 1.f);
+    fcontrolDry->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolDry->show();
+
+    fcontrolWet = new fabricController(this, knobSizeStandard);
+    fcontrolWet->setText("Wet");
+    fcontrolWet->setId(id_wet);
+    fcontrolWet->setCallback(this);
+    fcontrolWet->setRange(0.f, 1.f);
+    fcontrolWet->setAbsolutePos(lazyXPos,lazyYPosRow2);
+    fcontrolWet->show();
 }
 
 //FROM HOST
@@ -247,8 +254,11 @@ void fabricUI::parameterChanged(uint32_t index, float value)
         fenvelopeDisplay->setTiltValue(value);  // FIXME (alex) should we be doing this here?
         fcontrolTilt->setValue(value);
         break;
-    case id_mix:
-        fcontrolMix->setValue(value);
+    case id_dry:
+        fcontrolDry->setValue(value);
+        break;
+    case id_wet:
+        fcontrolWet->setValue(value);
         break;
     }
 }

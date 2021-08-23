@@ -20,30 +20,28 @@
 START_NAMESPACE_DISTRHO
 
 fabricDSP::fabricDSP()
-    : Plugin(Parameters::TOTAL, 0, 0) // 8 parameters, 0 programs, 0 states
+    : Plugin(Parameters::TOTAL, 0, 0)
       ,_recording(false)
-      ,_dry(50.f)
-      ,_mix(0.f)
       ,fNeedsReset(true)
       ,grainPlayer()
 {
     _sampleRate = getSampleRate();
 
     // smoothing for mix control
-    smoothMixWetValue = new fabricParamSmooth();
-    smoothMixWetValue->setSampleRate(_sampleRate);
-    smoothMixWetValue->setSmoothingT60(1);
+    smoothWetValue = new fabricParamSmooth();
+    smoothWetValue->setSampleRate(_sampleRate);
+    smoothWetValue->setSmoothingT60(1);
 
-    smoothMixDryValue = new fabricParamSmooth();
-    smoothMixDryValue->setSampleRate(_sampleRate);
-    smoothMixDryValue->setSmoothingT60(1);
+    smoothDryValue = new fabricParamSmooth();
+    smoothDryValue->setSampleRate(_sampleRate);
+    smoothDryValue->setSmoothingT60(1);
 
     // allocate stereo buffer for 10 second circular delay line
     st_audioBufferSize = 10 * _sampleRate;
     st_audioBuffer[0] = (float*)calloc(2 * st_audioBufferSize, sizeof(float));
     st_audioBuffer[1] = st_audioBuffer[0] + st_audioBufferSize;
 
-    // allocate stereo buffer for mixDry
+    // allocate stereo buffer for mixing output
     mixDry[0] = (float*)calloc(2 * 8192, sizeof(float));
     mixDry[1] = mixDry[0] + 8192;
 
@@ -200,13 +198,21 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 1.f;
         parameter.ranges.def = 0.f;
         break;
-    case id_mix:
+    case id_dry:
         parameter.hints = kParameterIsAutomable;
-        parameter.name = "Mix";
-        parameter.symbol = "MIX";
-        parameter.ranges.min = -100.0f; //Percent
-        parameter.ranges.max = 100.0f;
-        parameter.ranges.def = 0.f;
+        parameter.name = "Wet";
+        parameter.symbol = "WET";
+        parameter.ranges.min = 0.f; 
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 1.f;
+        break;
+    case id_wet:
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Dry";
+        parameter.symbol = "DRY";
+        parameter.ranges.min = 0.f; 
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 1.f;
         break;
     }
 }
@@ -244,8 +250,10 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return grainPlayer.controls.sides;
     case id_tilt:
         return grainPlayer.controls.tilt;
-    case id_mix:
-        return _mix;
+    case id_dry:
+        return m_dry;
+    case id_wet:
+        return m_wet;
     }
 
     return 0.0f;
@@ -291,8 +299,11 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
     case id_tilt:
         grainPlayer.controls.tilt = value;
         break;
-    case id_mix:
-        _mix = value;
+    case id_dry:
+        m_dry = value;
+        break;
+    case id_wet:
+        m_wet = value;
         break;
     }
 }
@@ -325,13 +336,10 @@ void fabricDSP::copyInputs(const float** inputs, uint32_t frames)
 
 void fabricDSP::mixToOutputs(float** outputs, float** dry, uint32_t frames)
 {   
-    float mixWetValue = _mix > 0 ? 1.f : (100.f + _mix) * .01f ;
-    float mixDryValue = _mix < 0 ? 1.f : (100.f - _mix) * .01f;
-
     for(int pos = 0; pos < frames; ++pos)
     {
-        float smoothedWetValue = smoothMixWetValue->process(mixWetValue);
-        float smoothedDryValue = smoothMixDryValue->process(mixDryValue);
+        float smoothedDryValue = smoothDryValue->process(m_dry);
+        float smoothedWetValue = smoothWetValue->process(m_wet);
 
         outputs[0][pos] = outputs[0][pos] * smoothedWetValue + mixDry[0][pos] * smoothedDryValue;
         outputs[1][pos] = outputs[1][pos] * smoothedWetValue + mixDry[1][pos] * smoothedDryValue;

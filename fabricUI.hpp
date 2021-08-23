@@ -91,7 +91,9 @@ private:
     ScopedPointer<fabricController> fcontrolPanSpray;        
     ScopedPointer<fabricController> fcontrolSides;
     ScopedPointer<fabricController> fcontrolTilt;
-    ScopedPointer<fabricController> fcontrolMix;
+
+    ScopedPointer<fabricController> fcontrolDry;
+    ScopedPointer<fabricController> fcontrolWet;
 
     void nanoKnobDragStarted(NanoKnob *nanoKnob) override;
     void nanoKnobDragFinished(NanoKnob *nanoKnob) override;
