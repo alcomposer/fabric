@@ -29,12 +29,14 @@ fabricWaveformDisplay::fabricWaveformDisplay(Widget *widget, Size<uint> size) no
     _writeHeadPos = &_parent->_plugin->bufferPos;
     _sizeOfBuffer = _parent->_plugin->st_audioBufferSize;
     _playHeadPos = &_parent->_plugin->grainPlayer.controls.playHeadPos;
+    m_spray = &_parent->_plugin->grainPlayer.controls.spray;
 }
 
 void fabricWaveformDisplay::onNanoDisplay()
 {
     Color blue = Color(173, 216, 230); //FIXME (alex) make this an enum 
     Color blue_transparent = Color(173, 216, 230, 0.3f);
+    Color blue_transparent_2 = Color(173, 216, 230, 0.12f);
     Color green_transparent = Color(173, 230, 173, 0.3f);
     //draw black widget background
     static const Color k_black(0, 0, 0);
@@ -50,7 +52,6 @@ void fabricWaveformDisplay::onNanoDisplay()
     float display_right = getWidth();
     float fIndex;
     uint sampleIndex;
-    
     
     //draw waveform
     beginPath();
@@ -71,60 +72,81 @@ void fabricWaveformDisplay::onNanoDisplay()
     moveTo(display_left, display_center);
     lineTo(display_right, display_center);
     stroke();
-    /*
+    
     // draw spray region
-    //beginPath();
-    //strokeColor(0,0,255,30); //change to an enum
-    //strokeWidth(2.0f);
-    fillColor(0,0,255,30);
     bool left_draw_overflow = false;
     bool right_draw_overflow = false;
     float left_spray_x_overflow = 0.0;
     float right_spray_x_overflow = 0.0;
+    float barSize = 5.f;
     
-    float playHeadPos = display_left + (float)plugin->playheadPos / plugin->st_audioBuffer.size() * display_width;
-    float sprayOffset = plugin->fSpray * 0.5 * display_width;
+    float playHeadPos = (float)(*_playHeadPos) / _sizeOfBuffer * display_right;
+    float sprayOffset = (float)(*m_spray / 10000) * .5f * display_right;
     
     float left_spray_x = playHeadPos - sprayOffset;
     float right_spray_x = playHeadPos + sprayOffset;
     if (left_spray_x < 0.0 + display_left){ 
-        left_spray_x_overflow = left_spray_x + display_width;
+        left_spray_x_overflow = left_spray_x + getWidth();
         left_spray_x = display_left + 0.0;
         left_draw_overflow = true;
     };
-    if (right_spray_x > display_width + display_left){ 
-        right_spray_x_overflow = right_spray_x - display_width;
-        right_spray_x = display_left + display_width;
+    if (right_spray_x > getWidth() + display_left){ 
+        right_spray_x_overflow = right_spray_x - getWidth();
+        right_spray_x = display_left + getWidth();
         right_draw_overflow = true;
     };
-    // draw overflow region
+
+    // draw overflow region of spray
     if (left_draw_overflow){
         beginPath();
-        moveTo(left_spray_x_overflow, display_top);
+        fillColor(blue);
+        moveTo(left_spray_x_overflow, 0);
+        lineTo(left_spray_x_overflow, barSize);
+        lineTo(getWidth(), barSize);
+        lineTo(getWidth(), 0);
+        fill();   
+                
+        beginPath();
+        fillColor(blue_transparent_2);
+        moveTo(left_spray_x_overflow, 0);
         lineTo(left_spray_x_overflow, display_bottom);
-        lineTo(display_left + display_width, display_bottom);
-        lineTo(display_left + display_width, display_top);
-        fill();
-        closePath();     
+        lineTo(getWidth(), display_bottom);
+        lineTo(getWidth(), 0);
+        fill();   
     }  
     if (right_draw_overflow){
         beginPath();
-        moveTo(display_left, display_top);
-        lineTo(display_left, display_bottom);
+        fillColor(blue);
+        moveTo(0, display_top);
+        lineTo(0, barSize);
+        lineTo(right_spray_x_overflow, barSize);
+        lineTo(right_spray_x_overflow, 0);
+        fill(); 
+
+        beginPath();
+        fillColor(blue_transparent_2);
+        moveTo(0, display_top);
+        lineTo(0, display_bottom);
         lineTo(right_spray_x_overflow, display_bottom);
-        lineTo(right_spray_x_overflow, display_top);
-        fill();
-        closePath();     
+        lineTo(right_spray_x_overflow, 0);
+        fill(); 
     }  
-    // draw standard region
+    // draw standard spray region
     beginPath();
-    moveTo(left_spray_x, display_top);
+    fillColor(blue);
+    moveTo(left_spray_x, 0);
+    lineTo(left_spray_x, barSize);
+    lineTo(right_spray_x, barSize);
+    lineTo(right_spray_x, 0);
+    fill();
+
+    beginPath();
+    fillColor(blue_transparent_2);
+    moveTo(left_spray_x, 0);
     lineTo(left_spray_x, display_bottom);
     lineTo(right_spray_x, display_bottom);
-    lineTo(right_spray_x, display_top);
+    lineTo(right_spray_x, 0);
     fill();
-    closePath();
-    */
 
    // draw grains
     strokeWidth(2.0f);

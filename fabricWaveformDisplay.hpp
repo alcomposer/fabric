@@ -39,6 +39,7 @@ private:
     float **_st_audioBuffer;
     uint *_writeHeadPos;
     float *_playHeadPos;
+    float * m_spray;
     int _sizeOfBuffer;
     DISTRHO_LEAK_DETECTOR(fabricController);
 };
