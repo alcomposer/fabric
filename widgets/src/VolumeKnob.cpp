@@ -26,11 +26,6 @@ void VolumeKnob::idleCallback()
 
 }
 
-void VolumeKnob::setLabel(std::string labelText)
-{
-    _labelText = labelText;
-};
-
 void VolumeKnob::onMouseHover()
 {
     if (!canBeFocused())
@@ -147,19 +142,6 @@ void VolumeKnob::draw()
     restore();
 
     closePath();
-
-    
-    //Draw Label
-    //beginPath();
-//
-    //fontFaceId(fFontID);
-    //fontSize(16.0f);
-    //fillColor(Color(0, 0, 0, 255));
-    //textAlign(ALIGN_CENTER | ALIGN_BOTTOM);
-//
-    //text(getWidth()/2.0, getHeight() + 5, _labelText.c_str(), NULL);
-//
-    //closePath();
 }
 
 END_NAMESPACE_DISTRHO

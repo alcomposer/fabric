@@ -28,7 +28,6 @@ protected:
 
 private:
   bool _isBipolar = {false};
-  std::string _labelText;
   float fKnobDiameter;
   FontId fFontID;
 
