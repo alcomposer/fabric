@@ -198,7 +198,7 @@ fabricUI::fabricUI()
     fcontrolDry->setText("Dry");
     fcontrolDry->setId(id_dry);
     fcontrolDry->setCallback(this);
-    fcontrolDry->setRange(-60.f, 10.f);
+    fcontrolDry->setRange(0.f, 1.f);
     fcontrolDry->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolDry->show();
 
@@ -206,7 +206,7 @@ fabricUI::fabricUI()
     fcontrolWet->setText("Wet");
     fcontrolWet->setId(id_wet);
     fcontrolWet->setCallback(this);
-    fcontrolWet->setRange(-60.f, 10.f);
+    fcontrolWet->setRange(0.f, 1.f);
     fcontrolWet->setAbsolutePos(lazyXPos,lazyYPosRow2);
     fcontrolWet->show();
 }
