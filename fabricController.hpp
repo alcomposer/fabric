@@ -32,17 +32,9 @@ public:
 
 protected:
     void knobValueChanged(bool sendCallback) override;
-
     void onNanoDisplay() override;
-    /**
-        Mouse press event.
-        This UI will change color when clicked.
-    */
-    //bool onMouse(const MouseEvent &ev) override;
-
     void onPositionChanged(const PositionChangedEvent &event) override;
     void onResize(const ResizeEvent &event) override;
-
 private:
     void updateBottomValue();
     void updateBuddyWidgetPositions();

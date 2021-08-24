@@ -90,11 +90,6 @@ void fabricController::updateBuddyWidgetPositions()
 
     Rectangle<float> labelTopBounds;
     flabelTop->textBounds(0.0, 0.0, topText.c_str(), NULL, labelTopBounds);
-    //std::cout << labelTopBounds.getWidth() << std::endl;
-
-    // reposition the label at horizontal center and above the knob
-    //flabelTop->setAbsolutePos(area.getX() - labelTopBounds.getWidth() / 2.0, area.getY() - labelTopBounds.getHeight() - 4);
-
     flabelTop->setAbsolutePos(
         area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
         area.getY() - labelTopBounds.getHeight() - 4);
@@ -102,12 +97,6 @@ void fabricController::updateBuddyWidgetPositions()
     flabelBottom->setAbsolutePos(
         area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
         area.getY() + getHeight());
-
- //fprintf(stderr, "area %d %d\n", area.getX(), area.getWidth());
- //fprintf(stderr, "label %d %d\n", flabelTop->getAbsoluteX(), flabelTop->getWidth());
-
-    // reposition the knob at top-left
-    //fknobCenter->setAbsolutePos(area.getX(), area.getY());
 }
 
 END_NAMESPACE_DISTRHO
