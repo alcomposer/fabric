@@ -1,6 +1,5 @@
 #include "VolumeKnob.hpp"
 #include <iostream>
-//#include "Application.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -30,36 +29,22 @@ void VolumeKnob::onMouseHover()
 {
     if (!canBeFocused())
         return;
-
-//    getParentWindow().setCursorStyle(Window::CursorStyle::Grab);
-
-    //fHoverAnimation->play(Animation::Forward);
 }
 
 void VolumeKnob::onMouseLeave()
 {
     if (!canBeFocused())
         return;
-        
-//    getParentWindow().setCursorStyle(Window::CursorStyle::Default);
-
-    //fHoverAnimation->play(Animation::Backward);
 }
 
 void VolumeKnob::onMouseDown()
 {
-    //fGrowAnimation->pause();
-    //fGrowAnimation->setDuration(0.100f);
-    //fGrowAnimation->seek(fGrowAnimation->getCurrentTime() / 2.0f);
-    //fGrowAnimation->play(Animation::Forward);
+
 }
 
 void VolumeKnob::onMouseUp()
 {
-    //fGrowAnimation->pause();
-    //fGrowAnimation->setDuration(0.400f);
-    //fGrowAnimation->seek(fGrowAnimation->getCurrentTime() * 2.0f);
-    //fGrowAnimation->play(Animation::Backward);
+
 }
 
 void VolumeKnob::setBipolar(bool isBipolar)
