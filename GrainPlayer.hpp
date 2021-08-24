@@ -6,6 +6,7 @@
 
 #include "Grain.hpp"
 #include "fabricMaths.hpp"
+#include "LinearSmoother.h"
 
 #define MAX_GRAINS 128
 
@@ -47,8 +48,15 @@ private:
     int _bufferSize = {0};
     bool addGrain(int currentFrame);
     void generateSubdivision(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t subdivStart, uint32_t subdivFrames);
-    
+    void processSmoothers(uint32_t frames);
+
     fabricMaths::fast_rand m_seed;
     fabricMaths::fast_real_distribution<float> m_fRandomNormalized;
     fabricMaths::fast_real_distribution<float> m_fRandomBiPolNormalized; 
+
+    LinearSmoother m_pitchSmooth;
+    float * m_pitchSmoothData;
+
+    LinearSmoother m_lengthSmooth;
+    float * m_lengthSmoothData;
 };

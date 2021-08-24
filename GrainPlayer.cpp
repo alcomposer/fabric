@@ -1,5 +1,6 @@
 #include "GrainPlayer.hpp"
 #include <iostream>
+#include <memory.h>
 
 inline int modulo(int a, int b) {
     if(b < 0) return modulo(-a, -b);
@@ -15,11 +16,23 @@ GrainPlayer::GrainPlayer() :
     {
         grains_free.push_back(grain);
     }
+
+    // setup the linear smoothers for control parameters
+    // pitch
+    m_pitchSmoothData = (float*)calloc(8192, sizeof(float));
+    m_pitchSmooth.setSampleRate(controls.sampleRate);
+    m_pitchSmooth.setSmoothTime(.1f);
+
+    // length
+    m_lengthSmoothData = (float*)calloc(8192, sizeof(float));
+    m_lengthSmooth.setSampleRate(controls.sampleRate);
+    m_lengthSmooth.setSmoothTime(.1f);
 }
 
 GrainPlayer::~GrainPlayer()
-{
-
+{   
+    free(m_pitchSmoothData);
+    free(m_lengthSmoothData);
 }
 
 bool GrainPlayer::addGrain(int currentFrame)
@@ -39,7 +52,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     grain.m_playing              = true;
     grain.m_direction            = m_fRandomNormalized(m_seed) <= (controls.direction * .5f) + .5f ? Grain::Direction::forward : Grain::Direction::reverse;
     grain.m_startTimeFrameOffset = currentFrame;
-    grain.m_age                  = (controls.length/1000.f * controls.sampleRate);
+    grain.m_age                  = (m_lengthSmoothData[currentFrame] / 1000.f * controls.sampleRate);
     grain.m_length               = grain.m_age; 
 
     grain.m_startTimeBuffer      = grain.m_direction == Grain::Direction::forward ? 
@@ -48,7 +61,7 @@ bool GrainPlayer::addGrain(int currentFrame)
 
     grain.m_sides                = controls.sides;
     grain.m_tilt                 = controls.tilt;
-    grain.m_pitch                = std::pow(2.f, controls.pitch + (m_fRandomBiPolNormalized(m_seed) * controls.pitchSpray));
+    grain.m_pitch                = std::pow(2.f, m_pitchSmoothData[currentFrame] + (m_fRandomBiPolNormalized(m_seed) * controls.pitchSpray));
     grain.m_stereoWidth          = controls.stereoWidth;
     grain.m_pan                  = ((m_fRandomBiPolNormalized(m_seed) * controls.panSpray) + 1.f) * .5f;
 
@@ -59,6 +72,8 @@ bool GrainPlayer::addGrain(int currentFrame)
 void GrainPlayer::generate(float** outputs, float** st_audioBuffer, int bufferSize, uint32_t frames)
 {
     _bufferSize = bufferSize;
+    
+    processSmoothers(frames);
 
     //Number of frames synthesized so far
     int synthesizedFrames = 0;
@@ -122,4 +137,14 @@ void GrainPlayer::generateSubdivision(float** outputs, float** st_audioBuffer, i
             grains_free.push_back(grain);
         }
     }
+}
+
+void GrainPlayer::processSmoothers(uint32_t frames)
+{
+    std::fill_n(m_pitchSmoothData, frames, controls.pitch);
+    m_pitchSmooth.process(m_pitchSmoothData, m_pitchSmoothData, frames, true);
+
+    std::fill_n(m_lengthSmoothData, frames, controls.length);
+    m_lengthSmooth.process(m_lengthSmoothData, m_lengthSmoothData, frames, true);
+
 }
