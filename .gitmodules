@@ -1,3 +1,6 @@
 [submodule "DPF"]
 	path = DPF
 	url = https://github.com/DISTRHO/DPF
+[submodule "thirdparty/simde"]
+	path = thirdparty/simde
+	url = https://github.com/simd-everywhere/simde.git
