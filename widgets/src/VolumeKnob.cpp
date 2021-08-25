@@ -61,7 +61,7 @@ void VolumeKnob::draw()
     const float min = getMin();
     const float max = getMax();
 
-    const float percentFilled = (value - min) / (max - min);
+    const float percentFilled = normalizeValue(value);
 
     const float radius = height / 2.0f;
 
