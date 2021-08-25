@@ -9,13 +9,46 @@ NanoKnob::NanoKnob(Widget  *widget, Size<uint> size) noexcept
       fMax(1.0f),
       fStep(0.0f),
       fValue(0.5f),
-      fUsingLog(false),
+      fCurve(0.0f),
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
     setSize(size);
+}
+
+void NanoKnob::setCurve(float curve)
+{
+    if (fCurve == curve)
+        return;
+
+    fCurve = curve;
+    repaint();
+}
+
+float NanoKnob::normalizeValue(float value)
+{
+    float nv = (value - fMin) / (fMax - fMin);
+
+    if (fCurve > 0)
+        nv = std::pow(nv, fCurve);
+    else if (fCurve < 0)
+        nv = 1.0f - std::pow(1.0f - nv, -fCurve);
+
+    return nv;
+}
+
+float NanoKnob::denormalizeValue(float value)
+{
+    float nv = (value - fMin) / (fMax - fMin);
+
+    if (fCurve > 0)
+        nv = std::pow(nv, 1.0f / fCurve);
+    else if (fCurve < 0)
+        nv = 1.0f - std::pow(1.0f - nv, 1.0f / -fCurve);
+
+    return nv * (fMax - fMin) + fMin;
 }
 
 float NanoKnob::getValue() const noexcept
@@ -61,11 +94,6 @@ void NanoKnob::setValue(float value, bool sendCallback) noexcept
     knobValueChanged(sendCallback);
 
     repaint();
-}
-
-void NanoKnob::setUsingLogScale(bool yesNo) noexcept
-{
-    fUsingLog = yesNo;
 }
 
 void NanoKnob::setCallback(Callback *callback) noexcept
@@ -172,7 +200,8 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
 
         fLeftMouseDownLocation.setY(ev.pos.getY());
 
-        setValue(fValue + difference, true);
+        float newValue = denormalizeValue( normalizeValue(fValue) + difference);
+        setValue(newValue, true);
 
         return true;
     }

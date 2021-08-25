@@ -28,9 +28,9 @@ public:
   void setDefault(float def) noexcept;
   void setRange(float min, float max) noexcept;
   void setStep(float step) noexcept;
-  void setUsingLogScale(bool yesNo) noexcept;
   void setCallback(Callback *callback) noexcept;
   void setColor(Color color) noexcept;
+  void setCurve(float curve);
 
 protected:
   virtual void knobValueChanged(bool sendCallback);
@@ -53,12 +53,15 @@ protected:
 
   virtual void draw() = 0;
 
+  float normalizeValue(float value);
+  float denormalizeValue(float value);
+
 private:
   float fMin;
   float fMax;
   float fStep;
   float fValue;
-  bool fUsingLog;
+  float fCurve;
 
   bool fLeftMouseDown;
   Point<double> fLeftMouseDownLocation;
