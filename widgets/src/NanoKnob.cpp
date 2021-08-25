@@ -230,8 +230,10 @@ bool NanoKnob::onScroll(const ScrollEvent &ev)
         return false;
 
     const float resistance = (ev.mod & kModifierControl) ? 400.0f : 40.0f;
+    const float difference = ev.delta.getY() / resistance;
 
-    setValue(getValue() + ev.delta.getY() / resistance * (fMax - fMin), true);
+    float newValue = denormalizeValue(normalizeValue(fValue) + difference);
+    setValue(newValue, true);
 
     return true;
 }
