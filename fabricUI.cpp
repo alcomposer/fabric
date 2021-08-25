@@ -104,7 +104,7 @@ fabricUI::fabricUI()
     fcontrolDensity->setCallback(this);
     fcontrolDensity->setRange(0.1f, 500.f);
     fcontrolDensity->setUnit("Hz");
-    fcontrolDensity->setCurve(.2f);
+    fcontrolDensity->setCurve(0.75f);
     fcontrolDensity->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolDensity->show();
 

@@ -32,9 +32,9 @@ float NanoKnob::normalizeValue(float value)
     float nv = (value - fMin) / (fMax - fMin);
 
     if (fCurve > 0)
-        nv = std::pow(nv, fCurve);
+        nv = std::pow(nv, 1.0f - fCurve);
     else if (fCurve < 0)
-        nv = 1.0f - std::pow(1.0f - nv, -fCurve);
+        nv = 1.0f - std::pow(1.0f - nv, fCurve - 1.0f);
 
     return nv;
 }
@@ -42,9 +42,9 @@ float NanoKnob::normalizeValue(float value)
 float NanoKnob::denormalizeValue(float nv)
 {
     if (fCurve > 0)
-        nv = std::pow(nv, 1.0f / fCurve);
+        nv = std::pow(nv, 1.0f / (1.0f - fCurve));
     else if (fCurve < 0)
-        nv = 1.0f - std::pow(1.0f - nv, 1.0f / -fCurve);
+        nv = 1.0f - std::pow(1.0f - nv, 1.0f / (fCurve - 1.0f));
 
     return nv * (fMax - fMin) + fMin;
 }
