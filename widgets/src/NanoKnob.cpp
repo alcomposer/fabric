@@ -39,10 +39,8 @@ float NanoKnob::normalizeValue(float value)
     return nv;
 }
 
-float NanoKnob::denormalizeValue(float value)
+float NanoKnob::denormalizeValue(float nv)
 {
-    float nv = (value - fMin) / (fMax - fMin);
-
     if (fCurve > 0)
         nv = std::pow(nv, 1.0f / fCurve);
     else if (fCurve < 0)
@@ -196,7 +194,7 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
     if (fLeftMouseDown)
     {
         const float resistance = (ev.mod & kModifierControl) ? 2000.0f : 200.0f;
-        const float difference = (fLeftMouseDownLocation.getY() - ev.pos.getY()) / resistance * (fMax - fMin);
+        const float difference = (fLeftMouseDownLocation.getY() - ev.pos.getY()) / resistance;
 
         fLeftMouseDownLocation.setY(ev.pos.getY());
 
