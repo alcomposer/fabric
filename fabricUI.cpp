@@ -115,6 +115,7 @@ fabricUI::fabricUI()
     fcontrolLength->setId(id_length);
     fcontrolLength->setCallback(this);
     fcontrolLength->setUnit("ms");    
+    fcontrolLength->setCurve(0.75f);
     fcontrolLength->setRange(0.f, 10000.f);
     fcontrolLength->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolLength->show();
