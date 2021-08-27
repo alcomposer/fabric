@@ -244,6 +244,9 @@ void fabricUI::parameterChanged(uint32_t index, float value)
     case id_length:
         fcontrolLength->setValue(value);
         break;
+    case id_gain_spray:
+        fcontrolGainSpray->setValue(value);
+        break;
     case id_direction:
         fcontrolDirection->setValue(value);
         break;
