@@ -83,6 +83,7 @@ private:
     ScopedPointer<fabricController> fcontrolScan;
     ScopedPointer<fabricController> fcontrolDensity;
     ScopedPointer<fabricController> fcontrolLength;
+    ScopedPointer<fabricController> fcontrolGainSpray;
     ScopedPointer<fabricController> fcontrolDirection;
     ScopedPointer<fabricController> fcontrolSpray;
     ScopedPointer<fabricController> fcontrolPitch;

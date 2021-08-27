@@ -61,6 +61,14 @@ fabricUI::fabricUI()
     m_pluginStatusTemp->setAbsolutePos(190,32);
     m_pluginStatusTemp->setFontSize(18.0);
 
+    frecButton = new fabricButton(this, Size<uint>(100,40));
+    frecButton->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    frecButton->setText("Rec");
+    frecButton->setId(id_rec);
+    frecButton->setCallback(this);
+    frecButton->setAbsolutePos(375,10);
+    frecButton->show();
+
     m_fabricGrainMeter = new fabricGrainMeter(this, Size<uint>(200,40));
     m_fabricGrainMeter->setAbsolutePos(640,10);
 
@@ -68,14 +76,7 @@ fabricUI::fabricUI()
     fwaveformDisplay->setAbsolutePos(0,60);
     fwaveformDisplay->show();
 
-    frecButton = new fabricButton(this, knobSizeStandard);
-    frecButton->setAbsolutePos(lazyXPos,lazyYPosRow1);
-    frecButton->setText("Rec");
-    frecButton->setId(id_rec);
-    frecButton->setCallback(this);
-    frecButton->show();
-
-    lazyXPos += lazyXposSpacer;
+    //lazyXPos += lazyXposSpacer;
 
     fcontrolScan = new fabricController(this, knobSizeStandard);
     fcontrolScan->setText("Scan");
@@ -119,6 +120,16 @@ fabricUI::fabricUI()
     fcontrolLength->setRange(0.f, 10000.f);
     fcontrolLength->setAbsolutePos(lazyXPos,lazyYPosRow1);
     fcontrolLength->show();
+
+    lazyXPos += lazyXposSpacer;
+
+    fcontrolGainSpray = new fabricController(this, knobSizeStandard);
+    fcontrolGainSpray->setText("Gain Spray");
+    fcontrolGainSpray->setId(id_gain_spray);
+    fcontrolGainSpray->setCallback(this);    
+    fcontrolGainSpray->setRange(0.f, 1.f);
+    fcontrolGainSpray->setAbsolutePos(lazyXPos,lazyYPosRow1);
+    fcontrolGainSpray->show();
 
     lazyXPos += lazyXposSpacer;
 

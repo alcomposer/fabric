@@ -23,6 +23,7 @@ enum Parameters
     id_spray,
     id_density,
     id_length,
+    id_gain_spray,
     id_direction,
     id_pitch,
     id_pitch_spray,

@@ -16,6 +16,7 @@ public:
     bool  m_playing;
     int   m_startTimeFrameOffset;
     float m_length;
+    float m_gain;
     float m_startTimeBuffer;
     int   m_positionInAudioBuffer;
     float m_age;

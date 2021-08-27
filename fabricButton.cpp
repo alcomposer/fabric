@@ -90,7 +90,7 @@ void fabricButton::updateBuddyWidgetPositions()
 
     flabelTop->setAbsolutePos(
         area.getX() + ((int)area.getWidth() - (int)flabelTop->getWidth()) / 2.0,
-        area.getY() - labelTopBounds.getHeight() - 4);
+        area.getY() + area.getHeight() * 0.5f - 6);
 }
 
 END_NAMESPACE_DISTRHO

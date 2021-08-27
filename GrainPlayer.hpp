@@ -16,6 +16,7 @@ struct GrainPlayerControl
     float spray = 0.01f;
     float density = 0.01f;
     float length = 0.01f;
+    float gainSpray = 0.f;
     float direction = 1.0f;
     float pitch = 1.f;
     float pitchSpray = 0.f;

@@ -142,6 +142,14 @@ void fabricDSP::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.max = 10000.0f;
         parameter.ranges.def = 100.f;
         break;
+    case id_gain_spray:   //Probability of grain gain attenuation
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Gain Spray";
+        parameter.symbol = "GAINSPRAY";
+        parameter.ranges.min = 0.f;
+        parameter.ranges.max = 1.f;
+        parameter.ranges.def = 0.f;
+        break;
     case id_direction:   //Factor of grain playback directon pobability
         parameter.hints = kParameterIsAutomable;
         parameter.name = "Direction";
@@ -236,6 +244,8 @@ float fabricDSP::getParameterValue(uint32_t index) const
         return grainPlayer.controls.density;
     case id_length:
         return grainPlayer.controls.length;
+    case id_gain_spray:
+        return grainPlayer.controls.gainSpray;
     case id_direction:
         return grainPlayer.controls.direction;
     case id_pitch:
@@ -277,6 +287,9 @@ void fabricDSP::setParameterValue(uint32_t index, float value)
         break;
     case id_length:
         grainPlayer.controls.length = value;
+        break;
+    case id_gain_spray:
+        grainPlayer.controls.gainSpray = value;
         break;
     case id_direction:
         grainPlayer.controls.direction = value;

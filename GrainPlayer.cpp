@@ -51,6 +51,7 @@ bool GrainPlayer::addGrain(int currentFrame)
     
     grain.m_playing              = true;
     grain.m_direction            = m_fRandomNormalized(m_seed) <= (controls.direction * .5f) + .5f ? Grain::Direction::forward : Grain::Direction::reverse;
+    grain.m_gain                 = 1.f - (m_fRandomNormalized(m_seed) * controls.gainSpray);
     grain.m_startTimeFrameOffset = currentFrame;
     grain.m_age                  = (m_lengthSmoothData[currentFrame] / 1000.f * controls.sampleRate);
     grain.m_length               = grain.m_age; 

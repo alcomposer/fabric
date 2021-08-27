@@ -8,6 +8,7 @@ Grain::Grain() :
      m_playing(false)
     ,m_startTimeFrameOffset(0)
     ,m_length(0)
+    ,m_gain(1.f)
     ,m_startTimeBuffer(0)
     ,m_age(0)
     ,m_positionInAudioBuffer(0)
@@ -72,11 +73,11 @@ void Grain::process(float** outputs, float** st_audioBuffer, int st_audioBufferS
         left *= std::sqrt(1.0f - m_pan);
         right *= std::sqrt(m_pan);
 
-        leftOutput[framePos]  += left * window;
-        rightOutput[framePos] += right * window;
+        leftOutput[framePos]  += left * window * m_gain;
+        rightOutput[framePos] += right * window * m_gain;
 
         m_age -= m_pitch;
-        startTimeBuffer += m_pitch * m_direction;
+        startTimeBuffer += m_pitch * (float)m_direction;
         startTimeBuffer = startTimeBuffer < 0.0f ? startTimeBuffer + st_audioBufferSize : startTimeBuffer;
     }
     m_startTimeBuffer = startTimeBuffer;
