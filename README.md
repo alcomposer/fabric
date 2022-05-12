@@ -13,6 +13,7 @@ Use at own risk during this time.
 First checkout the repo & grab DPF submodule:
 ```
 git clone https://github.com/alcomposer/fabric
+cd fabric
 git submodule update --init --recursive
 ```
 
